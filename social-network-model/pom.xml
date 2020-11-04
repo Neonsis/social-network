@@ -6,7 +6,7 @@
 
     <parent>
         <artifactId>social-network</artifactId>
-        <groupId>org.neonsis.social-network</groupId>
+        <groupId>org.neonsis.socialnetwork</groupId>
         <version>${revision}</version>
     </parent>
 
@@ -16,8 +16,11 @@
     <description>The model module of the social-network project</description>
     <url>https://github.com/Neonsis/social-network</url>
 
-
     <dependencies>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

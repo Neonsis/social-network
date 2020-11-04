@@ -13,7 +13,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>org.neonsis.social-network</groupId>
+    <groupId>org.neonsis.socialnetwork</groupId>
     <artifactId>social-network</artifactId>
     <version>${revision}</version>
     <name>${project.artifactId}</name>
