@@ -1,6 +1,5 @@
 package org.neonsis.socialnetwork.model.domain.user;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +11,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
-@Builder
 @NoArgsConstructor
 @Table(name = "user")
 public class User extends BaseEntityAudit implements Serializable {

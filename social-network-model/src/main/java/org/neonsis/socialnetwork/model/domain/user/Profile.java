@@ -1,10 +1,8 @@
 package org.neonsis.socialnetwork.model.domain.user;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.neonsis.socialnetwork.model.domain.base.BaseEntityAudit;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,15 +11,17 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Builder
 @NoArgsConstructor
 @Table(name = "profile")
-public class Profile extends BaseEntityAudit implements Serializable {
+public class Profile implements Serializable {
 
     private static final long serialVersionUID = 4644116734879167994L;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Id
+    private Long id;
+
     @Column(name = "gender")
+    @Enumerated(EnumType.ORDINAL)
     private Gender gender;
 
     @Column(name = "birthday")
@@ -37,6 +37,7 @@ public class Profile extends BaseEntityAudit implements Serializable {
     private String city;
 
     @MapsId
+    @JoinColumn(name = "id")
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
 }
