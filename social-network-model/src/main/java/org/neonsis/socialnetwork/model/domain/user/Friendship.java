@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,7 +14,9 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor
 @Table(name = "friendship")
-public class Friendship {
+public class Friendship implements Serializable {
+
+    private static final long serialVersionUID = -3623764064798214158L;
 
     @EmbeddedId
     private FriendshipId id;
@@ -28,6 +31,10 @@ public class Friendship {
 
     @Column(name = "created_at")
     private Date createdAt;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "status", nullable = false)
+    private Status status;
 
     @Override
     public boolean equals(Object o) {
