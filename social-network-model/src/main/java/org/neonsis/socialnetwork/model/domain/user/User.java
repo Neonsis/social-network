@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.neonsis.socialnetwork.model.domain.base.BaseEntityAudit;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @Getter
@@ -17,7 +19,7 @@ public class User extends BaseEntityAudit implements Serializable {
 
     private static final long serialVersionUID = 4943199878136168288L;
 
-    @Column(name = "uuid", nullable = false, unique = true)
+    @Column(name = "uuid", nullable = false, unique = true, length = 120)
     private String uuid;
 
     @Column(name = "email", nullable = false, unique = true, length = 50)
