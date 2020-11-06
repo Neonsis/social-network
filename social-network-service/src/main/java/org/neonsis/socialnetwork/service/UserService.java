@@ -6,9 +6,7 @@ public interface UserService {
 
     UserDto signUp(UserDto userDto);
 
-    UserDto signIn(UserDto userDto);
-
     UserDto findByUuid(String uuid);
 
-    UserDto getAuthUser();
+    UserDto findByEmail(String email);
 }
