@@ -6,6 +6,7 @@
         <module>social-network-model</module>
         <module>social-network-persistence</module>
         <module>social-network-service</module>
+        <module>social-network-rest</module>
     </modules>
 
     <parent>
