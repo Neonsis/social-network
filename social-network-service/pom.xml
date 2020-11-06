@@ -10,22 +10,24 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>social-network-persistence</artifactId>
+    <artifactId>social-network-service</artifactId>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
-    <description>The persistence module of the social-network project</description>
+    <description>The service module of the social-network project</description>
     <url>https://github.com/Neonsis/social-network</url>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
         <dependency>
             <artifactId>social-network-model</artifactId>
             <groupId>org.neonsis.socialnetwork</groupId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <artifactId>social-network-persistence</artifactId>
+            <groupId>org.neonsis.socialnetwork</groupId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
+
 
 </project>
