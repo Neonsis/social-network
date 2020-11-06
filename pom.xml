@@ -32,12 +32,18 @@
     <properties>
         <revision>0.1-SNAPSHOT</revision>
         <java.version>11</java.version>
+        <mapstruct.version>1.4.1.Final</mapstruct.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
         </dependency>
 
         <dependency>
