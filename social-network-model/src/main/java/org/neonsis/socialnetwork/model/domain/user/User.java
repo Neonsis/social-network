@@ -1,20 +1,25 @@
 package org.neonsis.socialnetwork.model.domain.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.neonsis.socialnetwork.model.domain.base.BaseEntityAudit;
 import org.neonsis.socialnetwork.model.domain.post.Post;
+import org.neonsis.socialnetwork.model.domain.user.security.Role;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "user")
 public class User extends BaseEntityAudit implements Serializable {
 
@@ -43,5 +48,11 @@ public class User extends BaseEntityAudit implements Serializable {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<Post> posts = new ArrayList<>();
+    private final List<Post> posts = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 }
