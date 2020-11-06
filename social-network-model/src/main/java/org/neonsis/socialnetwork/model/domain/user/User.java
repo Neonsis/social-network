@@ -40,8 +40,17 @@ public class User extends BaseEntityAudit implements Serializable {
     @Column(name = "last_name", nullable = false, length = 30)
     private String lastName;
 
-    @Column(name = "avatar_url", nullable = false)
+    @Column(name = "avatar_url")
     private String avatarUrl;
+
+    public User(String uuid, String email, String encryptedPassword, String firstName, String lastName, Set<Role> roles) {
+        this.uuid = uuid;
+        this.email = email;
+        this.encryptedPassword = encryptedPassword;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.roles = roles;
+    }
 
     @OneToMany(
             mappedBy = "user",
