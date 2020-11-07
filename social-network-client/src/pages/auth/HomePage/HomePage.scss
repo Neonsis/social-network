@@ -1,0 +1,21 @@
+@import "src/theme/variables.scss";
+
+.home-page {
+  height: calc(100vh - #{$navbar-height});
+  display: flex;
+  justify-content: space-around;
+  min-width: 960px;
+
+  .home {
+
+    &__promo {
+      min-width: 540px;
+      height: 100%;
+    }
+
+    &__auth {
+      min-width: 320px;
+      height: 100%;
+    }
+  }
+}
