@@ -8,7 +8,7 @@ export const HomePage = () => {
     return (
         <div className="home-page">
             <div className="home__promo">
-                <Header as='h2' textAlign="center" size="huge">
+                <Header as="h2" textAlign="center" size="huge">
                     Connect with friends and the world around you.
                     <Header.Subheader>
                         See photos and updates from your friends.

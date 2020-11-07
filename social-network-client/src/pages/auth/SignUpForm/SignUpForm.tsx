@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, Form, Header, Radio, Segment} from 'semantic-ui-react'
+import {Button, Form, Header, Radio, Segment} from "semantic-ui-react"
 import SemanticDatepicker from "react-semantic-ui-datepickers";
 import "./SignUpForm.scss";
 
@@ -21,10 +21,10 @@ export const SignUpForm = () => {
             </Header>
             <Form>
                 <Form.Field>
-                    <input placeholder='Your first name'/>
+                    <input placeholder="Your first name"/>
                 </Form.Field>
                 <Form.Field>
-                    <input placeholder='Your last name'/>
+                    <input placeholder="Your last name"/>
                 </Form.Field>
                 <Form.Field className="sign-up__date-picker">
                     <label>Birthday</label>
@@ -35,21 +35,21 @@ export const SignUpForm = () => {
                     <Form.Group inline>
                         <Form.Field
                             control={Radio}
-                            label='One'
-                            value='1'
-                            checked={gender === '1'}
+                            label="One"
+                            value="1"
+                            checked={gender === "1"}
                             onChange={handleGenderChange}
                         />
                         <Form.Field
                             control={Radio}
-                            label='Two'
-                            value='2'
-                            checked={gender === '2'}
+                            label="Two"
+                            value="2"
+                            checked={gender === "2"}
                             onChange={handleGenderChange}
                         />
                     </Form.Group>
                 </Form.Field>
-                <Button type='submit' className="register-button" fluid>Sign Up</Button>
+                <Button type="submit" className="register-button" fluid>Sign Up</Button>
             </Form>
         </Segment>
     );

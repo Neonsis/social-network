@@ -4,3 +4,10 @@ export interface IUser {
     token: string;
     avatarUrl?: string;
 }
+
+export interface IUserFormValues {
+    email: string;
+    password: string;
+    firstName?: string;
+    lastName?: string;
+}
