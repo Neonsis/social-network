@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {IUser} from "../../../models/user";
 import {Container, Dropdown, Image, Menu, Segment} from "semantic-ui-react";
 import AvatarNotFound from "../../../assets/avatar_not_found.png";
@@ -31,7 +31,7 @@ export const AppNavBar = ({user}: AppNavBarProps) => {
                                 pointing="top left"
                             >
                                 <Dropdown.Menu>
-                                    <Dropdown.Item text='Выйти'/>
+                                    <Dropdown.Item text="Выйти"/>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Menu.Item>

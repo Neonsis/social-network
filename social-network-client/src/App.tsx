@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 import {AppNavBar} from "./components/navigation";
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch} from "react-router-dom";
 import {AuthLayout} from "./pages/auth";
 
 function App() {

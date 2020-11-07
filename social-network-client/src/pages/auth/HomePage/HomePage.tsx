@@ -1,5 +1,6 @@
-import React from 'react';
+import React from "react";
 import "./HomePage.scss";
+import {SignUpForm} from "../SignUpForm";
 
 export const HomePage = () => {
     return (
@@ -8,7 +9,7 @@ export const HomePage = () => {
 
             </div>
             <div className="home__auth">
-
+                <SignUpForm/>
             </div>
         </div>
     );
