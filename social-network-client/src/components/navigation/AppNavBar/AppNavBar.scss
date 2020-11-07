@@ -1,0 +1,44 @@
+@import "src/theme/variables.scss";
+
+.app-navbar {
+  background-color: $color-primary-1 !important;
+  width: 960px;
+
+  &-wrapper {
+    position: relative;
+    width: 100%;
+    height: $navbar-height;
+  }
+
+  .menu .item {
+    width: 150px;
+  }
+
+  &__logo {
+    fill: white;
+    width: 34px;
+    height: 34px;
+  }
+
+  &__profile {
+    height: 100%;
+
+    &:hover {
+      background-color: $color-primary-1-active !important;
+    }
+  }
+
+  &__profile-name {
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: $default-font-size;
+    padding: 0 10px;
+  }
+
+  &__dropdown {
+    .icon {
+      margin-left: 4px !important;
+      color: #FFFFFF;
+    }
+  }
+}
