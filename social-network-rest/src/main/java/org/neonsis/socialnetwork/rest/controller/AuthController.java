@@ -2,6 +2,7 @@ package org.neonsis.socialnetwork.rest.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.exception.RecordNotFoundException;
+import org.neonsis.socialnetwork.model.dto.ProfileDto;
 import org.neonsis.socialnetwork.model.dto.UserDto;
 import org.neonsis.socialnetwork.rest.payload.mapper.AuthMapper;
 import org.neonsis.socialnetwork.rest.payload.request.LoginRequest;
@@ -53,8 +54,9 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<UserAuthResponse> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         UserDto userDto = authMapper.signUpRequestToUserDto(signUpRequest);
+        ProfileDto profileDto = authMapper.signUpRequestToProfileDto(signUpRequest);
 
-        UserDto registeredUser = userService.signUp(userDto);
+        UserDto registeredUser = userService.signUp(userDto, profileDto);
         String token = jwtTokenProvider.generateToken(registeredUser.getEmail());
         registeredUser.setToken(token);
 

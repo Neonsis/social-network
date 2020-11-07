@@ -7,7 +7,9 @@ import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.User;
 import org.neonsis.socialnetwork.model.domain.user.security.Role;
 import org.neonsis.socialnetwork.model.domain.user.security.RoleName;
+import org.neonsis.socialnetwork.model.dto.ProfileDto;
 import org.neonsis.socialnetwork.model.dto.UserDto;
+import org.neonsis.socialnetwork.model.dto.mapper.ProfileMapper;
 import org.neonsis.socialnetwork.model.dto.mapper.UserMapper;
 import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;
 import org.neonsis.socialnetwork.persistence.repository.RoleRepository;
@@ -24,6 +26,7 @@ import java.util.Collections;
 public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
+    private final ProfileMapper profileMapper;
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
     private final RoleRepository roleRepository;
@@ -31,7 +34,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public UserDto signUp(UserDto userDto) {
+    public UserDto signUp(UserDto userDto, ProfileDto profileDto) {
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
                 .orElseThrow(() -> new InvalidWorkFlowException("User Role not set."));
 
@@ -44,7 +47,7 @@ public class UserServiceImpl implements UserService {
         user.setRoles(Collections.singleton(userRole));
         User saved = userRepository.save(user);
 
-        Profile profile = new Profile();
+        Profile profile = profileMapper.profileDtoToProfile(profileDto);
         profile.setUser(saved);
         profileRepository.save(profile);
 
