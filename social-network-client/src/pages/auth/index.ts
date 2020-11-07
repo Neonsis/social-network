@@ -1,3 +1,4 @@
 export * from "./HomePage";
 export * from "./AuthLayout";
 export * from "./SignUpForm";
+export * from "./SignInForm";

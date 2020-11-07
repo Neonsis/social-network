@@ -1,6 +1,7 @@
 @import "src/theme/variables.scss";
 
 .home-page {
+  padding-top: 20px;
   height: calc(100vh - #{$navbar-height});
   display: flex;
   justify-content: space-around;
@@ -11,6 +12,13 @@
     &__promo {
       min-width: 540px;
       height: 100%;
+      padding-top: 170px;
+
+      .sub {
+        text-align: left;
+        font-size: 18px !important;
+        margin-top: 10px !important;
+      }
     }
 
     &__auth {
