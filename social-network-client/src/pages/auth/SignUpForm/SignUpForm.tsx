@@ -1,23 +1,23 @@
-import React, {SyntheticEvent, useEffect, useState} from "react";
+import React, {SyntheticEvent, useContext, useEffect, useState} from "react";
 import {Button, DropdownProps, Form, Header, Segment} from "semantic-ui-react"
 import SemanticDatepicker from "react-semantic-ui-datepickers";
 import "./SignUpForm.scss";
 import {useForm} from "react-hook-form";
 import {IUserFormValues} from "../../../models/user";
-import {user} from "../../../api/agent";
 import {ErrorMessages} from "../../../components/form";
 import {AxiosResponse} from "axios";
 import {SemanticDatepickerProps} from "react-semantic-ui-datepickers/dist/types";
+import {RootStoreContext} from "../../../stores/rootStore";
 
 const options = [
-    {key: 'm', text: 'Male', value: 'MALE'},
-    {key: 'f', text: 'Female', value: 'FEMALE'}
+    {key: "m", text: "Male", value: "MALE"},
+    {key: "f", text: "Female", value: "FEMALE"}
 ]
 
-
 export const SignUpForm = () => {
+    const rootStore = useContext(RootStoreContext);
+    const {register: registerRequest, loading} = rootStore.userStore;
     const {register, handleSubmit, errors, setValue, trigger} = useForm<IUserFormValues>();
-    const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
     const [apiError, setApiError] = useState<AxiosResponse>();
 
@@ -27,13 +27,9 @@ export const SignUpForm = () => {
     }, []);
 
     const onSubmit = (values: IUserFormValues) => {
-        setLoading(true);
         setError(false);
-        setLoading(true);
-        user.signup(values)
-            .then(value => console.log(value))
+        registerRequest(values)
             .catch((error) => setApiError(error))
-            .finally(() => setLoading(false))
     }
 
     const onGenderChange = async (e: SyntheticEvent<HTMLElement>, {name, value}: DropdownProps) => {
@@ -102,6 +98,7 @@ export const SignUpForm = () => {
                     className="register-button"
                     fluid
                     loading={loading}
+                    disabled={loading}
                 >
                     Sign Up
                 </Button>

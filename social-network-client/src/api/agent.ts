@@ -3,6 +3,17 @@ import {IUser, IUserFormValues} from "../models/user";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
+axios.interceptors.request.use(
+    config => {
+        const token = window.localStorage.getItem("jwt");
+        if (token) config.headers.Authorization = `Bearer ${token}`;
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    }
+);
+
 axios.interceptors.response.use(undefined, error => {
     throw error.response;
 });
@@ -28,11 +39,13 @@ const requests = {
             .then(responseBody)
 }
 
-const user = {
+const User = {
     login: (user: IUserFormValues): Promise<IUser> => requests.post("/auth/signin", user),
-    signup: (user: IUserFormValues): Promise<IUser> => requests.post("/auth/signup", user)
+    logout: (): Promise<null> => requests.post("/auth/logout", {}),
+    signup: (user: IUserFormValues): Promise<IUser> => requests.post("/auth/signup", user),
+    current: (): Promise<IUser> => requests.get("/users/me")
 }
 
-export {
-    user
+export default {
+    User
 };

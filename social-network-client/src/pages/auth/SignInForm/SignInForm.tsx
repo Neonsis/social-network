@@ -1,21 +1,20 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {Button, Form, Message, Segment} from "semantic-ui-react";
 import {useForm} from "react-hook-form";
 import {IUserFormValues} from "../../../models/user";
-import {user} from "../../../api/agent"
+import {RootStoreContext} from "../../../stores/rootStore";
+import {observer} from "mobx-react-lite";
 
-export const SignInForm = () => {
+export const SignInForm = observer(() => {
+    const rootStore = useContext(RootStoreContext);
+    const {login, loading} = rootStore.userStore;
     const {register, handleSubmit, errors} = useForm<IUserFormValues>();
-    const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
 
     const onSubmit = (values: IUserFormValues) => {
         setError(false);
-        setLoading(true);
-        user.login(values)
-            .then(value => console.log(value))
+        login(values)
             .catch(() => setError(true))
-            .finally(() => setLoading(false))
     }
 
     return (
@@ -38,17 +37,18 @@ export const SignInForm = () => {
                 </Form.Field>
                 <Message
                     error
-                    header='Action Forbidden'
+                    header="Action Forbidden"
                     content="Invalid email or password"
                 />
                 <Button
                     type="submit"
                     className="primary-button"
                     loading={loading}
+                    disabled={loading}
                 >
                     Login
                 </Button>
             </Form>
         </Segment>
     );
-};
+});

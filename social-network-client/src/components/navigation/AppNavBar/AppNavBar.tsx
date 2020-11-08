@@ -1,16 +1,16 @@
-import React from "react";
-import {IUser} from "../../../models/user";
+import React, {useContext} from "react";
+import "./AppNavBar.scss";
+import {observer} from "mobx-react-lite"
 import {Container, Dropdown, Image, Menu} from "semantic-ui-react";
+import {NavLink} from "react-router-dom";
 import AvatarNotFound from "../../../assets/avatar_not_found.png";
 import {ReactComponent as Logo} from "../../../assets/logo.svg";
-import {NavLink} from "react-router-dom";
-import "./AppNavBar.scss";
+import {RootStoreContext} from "../../../stores/rootStore";
 
-export type AppNavBarProps = {
-    user?: IUser;
-}
+export const AppNavBar = observer(() => {
+    const rootStore = useContext(RootStoreContext);
+    const {user, logout} = rootStore.userStore;
 
-export const AppNavBar = ({user}: AppNavBarProps) => {
     return (
         <div className="app-navbar-wrapper">
             <Menu fixed="top" className="app-navbar" text>
@@ -31,7 +31,7 @@ export const AppNavBar = ({user}: AppNavBarProps) => {
                                 pointing="top left"
                             >
                                 <Dropdown.Menu>
-                                    <Dropdown.Item text="Выйти"/>
+                                    <Dropdown.Item onClick={logout} text="Выйти"/>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Menu.Item>
@@ -40,4 +40,5 @@ export const AppNavBar = ({user}: AppNavBarProps) => {
             </Menu>
         </div>
     );
-};
+});
+

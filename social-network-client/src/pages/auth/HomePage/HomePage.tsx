@@ -1,7 +1,6 @@
 import React from "react";
 import "./HomePage.scss";
-import {SignUpForm} from "../SignUpForm";
-import {SignInForm} from "../SignInForm";
+import {SignInForm, SignUpForm} from "../";
 import {Header} from "semantic-ui-react";
 
 export const HomePage = () => {

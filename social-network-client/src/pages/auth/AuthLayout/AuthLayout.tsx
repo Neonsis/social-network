@@ -4,7 +4,6 @@ import {Redirect, Route, Switch} from "react-router-dom";
 import * as Routes from "../../../util/routes";
 import {HomePage} from "../HomePage";
 
-
 /**
  * Main Layout for the app, when user isn't authenticated
  */

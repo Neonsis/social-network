@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {AxiosResponse} from "axios";
 import {Message} from "semantic-ui-react";
 import "./ErrorMessages.scss";
@@ -19,7 +19,6 @@ interface ErrorMessagesProps {
 }
 
 export const ErrorMessages = ({error, text}: ErrorMessagesProps) => {
-    console.log(Object.values(error.data.details).map(error => error.message));
     return (
         <Message error className="error-messages">
             <Message.Header>{error.data.message}</Message.Header>
