@@ -3,6 +3,10 @@ import {IUser, IUserFormValues} from "../models/user";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
+axios.interceptors.response.use(undefined, error => {
+    throw error.response;
+});
+
 const responseBody = (response: AxiosResponse) => response.data;
 
 const requests = {
@@ -24,11 +28,11 @@ const requests = {
             .then(responseBody)
 }
 
-const User = {
-    login: (user: IUserFormValues): Promise<IUser> => requests.post("/auth/signup", user),
+const user = {
+    login: (user: IUserFormValues): Promise<IUser> => requests.post("/auth/signin", user),
     signup: (user: IUserFormValues): Promise<IUser> => requests.post("/auth/signup", user)
 }
 
-export default {
-    User
+export {
+    user
 };

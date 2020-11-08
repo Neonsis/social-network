@@ -8,6 +8,8 @@ export interface IUser {
 export interface IUserFormValues {
     email: string;
     password: string;
+    gender: "MALE" | "FEMALE";
+    birthday: Date;
     firstName?: string;
     lastName?: string;
 }

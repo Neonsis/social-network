@@ -1,6 +1,6 @@
 import React from "react";
 import {IUser} from "../../../models/user";
-import {Container, Dropdown, Image, Menu, Segment} from "semantic-ui-react";
+import {Container, Dropdown, Image, Menu} from "semantic-ui-react";
 import AvatarNotFound from "../../../assets/avatar_not_found.png";
 import {ReactComponent as Logo} from "../../../assets/logo.svg";
 import {NavLink} from "react-router-dom";

@@ -1,55 +1,110 @@
-import React, {useState} from "react";
-import {Button, Form, Header, Radio, Segment} from "semantic-ui-react"
+import React, {SyntheticEvent, useEffect, useState} from "react";
+import {Button, DropdownProps, Form, Header, Segment} from "semantic-ui-react"
 import SemanticDatepicker from "react-semantic-ui-datepickers";
 import "./SignUpForm.scss";
+import {useForm} from "react-hook-form";
+import {IUserFormValues} from "../../../models/user";
+import {user} from "../../../api/agent";
+import {ErrorMessages} from "../../../components/form";
+import {AxiosResponse} from "axios";
+import {SemanticDatepickerProps} from "react-semantic-ui-datepickers/dist/types";
+
+const options = [
+    {key: 'm', text: 'Male', value: 'MALE'},
+    {key: 'f', text: 'Female', value: 'FEMALE'}
+]
+
 
 export const SignUpForm = () => {
+    const {register, handleSubmit, errors, setValue, trigger} = useForm<IUserFormValues>();
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<boolean>(false);
+    const [apiError, setApiError] = useState<AxiosResponse>();
 
-    const [gender, setGender] = useState<string>();
+    useEffect(() => {
+        register({name: "gender"}, {required: true});
+        register({name: "birthday"}, {required: true});
+    }, []);
 
-    const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>, {value}: any) => {
-        setGender(value);
+    const onSubmit = (values: IUserFormValues) => {
+        setLoading(true);
+        setError(false);
+        setLoading(true);
+        user.signup(values)
+            .then(value => console.log(value))
+            .catch((error) => setApiError(error))
+            .finally(() => setLoading(false))
+    }
+
+    const onGenderChange = async (e: SyntheticEvent<HTMLElement>, {name, value}: DropdownProps) => {
+        setValue(name, value);
+        await trigger(name);
+    }
+
+    const onBirthdayChange = async (event: SyntheticEvent<Element, Event> | undefined, data: SemanticDatepickerProps) => {
+        setValue("birthday", data.value);
+        await trigger("birthday");
     }
 
     return (
         <Segment className="sign-up">
             <Header as="h3" textAlign="center">
-                First time here?
-                <Header.Subheader>
-                    Sign up for VK
-                </Header.Subheader>
+                Sign up for VK
             </Header>
-            <Form>
-                <Form.Field>
-                    <input placeholder="Your first name"/>
+            <Form onSubmit={handleSubmit(onSubmit)} error={error || apiError !== undefined}>
+                <Form.Field error={errors.firstName}>
+                    <input
+                        name="firstName"
+                        placeholder="Your first name"
+                        ref={register({required: true})}
+                    />
                 </Form.Field>
-                <Form.Field>
-                    <input placeholder="Your last name"/>
+                <Form.Field error={errors.lastName}>
+                    <input
+                        name="lastName"
+                        placeholder="Your last name"
+                        ref={register({required: true})}
+                    />
                 </Form.Field>
-                <Form.Field className="sign-up__date-picker">
+                <Form.Field error={errors.email}>
+                    <input
+                        name="email"
+                        placeholder="Your email"
+                        ref={register({required: true})}
+                    />
+                </Form.Field>
+                <Form.Field error={errors.password}>
+                    <input
+                        name="password"
+                        placeholder="Your password"
+                        type="password"
+                        ref={register({required: true})}
+                    />
+                </Form.Field>
+                <Form.Field className="sign-up__date-picker" error={errors.birthday}>
                     <label>Birthday</label>
-                    <SemanticDatepicker/>
+                    <SemanticDatepicker
+                        name="birthday"
+                        onChange={onBirthdayChange}
+                    />
                 </Form.Field>
-                <Form.Field>
-                    <label>Birthday</label>
-                    <Form.Group inline>
-                        <Form.Field
-                            control={Radio}
-                            label="One"
-                            value="1"
-                            checked={gender === "1"}
-                            onChange={handleGenderChange}
-                        />
-                        <Form.Field
-                            control={Radio}
-                            label="Two"
-                            value="2"
-                            checked={gender === "2"}
-                            onChange={handleGenderChange}
-                        />
-                    </Form.Group>
+                <Form.Field error={errors.gender}>
+                    <Form.Select
+                        name="gender"
+                        options={options}
+                        placeholder="Gender"
+                        onChange={onGenderChange}
+                    />
                 </Form.Field>
-                <Button type="submit" className="register-button" fluid>Sign Up</Button>
+                {apiError && <ErrorMessages error={apiError}/>}
+                <Button
+                    type="submit"
+                    className="register-button"
+                    fluid
+                    loading={loading}
+                >
+                    Sign Up
+                </Button>
             </Form>
         </Segment>
     );
