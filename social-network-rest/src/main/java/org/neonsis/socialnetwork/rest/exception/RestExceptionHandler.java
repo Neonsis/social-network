@@ -51,7 +51,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidWorkFlowException.class)
     protected ResponseEntity<Object> handleInvalidWorkflowException(InvalidWorkFlowException ex) {
-        logger.warn("Responding with invalid workflow error.  Message - {}", ex.getMessage());
+        logger.error("Responding with invalid workflow error.  Message - {}", ex.getMessage());
         ApiErrorRequest apiError = new ApiErrorRequest(INTERNAL_SERVER_ERROR);
         apiError.setMessage("Server error");
         return buildResponseEntity(apiError);

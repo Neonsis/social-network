@@ -1,0 +1,1 @@
+INSERT INTO `role` values(null,null,null,'ROLE_USER');

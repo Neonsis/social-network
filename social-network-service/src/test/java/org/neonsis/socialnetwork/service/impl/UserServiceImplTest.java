@@ -60,6 +60,8 @@ class UserServiceImplTest {
         );
     }
 
+    // TODO signup tests
+
     @Test
     public void testFindByUuid_whenExists_shouldReturnUser() {
         User user = createUser();

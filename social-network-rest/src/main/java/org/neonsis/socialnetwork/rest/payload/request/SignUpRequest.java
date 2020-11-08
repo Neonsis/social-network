@@ -15,23 +15,24 @@ import java.time.LocalDate;
 @Setter
 public class SignUpRequest {
 
-    @NotBlank
+    @NotBlank(message = "{user.first-name.not-empty}")
     private String firstName;
 
-    @NotBlank
+    @NotBlank(message = "{user.last-name.not-empty}")
     private String lastName;
 
-    @Email
     @UniqueEmail
+    @Email(message = "{user.email.valid}")
+    @NotBlank(message = "{user.email.not-empty}")
     private String email;
 
-    @NotBlank
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")
+    @NotBlank(message = "{user.password.not-empty}")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", message = "{user.password.valid}")
     private String password;
 
-    @NotNull
+    @NotNull(message = "{user.gender.not-empty}")
     private Gender gender;
 
-    @NotNull
+    @NotNull(message = "{user.birthday.not-empty}")
     private LocalDate birthday;
 }
