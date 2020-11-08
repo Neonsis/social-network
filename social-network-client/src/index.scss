@@ -1,0 +1,23 @@
+@import "src/theme/variables.scss";
+
+body {
+  margin: 0;
+  background-color: $background-color;
+  overflow-x: auto;
+}
+
+.page-layout {
+  padding-top: 44px;
+  min-width: 960px;
+}
+
+.primary-button {
+  background-color: $color-primary-1 !important;
+  color: #FFFFFF !important;
+}
+
+@media only screen and (min-width: 1200px) {
+  .ui.container {
+    width: 960px !important;
+  }
+}
