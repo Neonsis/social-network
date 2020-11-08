@@ -1,15 +1,13 @@
 package org.neonsis.socialnetwork.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.neonsis.socialnetwork.model.domain.user.Gender;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProfileDto {
