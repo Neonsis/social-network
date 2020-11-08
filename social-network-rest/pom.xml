@@ -10,25 +10,43 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>social-network-model</artifactId>
+    <artifactId>social-network-rest</artifactId>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
-    <description>The model module of the social-network project</description>
+    <description>The rest module of the social-network project</description>
     <url>https://github.com/Neonsis/social-network</url>
 
     <dependencies>
         <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
+            <artifactId>social-network-model</artifactId>
+            <groupId>org.neonsis.socialnetwork</groupId>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <artifactId>social-network-service</artifactId>
+            <groupId>org.neonsis.socialnetwork</groupId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -52,4 +70,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

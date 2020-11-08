@@ -6,7 +6,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -25,7 +27,7 @@ public class Profile implements Serializable {
     private Gender gender;
 
     @Column(name = "birthday")
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     @Column(name = "about")
     private String about;
@@ -40,4 +42,17 @@ public class Profile implements Serializable {
     @JoinColumn(name = "id")
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Profile profile = (Profile) o;
+        return Objects.equals(id, profile.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

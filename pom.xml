@@ -4,6 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
     <modules>
         <module>social-network-model</module>
+        <module>social-network-persistence</module>
+        <module>social-network-service</module>
+        <module>social-network-rest</module>
     </modules>
 
     <parent>
@@ -30,12 +33,31 @@
     <properties>
         <revision>0.1-SNAPSHOT</revision>
         <java.version>11</java.version>
+        <mapstruct.version>1.4.1.Final</mapstruct.version>
+        <jjwt.version>0.9.0</jjwt.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
         </dependency>
 
         <dependency>
@@ -56,6 +78,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>

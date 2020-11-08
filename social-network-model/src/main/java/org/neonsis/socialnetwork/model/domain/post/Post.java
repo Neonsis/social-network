@@ -20,10 +20,10 @@ public class Post extends BaseEntityAudit implements Serializable {
 
     private static final long serialVersionUID = 3044347078236487944L;
 
-    @Column(name = "content")
+    @Column(name = "content", nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private User user;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

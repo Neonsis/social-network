@@ -21,12 +21,13 @@ public class Comment extends BaseEntityAudit implements Serializable {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @OneToOne(mappedBy = "replyTo")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "reply_comment_id")
     private Comment replyTo;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Post post;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User user;
 }
