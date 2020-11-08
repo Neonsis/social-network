@@ -1,9 +1,12 @@
 package org.neonsis.socialnetwork.rest.exception;
 
+import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
 import org.neonsis.socialnetwork.exception.RecordNotFoundException;
 import org.neonsis.socialnetwork.rest.exception.model.ValidationError;
 import org.neonsis.socialnetwork.rest.payload.request.ApiErrorRequest;
 import org.neonsis.socialnetwork.rest.payload.request.ApiValidationErrorRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -19,12 +22,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(RestExceptionHandler.class);
+
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -32,6 +37,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             HttpHeaders headers,
             HttpStatus status,
             WebRequest request) {
+        logger.warn("Responding with validation error.  Message - {}", ex.getMessage());
         List<ValidationError> errors = ex.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> new ValidationError(fieldError.getField(), fieldError.getDefaultMessage()))
                 .collect(Collectors.toList());
@@ -40,6 +46,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         apiError.setMessage("Validation error");
         apiError.setDetails(errors);
 
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(InvalidWorkFlowException.class)
+    protected ResponseEntity<Object> handleInvalidWorkflowException(InvalidWorkFlowException ex) {
+        logger.warn("Responding with invalid workflow error.  Message - {}", ex.getMessage());
+        ApiErrorRequest apiError = new ApiErrorRequest(INTERNAL_SERVER_ERROR);
+        apiError.setMessage("Server error");
         return buildResponseEntity(apiError);
     }
 
