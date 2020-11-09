@@ -1,10 +1,10 @@
 import React, {useContext, useEffect} from "react";
 import {AppNavBar} from "./components/navigation";
 import {Route, Switch} from "react-router-dom";
-import {AuthLayout} from "./pages/auth";
 import {RootStoreContext} from "./stores/rootStore";
 import {observer} from "mobx-react-lite";
-import {LoadingComponent} from "./components/layot";
+import {AppLayout, LoadingComponent} from "./components/layot";
+import {AuthLayout} from "./pages/auth/AuthLayout";
 
 function App() {
     const rootStore = useContext(RootStoreContext);
@@ -22,15 +22,15 @@ function App() {
     if (!appLoaded) return <LoadingComponent content="Loading app..."/>
 
     return (
-        <React.Fragment>
+        <div className="app social-network">
             <AppNavBar/>
             <Switch>
                 {user
-                    ? <div></div>
+                    ? <Route exact render={() => <AppLayout/>}/>
                     : <Route exact render={() => <AuthLayout/>}/>
                 }
             </Switch>
-        </React.Fragment>
+        </div>
     );
 }
 

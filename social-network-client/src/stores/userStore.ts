@@ -21,7 +21,7 @@ export default class UserStore {
                 this.user = user;
             })
         } catch (error) {
-            console.log(error);
+            this.rootStore.commonStore.setToken(null);
         } finally {
             runInAction(() => {
                 this.loading = false;

@@ -13,7 +13,7 @@ export const AppNavBar = observer(() => {
 
     return (
         <div className="app-navbar-wrapper">
-            <Menu fixed="top" className="app-navbar" text>
+            <Menu fixed="top" className="app-navbar nav" text>
                 <Container>
                     <Menu.Item header as={NavLink} exact to="/">
                         <Logo className="app-navbar__logo"/>

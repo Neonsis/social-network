@@ -1,0 +1,33 @@
+@import "src/theme/variables.scss";
+
+.app.social-network .main-layout {
+
+  .main-sidebar {
+    width: 157px;
+    display: inline-block;
+
+    &__item {
+      color: $color-primary-1-active;
+      font-size: $default-font-size;
+      opacity: .75;
+      padding: 6px 8px !important;
+      margin: 5px 0 !important;
+
+      &:hover {
+        color: $color-primary-1-active;
+        font-size: $default-font-size;
+        background-color: $background-color-3;
+        border-radius: 2px;
+      }
+
+      .icon {
+        margin-right: 10px !important;
+      }
+
+      .label {
+        background-color: $background-color-2;
+        color: $color-primary-1-active;
+      }
+    }
+  }
+}

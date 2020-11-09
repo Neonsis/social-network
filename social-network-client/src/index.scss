@@ -11,9 +11,9 @@ body {
   min-width: 960px;
 }
 
-.primary-button {
-  background-color: $color-primary-1 !important;
-  color: #FFFFFF !important;
+.app .primary-button {
+  background-color: $color-primary-1;
+  color: #FFFFFF;
 }
 
 @media only screen and (min-width: 1200px) {
