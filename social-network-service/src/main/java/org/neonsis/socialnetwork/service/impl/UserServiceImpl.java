@@ -1,7 +1,7 @@
 package org.neonsis.socialnetwork.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
+import org.neonsis.socialnetwork.exception.InternalServerException;
 import org.neonsis.socialnetwork.exception.RecordNotFoundException;
 import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.User;
@@ -18,10 +18,12 @@ import org.neonsis.socialnetwork.service.UserService;
 import org.neonsis.socialnetwork.service.UuidGeneratorService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -36,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto signUp(UserDto userDto, ProfileDto profileDto) {
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new InvalidWorkFlowException("User Role not set."));
+                .orElseThrow(() -> new InternalServerException("User Role not set."));
 
         String uuid = uuidGeneratorService.generateUuid();
         String encryptedPassword = passwordEncoder.encode(userDto.getPassword());
