@@ -5,7 +5,7 @@ import {RouteComponentProps} from 'react-router';
 import {RootStoreContext} from "../../../stores/rootStore";
 
 interface ProfilePageProps {
-    userUuid: string;
+    userId: string;
 }
 
 export const ProfilePage: React.FC<RouteComponentProps<ProfilePageProps>> = ({match}) => {
@@ -14,12 +14,12 @@ export const ProfilePage: React.FC<RouteComponentProps<ProfilePageProps>> = ({ma
 
     useEffect(() => {
 
-    }, [match.params.userUuid])
+    }, [match.params.userId])
 
     return (
         <Grid className="profile-page">
             <Grid.Column width={5}>
-                <ProfileAvatar image_url={user.avatarUrL}/>
+                <ProfileAvatar/>
             </Grid.Column>
         </Grid>
     );

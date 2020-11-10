@@ -10,7 +10,7 @@ export const Sidebar = () => {
 
     return (
         <Menu vertical text className="main-sidebar">
-            <Menu.Item as={Link} to={`/${user!.uuid}`} className="main-sidebar__item">
+            <Menu.Item as={Link} to={`/id${user!.id}`} className="main-sidebar__item">
                 <Icon name="home"/>
                 Моя страница
             </Menu.Item>

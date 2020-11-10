@@ -1,2 +1,2 @@
 export const HOME = "/";
-export const PROFILE = "/:userUuid";
+export const PROFILE = "/id:userId";
