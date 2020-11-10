@@ -1,5 +1,6 @@
 package org.neonsis.socialnetwork.model.domain.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.util.Objects;
 @Setter
 @Embeddable
 @NoArgsConstructor
+@AllArgsConstructor
 public class FriendshipId implements Serializable {
 
     private static final long serialVersionUID = -6500400027286181854L;
@@ -22,6 +24,14 @@ public class FriendshipId implements Serializable {
 
     @Column(name = "invited_id")
     private Long invitedId;
+
+    @Override
+    public String toString() {
+        return "FriendshipId{" +
+                "inviterId=" + inviterId +
+                ", invitedId=" + invitedId +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {

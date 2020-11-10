@@ -3,6 +3,8 @@ package org.neonsis.socialnetwork.model.domain.user;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +16,7 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor
 @Table(name = "friendship")
+@EntityListeners(AuditingEntityListener.class)
 public class Friendship implements Serializable {
 
     private static final long serialVersionUID = -3623764064798214158L;
@@ -29,6 +32,7 @@ public class Friendship implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private User invited;
 
+    @CreatedDate
     @Column(name = "created_at")
     private Date createdAt;
 
