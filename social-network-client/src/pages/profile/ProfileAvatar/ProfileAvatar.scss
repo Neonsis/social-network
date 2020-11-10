@@ -1,0 +1,19 @@
+@import "src/theme/variables";
+
+.profile__button:first-child {
+  margin-top: 15px;
+}
+
+.profile__buttons .profile__button:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.profile__avatar-container {
+  .profile__buttons {
+    .profile__dropdown {
+      &-item {
+        font-size: $default-font-size;
+      }
+    }
+  }
+}

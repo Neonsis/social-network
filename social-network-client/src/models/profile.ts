@@ -1,9 +1,6 @@
-export interface IProfile {
-    displayName: string;
-    username: string;
-    bio: string;
-    image: string;
-    following: boolean;
-    followersCount: number;
-    followingCount: number;
+export interface IProfileDetails {
+    birthday: Date;
+    about: string;
+    country: string;
+    city: string;
 }

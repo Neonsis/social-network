@@ -3,24 +3,40 @@ import {Grid} from "semantic-ui-react";
 import {ProfileAvatar} from "../ProfileAvatar";
 import {RouteComponentProps} from 'react-router';
 import {RootStoreContext} from "../../../stores/rootStore";
+import {observer} from "mobx-react-lite";
+import {LoadingComponent} from "../../../components/layot/LoadingComponent";
+import {ProfileInfo} from "../ProfileInfo";
 
 interface ProfilePageProps {
     userId: string;
 }
 
-export const ProfilePage: React.FC<RouteComponentProps<ProfilePageProps>> = ({match}) => {
+export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({match}) => {
     const rootStore = useContext(RootStoreContext);
-    const {user: loggedInUser} = rootStore.userStore;
+    const {loadingPage, userProfile, loadUser} = rootStore.profileStore;
 
     useEffect(() => {
+        loadUser(match.params.userId)
+    }, [match.params.userId, loadUser])
 
-    }, [match.params.userId])
+    if (loadingPage) return <LoadingComponent content="Loading app..."/>
 
     return (
-        <Grid className="profile-page">
+        <Grid>
             <Grid.Column width={5}>
-                <ProfileAvatar/>
+                <ProfileAvatar
+                    isFriend={userProfile!.isFriend}
+                    isLoggedInUser={userProfile!.isLoggedInUser}
+                    isPendingFriendship={userProfile!.isPendingFriendship}
+                />
+            </Grid.Column>
+            <Grid.Column width={11}>
+                <ProfileInfo
+                    firstName={userProfile!.firstName}
+                    lastName={userProfile!.lastName}
+                    id={match.params.userId}
+                />
             </Grid.Column>
         </Grid>
     );
-};
+});

@@ -1,5 +1,6 @@
 import axios, {AxiosResponse} from "axios";
-import {IUser, IUserFormValues} from "../models/user";
+import {IUser, IUserDetails, IUserFormValues} from "../models/user";
+import {IProfileDetails} from "../models/profile";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
@@ -43,7 +44,9 @@ const User = {
     login: (user: IUserFormValues): Promise<IUser> => requests.post("/auth/signin", user),
     logout: (): Promise<null> => requests.post("/auth/logout", {}),
     signup: (user: IUserFormValues): Promise<IUser> => requests.post("/auth/signup", user),
-    current: (): Promise<IUser> => requests.get("/users/me")
+    current: (): Promise<IUser> => requests.get("/users/me"),
+    get: (userId: string): Promise<IUserDetails> => requests.get(`/users/${userId}`),
+    profileDetails: (userId: string): Promise<IProfileDetails> => requests.get(`/profiles/${userId}`)
 }
 
 export default {
