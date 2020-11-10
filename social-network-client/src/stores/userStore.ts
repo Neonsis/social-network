@@ -18,11 +18,11 @@ export default class UserStore {
         try {
             const user = await agent.User.current();
             runInAction(() => {
+                this.loading = false;
                 this.user = user;
             })
         } catch (error) {
             this.rootStore.commonStore.setToken(null);
-        } finally {
             runInAction(() => {
                 this.loading = false;
             });
@@ -34,32 +34,32 @@ export default class UserStore {
         try {
             const user = await agent.User.login(values);
             runInAction(() => {
+                this.loading = false;
                 this.user = user;
             });
             this.rootStore.commonStore.setToken(user.token);
         } catch (error) {
-            throw error;
-        } finally {
             runInAction(() => {
                 this.loading = false;
             });
+            throw error;
         }
     };
 
     @action register = async (values: IUserFormValues) => {
+        this.loading = true;
         try {
-            this.loading = true;
             const user = await agent.User.signup(values);
             runInAction(() => {
+                this.loading = false;
                 this.user = user;
             });
             this.rootStore.commonStore.setToken(user.token);
         } catch (error) {
-            throw error;
-        } finally {
             runInAction(() => {
                 this.loading = false;
             });
+            throw error;
         }
     };
 
