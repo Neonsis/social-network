@@ -2,12 +2,22 @@ package org.neonsis.socialnetwork.model.dto.mapper;
 
 import org.mapstruct.Mapper;
 import org.neonsis.socialnetwork.model.domain.user.User;
+import org.neonsis.socialnetwork.model.dto.PageDto;
 import org.neonsis.socialnetwork.model.dto.UserDto;
+import org.neonsis.socialnetwork.model.dto.mapper.impl.PageMapperImpl;
+import org.springframework.data.domain.Page;
 
 @Mapper(componentModel = "spring")
-public interface UserMapper {
+public abstract class UserMapper {
 
-    UserDto userToUserDto(User user);
+    private final PageMapper<UserDto> pageMapper = new PageMapperImpl<>();
 
-    User userDtoToUser(UserDto userDto);
+    public abstract UserDto userToUserDto(User user);
+
+    public abstract User userDtoToUser(UserDto userDto);
+
+    public PageDto<UserDto> pageUserToPageDtoUserDto(Page<User> userPage) {
+        Page<UserDto> map = userPage.map(this::userToUserDto);
+        return pageMapper.pageToPageDto(map);
+    }
 }
