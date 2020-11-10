@@ -13,8 +13,10 @@ public class UserDetailsResponse {
     private String lastName;
     private String avatarUrl;
     private String email;
-    @JsonProperty(value="isFriend")
+    @JsonProperty(value = "isFriend")
     private boolean isFriend;
-    @JsonProperty(value="isPendingFriendship")
+    @JsonProperty(value = "isFollower")
+    private boolean isFollower;
+    @JsonProperty(value = "isPendingFriendship")
     private boolean isPendingFriendship;
 }

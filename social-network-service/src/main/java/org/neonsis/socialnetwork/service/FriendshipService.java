@@ -10,13 +10,13 @@ public interface FriendshipService {
 
     PageDto<UserDto> getFriends(Long userId, Pageable pageable);
 
-    PageDto<UserDto> getPendingUsers(Long userId, Pageable pageable);
-
-    void acceptFriendship(Long loggedInUserId, Long friendId);
+    PageDto<UserDto> getFollowers(Long userId, Pageable pageable);
 
     void deleteFriendship(Long loggedInUserId, Long friendId);
 
     boolean isUserFriend(Long loggedInUserId, Long friendId);
 
-    boolean isUserPendingFriendship(Long loggedInUserId, Long friendId);
+    boolean isFollower(Long loggedInUserId, Long followerId);
+
+    boolean isPendingFriendship(Long loggedInUserId, Long followerId);
 }

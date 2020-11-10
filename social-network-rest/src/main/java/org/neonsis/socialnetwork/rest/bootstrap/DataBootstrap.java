@@ -64,7 +64,7 @@ public class DataBootstrap implements ApplicationRunner {
         friendshipService.addToFriends(newUser.getId(), newUser1.getId());
         friendshipService.addToFriends(newUser.getId(), newUser2.getId());
 
-        friendshipService.acceptFriendship(newUser1.getId(), newUser.getId());
-        friendshipService.acceptFriendship(newUser2.getId(), newUser.getId());
+        friendshipService.addToFriends(newUser1.getId(), newUser.getId());
+        friendshipService.addToFriends(newUser2.getId(), newUser.getId());
     }
 }
