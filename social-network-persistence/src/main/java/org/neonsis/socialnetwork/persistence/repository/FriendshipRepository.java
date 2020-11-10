@@ -14,11 +14,11 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Friendsh
 
     boolean existsByInviterIdAndInvitedId(Long inviterId, Long invitedId);
 
-    Optional<Friendship> findFriendshipByInviterUuidAndInvitedUuid(String inviterUuid, String invitedUuid);
+    Optional<Friendship> findFriendshipByInviterIdAndInvitedId(Long inviterId, Long invitedId);
 
-    @Query("SELECT f FROM Friendship f WHERE (f.inviter.uuid = :inviterUuid AND f.invited.uuid = :invitedUuid) " +
-            "OR (f.invited.uuid = :inviterUuid AND f.inviter.uuid = :invitedUuid)")
-    Optional<Friendship> findFriendship(String inviterUuid, String invitedUuid);
+    @Query("SELECT f FROM Friendship f WHERE (f.inviter.id = :inviterId AND f.invited.id = :invitedId) " +
+            "OR (f.invited.id = :inviterId AND f.inviter.id = :invitedId)")
+    Optional<Friendship> findFriendship(Long inviterId, Long invitedId);
 
     @Query("SELECT u FROM User u WHERE u.id IN " +
             "(SELECT CASE WHEN f.invited.id = :id THEN f.inviter.id ELSE f.invited.id END FROM Friendship f " +

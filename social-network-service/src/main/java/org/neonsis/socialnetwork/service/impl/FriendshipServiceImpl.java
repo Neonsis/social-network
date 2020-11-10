@@ -28,18 +28,18 @@ public class FriendshipServiceImpl implements FriendshipService {
     private final UserMapper userMapper;
 
     @Override
-    public void addToFriends(String loggedInUserUuid, String friendUuid) {
-        if (loggedInUserUuid.equals(friendUuid)) {
+    public void addToFriends(Long loggedInUserId, Long friendId) {
+        if (loggedInUserId.equals(friendId)) {
             throw new InvalidWorkFlowException("You can't add yourself as a friend");
         }
-        User currentUser = userRepository.findByUuid(loggedInUserUuid)
-                .orElseThrow(() -> new RecordNotFoundException("User not found by uuid: " + loggedInUserUuid));
-        User friend = userRepository.findByUuid(friendUuid)
-                .orElseThrow(() -> new RecordNotFoundException("User not found by uuid: " + loggedInUserUuid));
+        User currentUser = userRepository.findById(loggedInUserId)
+                .orElseThrow(() -> new RecordNotFoundException("User not found by id: " + loggedInUserId));
+        User friend = userRepository.findById(friendId)
+                .orElseThrow(() -> new RecordNotFoundException("User not found by id: " + friendId));
 
         boolean isAlreadyFriend = friendshipRepository.existsByInviterIdAndInvitedId(currentUser.getId(), friend.getId());
         if (isAlreadyFriend) {
-            throw new InvalidWorkFlowException(String.format("User with uuid '%s' already your friend", friendUuid));
+            throw new InvalidWorkFlowException(String.format("User with id '%s' already your friend", friendId));
         }
 
         FriendshipId friendshipId = new FriendshipId(currentUser.getId(), friend.getId());
@@ -50,25 +50,25 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public PageDto<UserDto> getFriends(String uuid, Pageable pageable) {
-        User user = userRepository.findByUuid(uuid)
-                .orElseThrow(() -> new RecordNotFoundException("User not found by uuid: " + uuid));
+    public PageDto<UserDto> getFriends(Long userId, Pageable pageable) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RecordNotFoundException("User not found by id: " + userId));
         Page<User> friends = friendshipRepository.findFriends(user.getId(), pageable);
         return userMapper.pageUserToPageDtoUserDto(friends);
     }
 
     @Override
-    public PageDto<UserDto> getPendingUsers(String uuid, Pageable pageable) {
-        User user = userRepository.findByUuid(uuid)
-                .orElseThrow(() -> new RecordNotFoundException("User not found by uuid: " + uuid));
+    public PageDto<UserDto> getPendingUsers(Long userId, Pageable pageable) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RecordNotFoundException("User not found by id: " + userId));
         Page<User> pendingUsers = friendshipRepository.findRequestedFriendshipUsers(user.getId(), pageable);
         return userMapper.pageUserToPageDtoUserDto(pendingUsers);
     }
 
     @Override
-    public void acceptFriendship(String loggedInUserUuid, String friendUuid) {
-        Friendship friendship = friendshipRepository.findFriendshipByInviterUuidAndInvitedUuid(friendUuid, loggedInUserUuid)
-                .orElseThrow(() -> new RecordNotFoundException(String.format("Friendship not found by uuids: %s,%s", loggedInUserUuid, friendUuid)));
+    public void acceptFriendship(Long loggedInUserId, Long friendId) {
+        Friendship friendship = friendshipRepository.findFriendshipByInviterIdAndInvitedId(friendId, loggedInUserId)
+                .orElseThrow(() -> new RecordNotFoundException(String.format("Friendship not found by ids: %s,%s", loggedInUserId, friendId)));
 
         friendship.setStatus(Status.ACCEPTED);
 
@@ -76,25 +76,25 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public void deleteFriendship(String loggedInUserUuid, String friendUuid) {
-        Friendship friendship = friendshipRepository.findFriendshipByInviterUuidAndInvitedUuid(friendUuid, loggedInUserUuid)
-                .orElseThrow(() -> new RecordNotFoundException(String.format("Friendship not found by uuids: %s,%s", loggedInUserUuid, friendUuid)));
+    public void deleteFriendship(Long loggedInUserId, Long friendId) {
+        Friendship friendship = friendshipRepository.findFriendshipByInviterIdAndInvitedId(friendId, loggedInUserId)
+                .orElseThrow(() -> new RecordNotFoundException(String.format("Friendship not found by ids: %s,%s", loggedInUserId, friendId)));
 
         friendshipRepository.delete(friendship);
     }
 
     @Override
-    public boolean isUserFriend(String loggedInUserUuid, String friendUuid) {
+    public boolean isUserFriend(Long loggedInUserId, Long friendId) {
         Optional<Friendship> friendship = friendshipRepository
-                .findFriendship(loggedInUserUuid, friendUuid);
+                .findFriendship(loggedInUserId, friendId);
 
         return friendship.isPresent() && friendship.get().getStatus().equals(Status.ACCEPTED);
     }
 
     @Override
-    public boolean isUserPendingFriendship(String loggedInUserUuid, String friendUuid) {
+    public boolean isUserPendingFriendship(Long loggedInUserId, Long friendId) {
         Optional<Friendship> friendship = friendshipRepository
-                .findFriendship(loggedInUserUuid, friendUuid);
+                .findFriendship(loggedInUserId, friendId);
 
         return friendship.isPresent() && friendship.get().getStatus().equals(Status.PENDING);
     }

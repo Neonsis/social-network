@@ -25,9 +25,6 @@ public class User extends BaseEntityAudit implements Serializable {
 
     private static final long serialVersionUID = 4943199878136168288L;
 
-    @Column(name = "uuid", nullable = false, unique = true, length = 120)
-    private String uuid;
-
     @Column(name = "email", nullable = false, unique = true, length = 50)
     private String email;
 
@@ -43,8 +40,7 @@ public class User extends BaseEntityAudit implements Serializable {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
-    public User(String uuid, String email, String encryptedPassword, String firstName, String lastName, Set<Role> roles) {
-        this.uuid = uuid;
+    public User(String email, String encryptedPassword, String firstName, String lastName, Set<Role> roles) {
         this.email = email;
         this.encryptedPassword = encryptedPassword;
         this.firstName = firstName;

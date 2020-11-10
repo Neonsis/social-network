@@ -31,45 +31,45 @@ public class FriendsController {
     private final FriendshipService friendshipService;
     private final UserRestMapper userRestMapper;
 
-    @GetMapping("/{uuid}")
+    @GetMapping("/{id}")
     public ResponseEntity<PageDto<UserResponse>> findFriends(
             @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "id", direction = Sort.Direction.ASC)
             }) Pageable pageable,
-            @PathVariable String uuid) {
-        PageDto<UserDto> friendsDto = friendshipService.getFriends(uuid, pageable);
+            @PathVariable Long id) {
+        PageDto<UserDto> friendsDto = friendshipService.getFriends(id, pageable);
         PageDto<UserResponse> friendsResponse = userRestMapper.pageUserDtoToPageUserResponse(friendsDto);
         return new ResponseEntity<>(friendsResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/{uuid}/pending")
+    @GetMapping("/{id}/pending")
     public ResponseEntity<PageDto<UserResponse>> findUsersPendingFriendship(
             @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "id", direction = Sort.Direction.ASC)
             }) Pageable pageable,
-            @PathVariable String uuid) {
-        PageDto<UserDto> pendingUsersDto = friendshipService.getPendingUsers(uuid, pageable);
+            @PathVariable Long id) {
+        PageDto<UserDto> pendingUsersDto = friendshipService.getPendingUsers(id, pageable);
         PageDto<UserResponse> pendingUsersResponse = userRestMapper.pageUserDtoToPageUserResponse(pendingUsersDto);
         return new ResponseEntity<>(pendingUsersResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/{uuid}")
-    public ResponseEntity<HttpStatus> addToFriend(@CurrentUser UserPrincipal userPrincipal, @PathVariable String uuid) {
-        friendshipService.addToFriends(userPrincipal.getUuid(), uuid);
+    @PostMapping("/{id}")
+    public ResponseEntity<HttpStatus> addToFriend(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long id) {
+        friendshipService.addToFriends(userPrincipal.getId(), id);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/{uuid}/accept")
-    public ResponseEntity<HttpStatus> acceptFriendship(@CurrentUser UserPrincipal userPrincipal, @PathVariable String uuid) {
-        friendshipService.acceptFriendship(userPrincipal.getUuid(), uuid);
+    @PostMapping("/{id}/accept")
+    public ResponseEntity<HttpStatus> acceptFriendship(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long id) {
+        friendshipService.acceptFriendship(userPrincipal.getId(), id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/{uuid}/reject")
-    public ResponseEntity<HttpStatus> rejectFriendship(@CurrentUser UserPrincipal userPrincipal, @PathVariable String uuid) {
-        friendshipService.deleteFriendship(userPrincipal.getUuid(), uuid);
+    @PostMapping("/{id}/reject")
+    public ResponseEntity<HttpStatus> rejectFriendship(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long id) {
+        friendshipService.deleteFriendship(userPrincipal.getId(), id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

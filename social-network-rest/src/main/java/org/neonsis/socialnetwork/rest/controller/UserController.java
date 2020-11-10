@@ -32,16 +32,16 @@ public class UserController {
         return new ResponseEntity<>(authRestMapper.userPrincipalToUserResponse(userPrincipal), HttpStatus.OK);
     }
 
-    @GetMapping("/{uuid}")
-    public ResponseEntity<UserDetailsResponse> getProfileByUuid(@PathVariable String uuid, @CurrentUser UserPrincipal userPrincipal) {
-        UserDto user = userService.findByUuid(uuid);
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDetailsResponse> getProfileById(@PathVariable Long id, @CurrentUser UserPrincipal userPrincipal) {
+        UserDto user = userService.findById(id);
         UserDetailsResponse userDetailsResponse = userRestMapper.userDtoToUserDetailsResponse(user);
 
-        boolean isUserFriend = friendshipService.isUserFriend(userPrincipal.getUuid(), uuid);
+        boolean isUserFriend = friendshipService.isUserFriend(userPrincipal.getId(), id);
         if (isUserFriend) {
             userDetailsResponse.setFriend(true);
         } else {
-            boolean isUserPendingFriendship = friendshipService.isUserPendingFriendship(userPrincipal.getUuid(), uuid);
+            boolean isUserPendingFriendship = friendshipService.isUserPendingFriendship(userPrincipal.getId(), id);
             userDetailsResponse.setPendingFriendship(isUserPendingFriendship);
         }
 

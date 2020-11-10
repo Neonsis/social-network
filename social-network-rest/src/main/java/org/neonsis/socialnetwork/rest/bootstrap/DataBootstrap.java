@@ -60,11 +60,11 @@ public class DataBootstrap implements ApplicationRunner {
 
         UserDto newUser2 = userService.signUp(userDto2, profileDto2);
 
-        friendshipService.addToFriends(newUser1.getUuid(), newUser2.getUuid());
-        friendshipService.addToFriends(newUser.getUuid(), newUser1.getUuid());
-        friendshipService.addToFriends(newUser.getUuid(), newUser2.getUuid());
+        friendshipService.addToFriends(newUser1.getId(), newUser2.getId());
+        friendshipService.addToFriends(newUser.getId(), newUser1.getId());
+        friendshipService.addToFriends(newUser.getId(), newUser2.getId());
 
-        friendshipService.acceptFriendship(newUser1.getUuid(), newUser.getUuid());
-        friendshipService.acceptFriendship(newUser2.getUuid(), newUser.getUuid());
+        friendshipService.acceptFriendship(newUser1.getId(), newUser.getId());
+        friendshipService.acceptFriendship(newUser2.getId(), newUser.getId());
     }
 }

@@ -6,17 +6,17 @@ import org.springframework.data.domain.Pageable;
 
 public interface FriendshipService {
 
-    void addToFriends(String loggedInUserUuid, String friendUuid);
+    void addToFriends(Long loggedInUserId, Long friendId);
 
-    PageDto<UserDto> getFriends(String uuid, Pageable pageable);
+    PageDto<UserDto> getFriends(Long userId, Pageable pageable);
 
-    PageDto<UserDto> getPendingUsers(String uuid, Pageable pageable);
+    PageDto<UserDto> getPendingUsers(Long userId, Pageable pageable);
 
-    void acceptFriendship(String loggedInUserUuid, String friendUuid);
+    void acceptFriendship(Long loggedInUserId, Long friendId);
 
-    void deleteFriendship(String loggedInUserUuid, String friendUuid);
+    void deleteFriendship(Long loggedInUserId, Long friendId);
 
-    boolean isUserFriend(String loggedInUserUuid, String friendUuid);
+    boolean isUserFriend(Long loggedInUserId, Long friendId);
 
-    boolean isUserPendingFriendship(String loggedInUserUuid, String friendUuid);
+    boolean isUserPendingFriendship(Long loggedInUserId, Long friendId);
 }

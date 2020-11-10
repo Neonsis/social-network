@@ -19,14 +19,14 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfileDto findByUserId(Long userId) {
         Profile profile = profileRepository.findById(userId)
-                .orElseThrow(() -> new RecordNotFoundException("Profile not found by id: " + userId));
+                .orElseThrow(() -> new RecordNotFoundException("Profile not found by user id: " + userId));
         return profileMapper.profileToProfileDto(profile);
     }
 
     @Override
     public ProfileDto updateProfile(ProfileDto profileDto, Long userId) {
         profileRepository.findById(userId)
-                .orElseThrow(() -> new RecordNotFoundException("Profile not found by id: " + userId));
+                .orElseThrow(() -> new RecordNotFoundException("Profile not found by user id: " + userId));
 
         Profile profile = profileMapper.profileDtoToProfile(profileDto);
         profile.setId(userId);
