@@ -9,7 +9,7 @@ import org.neonsis.socialnetwork.rest.payload.response.UserResponse;
 import org.neonsis.socialnetwork.rest.security.UserPrincipal;
 
 @Mapper(componentModel = "spring")
-public interface AuthMapper {
+public interface AuthRestMapper {
 
     UserDto signUpRequestToUserDto(SignUpRequest signUpRequest);
 
