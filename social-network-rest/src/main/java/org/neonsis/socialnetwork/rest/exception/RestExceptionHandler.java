@@ -1,5 +1,6 @@
 package org.neonsis.socialnetwork.rest.exception;
 
+import org.neonsis.socialnetwork.exception.InternalServerException;
 import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
 import org.neonsis.socialnetwork.exception.RecordNotFoundException;
 import org.neonsis.socialnetwork.rest.exception.model.ValidationError;
@@ -51,7 +52,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidWorkFlowException.class)
     protected ResponseEntity<Object> handleInvalidWorkflowException(InvalidWorkFlowException ex) {
-        logger.error("Responding with invalid workflow error.  Message - {}", ex.getMessage());
+        logger.warn("Responding with invalid workflow error.  Message - {}", ex.getMessage());
+        ApiErrorRequest apiError = new ApiErrorRequest(BAD_REQUEST);
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(InternalServerException.class)
+    protected ResponseEntity<Object> handleInternalServerException(InternalServerException ex) {
+        logger.error("Responding with internal server error.  Message - {}", ex.getMessage());
         ApiErrorRequest apiError = new ApiErrorRequest(INTERNAL_SERVER_ERROR);
         apiError.setMessage("Server error");
         return buildResponseEntity(apiError);

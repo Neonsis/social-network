@@ -17,8 +17,6 @@ public class UserPrincipal implements UserDetails {
 
     private final Long id;
 
-    private final String uuid;
-
     private final String email;
 
     private final String encryptedPassword;
@@ -38,7 +36,6 @@ public class UserPrincipal implements UserDetails {
 
         return new UserPrincipal(
                 user.getId(),
-                user.getUuid(),
                 user.getEmail(),
                 user.getEncryptedPassword(),
                 user.getFirstName(),

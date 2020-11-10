@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.exception.RecordNotFoundException;
 import org.neonsis.socialnetwork.model.dto.ProfileDto;
 import org.neonsis.socialnetwork.model.dto.UserDto;
-import org.neonsis.socialnetwork.rest.payload.mapper.AuthMapper;
+import org.neonsis.socialnetwork.rest.payload.mapper.AuthRestMapper;
 import org.neonsis.socialnetwork.rest.payload.request.LoginRequest;
 import org.neonsis.socialnetwork.rest.payload.request.SignUpRequest;
 import org.neonsis.socialnetwork.rest.payload.response.UserAuthResponse;
@@ -32,7 +32,7 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final UserService userService;
-    private final AuthMapper authMapper;
+    private final AuthRestMapper authRestMapper;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
 
@@ -45,7 +45,7 @@ public class AuthController {
             String token = jwtTokenProvider.generateToken(email);
             loggedInUser.setToken(token);
 
-            return new ResponseEntity<>(authMapper.userDtoToUserAuthResponse(loggedInUser), HttpStatus.OK);
+            return new ResponseEntity<>(authRestMapper.userDtoToUserAuthResponse(loggedInUser), HttpStatus.OK);
         } catch (AuthenticationException | RecordNotFoundException e) {
             throw new BadCredentialsException("Invalid username or password");
         }
@@ -53,14 +53,14 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<UserAuthResponse> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        UserDto userDto = authMapper.signUpRequestToUserDto(signUpRequest);
-        ProfileDto profileDto = authMapper.signUpRequestToProfileDto(signUpRequest);
+        UserDto userDto = authRestMapper.signUpRequestToUserDto(signUpRequest);
+        ProfileDto profileDto = authRestMapper.signUpRequestToProfileDto(signUpRequest);
 
         UserDto registeredUser = userService.signUp(userDto, profileDto);
         String token = jwtTokenProvider.generateToken(registeredUser.getEmail());
         registeredUser.setToken(token);
 
-        return new ResponseEntity<>(authMapper.userDtoToUserAuthResponse(registeredUser), HttpStatus.CREATED);
+        return new ResponseEntity<>(authRestMapper.userDtoToUserAuthResponse(registeredUser), HttpStatus.CREATED);
     }
 
     @PostMapping("/logout")

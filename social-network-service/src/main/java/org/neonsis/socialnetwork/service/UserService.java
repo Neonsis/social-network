@@ -7,7 +7,7 @@ public interface UserService {
 
     UserDto signUp(UserDto userDto, ProfileDto profileDto);
 
-    UserDto findByUuid(String uuid);
+    UserDto findById(Long id);
 
     UserDto findByEmail(String email);
 }

@@ -14,7 +14,6 @@ import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;
 import org.neonsis.socialnetwork.persistence.repository.RoleRepository;
 import org.neonsis.socialnetwork.persistence.repository.UserRepository;
 import org.neonsis.socialnetwork.service.UserService;
-import org.neonsis.socialnetwork.service.UuidGeneratorService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -40,9 +39,6 @@ class UserServiceImplTest {
     private RoleRepository roleRepository;
 
     @Mock
-    private UuidGeneratorService uuidGeneratorService;
-
-    @Mock
     private BCryptPasswordEncoder passwordEncoder;
 
     private UserService userService;
@@ -55,7 +51,6 @@ class UserServiceImplTest {
                 userRepository,
                 profileRepository,
                 roleRepository,
-                uuidGeneratorService,
                 passwordEncoder
         );
     }
@@ -63,32 +58,30 @@ class UserServiceImplTest {
     // TODO signup tests
 
     @Test
-    public void testFindByUuid_whenExists_shouldReturnUser() {
+    public void testFindById_whenExists_shouldReturnUser() {
         User user = createUser();
-        String uuid = "andrey-vinel";
-        when(userRepository.findByUuid(uuid)).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
-        UserDto actual = userService.findByUuid(uuid);
+        UserDto actual = userService.findById(1L);
 
         assertNotNull(actual);
 
-        verify(userRepository, times(1)).findByUuid(uuid);
+        verify(userRepository, times(1)).findById(1L);
     }
 
     @Test
-    public void testFindByUuid_whenNotExists_shouldReturnUser() {
-        String uuid = "andrey-vinel";
-        when(userRepository.findByUuid(uuid)).thenReturn(Optional.empty());
+    public void testFindById_whenNotExists_shouldReturnUser() {
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
         RecordNotFoundException exception = assertThrows(RecordNotFoundException.class, () -> {
-            userService.findByUuid(uuid);
+            userService.findById(1L);
         });
 
-        String expected = "User not found by uuid: " + uuid;
+        String expected = "User not found by id: 1";
         String actual = exception.getMessage();
         assertEquals(expected, actual);
 
-        verify(userRepository, times(1)).findByUuid(uuid);
+        verify(userRepository, times(1)).findById(1L);
     }
 
     @Test
@@ -122,11 +115,11 @@ class UserServiceImplTest {
 
     public User createUser() {
         User user = new User();
+        user.setId(1L);
         user.setEmail("test@gmail.ru");
         user.setFirstName("Andrey");
         user.setLastName("Vinel");
         user.setEncryptedPassword("P4ssword");
-        user.setUuid("andrey-vinel");
         return user;
     }
 }
