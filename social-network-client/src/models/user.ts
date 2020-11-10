@@ -14,6 +14,7 @@ export interface IUserDetails {
     email: string;
     isFriend: boolean;
     isLoggedInUser: boolean;
+    isFollower: boolean;
     isPendingFriendship: boolean;
 }
 

@@ -16,7 +16,7 @@ export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({mat
     const {loadingPage, userProfile, loadUser} = rootStore.profileStore;
 
     useEffect(() => {
-        loadUser(match.params.userId)
+        loadUser(match.params.userId);
     }, [match.params.userId, loadUser])
 
     if (loadingPage) return <LoadingComponent content="Loading app..."/>
@@ -25,9 +25,11 @@ export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({mat
         <Grid>
             <Grid.Column width={5}>
                 <ProfileAvatar
+                    id={match.params.userId}
                     isFriend={userProfile!.isFriend}
                     isLoggedInUser={userProfile!.isLoggedInUser}
                     isPendingFriendship={userProfile!.isPendingFriendship}
+                    isFollower={userProfile!.isFollower}
                 />
             </Grid.Column>
             <Grid.Column width={11}>
