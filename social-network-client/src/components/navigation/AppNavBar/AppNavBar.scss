@@ -1,44 +1,45 @@
 @import "src/theme/variables.scss";
 
-.app-navbar {
-  background-color: $color-primary-1 !important;
-  width: 960px;
-
-  &-wrapper {
+.app {
+  .app-navbar-wrapper {
     position: relative;
     width: 100%;
     height: $navbar-height;
-  }
 
-  .menu .item {
-    width: 150px;
-  }
+    .app-navbar {
+      background-color: $color-primary-1;
 
-  &__logo {
-    fill: white;
-    width: 34px;
-    height: 34px;
-  }
+      &__logo {
+        fill: white;
+        width: 34px;
+        height: 34px;
+      }
 
-  &__profile {
-    height: 100%;
+      &__profile {
+        height: 100%;
 
-    &:hover {
-      background-color: $color-primary-1-active !important;
-    }
-  }
+        &-name {
+          color: #FFFFFF;
+          font-weight: bold;
+          font-size: $default-font-size;
+          padding: 0 10px;
+        }
 
-  &__profile-name {
-    color: #FFFFFF;
-    font-weight: bold;
-    font-size: $default-font-size;
-    padding: 0 10px;
-  }
+        &:hover {
+          background-color: $color-primary-1-active !important;
+        }
+      }
 
-  &__dropdown {
-    .icon {
-      margin-left: 4px !important;
-      color: #FFFFFF;
+      &__dropdown {
+        .icon {
+          margin-left: 4px;
+          color: #FFFFFF;
+        }
+      }
+
+      .menu .item {
+        width: 150px;
+      }
     }
   }
 }

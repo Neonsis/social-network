@@ -1,0 +1,39 @@
+@import "src/theme/variables";
+
+.profile {
+  &__info {
+
+    &-header {
+      margin-bottom: 8px;
+    }
+
+    &-item {
+      width: 100%;
+      font-size: $default-font-size !important;
+      font-weight: 500;
+      display: flex;
+    }
+
+    &--absent {
+      text-align: center;
+      font-size: $default-font-size !important;
+      color: $font-color-secondary;
+      font-weight: 500;
+    }
+  }
+
+  &__item {
+
+    &-label {
+      width: 165px;
+      display: inline-block;
+      color: $font-color-secondary;
+    }
+
+    &-content {
+      display: inline-block;
+      color: $color-primary-1;
+      width: 300px;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 @import "src/theme/variables.scss";
 
-.home-page {
+.app .home-page {
   padding-top: 20px;
   height: calc(100vh - #{$navbar-height});
   display: flex;
@@ -16,8 +16,8 @@
 
       .sub {
         text-align: left;
-        font-size: 18px !important;
-        margin-top: 10px !important;
+        font-size: 18px;
+        margin-top: 10px;
       }
     }
 

@@ -1,8 +1,21 @@
 export interface IUser {
+    id: string;
     firstName: string;
     lastName: string;
     token: string;
     avatarUrl?: string;
+}
+
+export interface IUserDetails {
+    id: string;
+    firstName: string;
+    lastName: string;
+    avatarUrl: string;
+    email: string;
+    isFriend: boolean;
+    isLoggedInUser: boolean;
+    isFollower: boolean;
+    isPendingFriendship: boolean;
 }
 
 export interface IUserFormValues {

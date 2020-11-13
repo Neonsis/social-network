@@ -11,10 +11,28 @@ body {
   min-width: 960px;
 }
 
-.primary-button {
-  background-color: $color-primary-1 !important;
-  color: #FFFFFF !important;
+
+.app .primary-button,
+.app .primary-button:hover,
+.app .primary-button:active,
+.app .primary-button:focus {
+  background-color: $color-primary-1;
+  color: #FFFFFF;
+  font-size: $default-font-size;
+  font-weight: 400;
 }
+
+.app .secondary-button,
+.app .secondary-button:hover,
+.app .secondary-button:active,
+.app .secondary-button:focus {
+  color: $button-secondary-text-color !important;
+  background-color: $button-secondary-background-color !important;
+  font-size: $default-font-size;
+  font-weight: 400;
+  text-align: center;
+}
+
 
 @media only screen and (min-width: 1200px) {
   .ui.container {

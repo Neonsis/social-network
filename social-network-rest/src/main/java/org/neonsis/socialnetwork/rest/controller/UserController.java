@@ -41,8 +41,13 @@ public class UserController {
         if (isUserFriend) {
             userDetailsResponse.setFriend(true);
         } else {
-            boolean isUserPendingFriendship = friendshipService.isUserPendingFriendship(userPrincipal.getId(), id);
-            userDetailsResponse.setPendingFriendship(isUserPendingFriendship);
+            boolean isFollower = friendshipService.isFollower(userPrincipal.getId(), id);
+            if (isFollower) {
+                userDetailsResponse.setFollower(isFollower);
+            } else {
+                boolean pendingFriendship = friendshipService.isPendingFriendship(userPrincipal.getId(), id);
+                userDetailsResponse.setPendingFriendship(pendingFriendship);
+            }
         }
 
         return new ResponseEntity<>(userDetailsResponse, HttpStatus.OK);

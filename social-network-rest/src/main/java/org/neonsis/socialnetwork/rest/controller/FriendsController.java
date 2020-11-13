@@ -15,10 +15,7 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import static org.neonsis.socialnetwork.rest.util.AppConstants.DEFAULT_PAGE_NUMBER;
 import static org.neonsis.socialnetwork.rest.util.AppConstants.DEFAULT_PAGE_SIZE;
@@ -50,7 +47,7 @@ public class FriendsController {
                     @SortDefault(sort = "id", direction = Sort.Direction.ASC)
             }) Pageable pageable,
             @PathVariable Long id) {
-        PageDto<UserDto> pendingUsersDto = friendshipService.getPendingUsers(id, pageable);
+        PageDto<UserDto> pendingUsersDto = friendshipService.getFollowers(id, pageable);
         PageDto<UserResponse> pendingUsersResponse = userRestMapper.pageUserDtoToPageUserResponse(pendingUsersDto);
         return new ResponseEntity<>(pendingUsersResponse, HttpStatus.OK);
     }
@@ -61,14 +58,8 @@ public class FriendsController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/{id}/accept")
-    public ResponseEntity<HttpStatus> acceptFriendship(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long id) {
-        friendshipService.acceptFriendship(userPrincipal.getId(), id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("/{id}/reject")
-    public ResponseEntity<HttpStatus> rejectFriendship(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteFriend(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long id) {
         friendshipService.deleteFriendship(userPrincipal.getId(), id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

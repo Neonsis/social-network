@@ -1,0 +1,25 @@
+@import "src/theme/variables";
+
+.profile__button:first-child {
+  margin-top: 15px;
+}
+
+.profile__buttons .profile__button:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.profile__avatar-container {
+  .profile__buttons {
+    .profile__dropdown {
+      &-item {
+        font-size: $default-font-size;
+      }
+    }
+  }
+}
+
+.profile__avatar-follower {
+  font-size: $default-font-size;
+  color: $font-color-secondary;
+  text-align: center;
+}

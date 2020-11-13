@@ -1,5 +1,7 @@
 import axios, {AxiosResponse} from "axios";
-import {IUser, IUserFormValues} from "../models/user";
+import {IUser, IUserDetails, IUserFormValues} from "../models/user";
+import {IProfileDetails} from "../models/profile";
+import {Page} from "../models/page";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
@@ -41,11 +43,22 @@ const requests = {
 
 const User = {
     login: (user: IUserFormValues): Promise<IUser> => requests.post("/auth/signin", user),
-    logout: (): Promise<null> => requests.post("/auth/logout", {}),
+    logout: (): Promise<void> => requests.post("/auth/logout", {}),
     signup: (user: IUserFormValues): Promise<IUser> => requests.post("/auth/signup", user),
-    current: (): Promise<IUser> => requests.get("/users/me")
+    current: (): Promise<IUser> => requests.get("/users/me"),
+    get: (userId: string): Promise<IUserDetails> => requests.get(`/users/${userId}`),
+    profileDetails: (userId: string): Promise<IProfileDetails> => requests.get(`/profiles/${userId}`),
+    saveDetails: (details: IProfileDetails): Promise<void> => requests.put(`/profiles`, details),
+}
+
+const Friendship = {
+    getFriends: (userId: string, page: number, size: number)
+        : Promise<Page<IUser[]>> => requests.get(`/friends/${userId}?size=${size}&page=${page}`),
+    post: (friendId: string): Promise<void> => requests.post(`/friends/${friendId}`, {}),
+    delete: (friendId: string): Promise<void> => requests.del(`/friends/${friendId}`)
 }
 
 export default {
-    User
+    User,
+    Friendship
 };

@@ -37,15 +37,22 @@ public class FriendshipServiceImpl implements FriendshipService {
         User friend = userRepository.findById(friendId)
                 .orElseThrow(() -> new RecordNotFoundException("User not found by id: " + friendId));
 
-        boolean isAlreadyFriend = friendshipRepository.existsByInviterIdAndInvitedId(currentUser.getId(), friend.getId());
-        if (isAlreadyFriend) {
-            throw new InvalidWorkFlowException(String.format("User with id '%s' already your friend", friendId));
+        Optional<Friendship> friendshipOptional = friendshipRepository.findFriendship(currentUser.getId(), friend.getId());
+        Friendship friendship;
+        if (friendshipOptional.isPresent()) {
+            friendship = friendshipOptional.get();
+            if (friendshipOptional.get().getStatus().equals(Status.FOLLOW) && friendship.getId().getInvitedId().equals(loggedInUserId)) {
+                friendship.setStatus(Status.FRIEND);
+            } else {
+                throw new InvalidWorkFlowException(String.format("User with id '%s' already your friend", friendId));
+            }
+        } else {
+            FriendshipId friendshipId = new FriendshipId(currentUser.getId(), friend.getId());
+            friendship = new Friendship();
+            friendship.setId(friendshipId);
+            friendship.setStatus(Status.FOLLOW);
         }
 
-        FriendshipId friendshipId = new FriendshipId(currentUser.getId(), friend.getId());
-        Friendship friendship = new Friendship();
-        friendship.setId(friendshipId);
-        friendship.setStatus(Status.PENDING);
         friendshipRepository.save(friendship);
     }
 
@@ -58,26 +65,16 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public PageDto<UserDto> getPendingUsers(Long userId, Pageable pageable) {
+    public PageDto<UserDto> getFollowers(Long userId, Pageable pageable) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RecordNotFoundException("User not found by id: " + userId));
-        Page<User> pendingUsers = friendshipRepository.findRequestedFriendshipUsers(user.getId(), pageable);
-        return userMapper.pageUserToPageDtoUserDto(pendingUsers);
-    }
-
-    @Override
-    public void acceptFriendship(Long loggedInUserId, Long friendId) {
-        Friendship friendship = friendshipRepository.findFriendshipByInviterIdAndInvitedId(friendId, loggedInUserId)
-                .orElseThrow(() -> new RecordNotFoundException(String.format("Friendship not found by ids: %s,%s", loggedInUserId, friendId)));
-
-        friendship.setStatus(Status.ACCEPTED);
-
-        friendshipRepository.save(friendship);
+        Page<User> followers = friendshipRepository.findFollowers(user.getId(), pageable);
+        return userMapper.pageUserToPageDtoUserDto(followers);
     }
 
     @Override
     public void deleteFriendship(Long loggedInUserId, Long friendId) {
-        Friendship friendship = friendshipRepository.findFriendshipByInviterIdAndInvitedId(friendId, loggedInUserId)
+        Friendship friendship = friendshipRepository.findFriendship(friendId, loggedInUserId)
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Friendship not found by ids: %s,%s", loggedInUserId, friendId)));
 
         friendshipRepository.delete(friendship);
@@ -88,14 +85,26 @@ public class FriendshipServiceImpl implements FriendshipService {
         Optional<Friendship> friendship = friendshipRepository
                 .findFriendship(loggedInUserId, friendId);
 
-        return friendship.isPresent() && friendship.get().getStatus().equals(Status.ACCEPTED);
+        return friendship.isPresent() && friendship.get().getStatus().equals(Status.FRIEND);
     }
 
     @Override
-    public boolean isUserPendingFriendship(Long loggedInUserId, Long friendId) {
+    public boolean isFollower(Long loggedInUserId, Long followerId) {
         Optional<Friendship> friendship = friendshipRepository
-                .findFriendship(loggedInUserId, friendId);
+                .findFriendship(loggedInUserId, followerId);
 
-        return friendship.isPresent() && friendship.get().getStatus().equals(Status.PENDING);
+        return friendship.isPresent()
+                && friendship.get().getStatus().equals(Status.FOLLOW)
+                && friendship.get().getId().getInvitedId().equals(loggedInUserId);
+    }
+
+    @Override
+    public boolean isPendingFriendship(Long loggedInUserId, Long followerId) {
+        Optional<Friendship> friendship = friendshipRepository
+                .findFriendship(loggedInUserId, followerId);
+
+        return friendship.isPresent()
+                && friendship.get().getStatus().equals(Status.FOLLOW)
+                && friendship.get().getId().getInviterId().equals(loggedInUserId);
     }
 }

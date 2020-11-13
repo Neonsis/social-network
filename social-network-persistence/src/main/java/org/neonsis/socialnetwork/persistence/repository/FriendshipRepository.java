@@ -12,10 +12,6 @@ import java.util.Optional;
 
 public interface FriendshipRepository extends JpaRepository<Friendship, FriendshipId> {
 
-    boolean existsByInviterIdAndInvitedId(Long inviterId, Long invitedId);
-
-    Optional<Friendship> findFriendshipByInviterIdAndInvitedId(Long inviterId, Long invitedId);
-
     @Query("SELECT f FROM Friendship f WHERE (f.inviter.id = :inviterId AND f.invited.id = :invitedId) " +
             "OR (f.invited.id = :inviterId AND f.inviter.id = :invitedId)")
     Optional<Friendship> findFriendship(Long inviterId, Long invitedId);
@@ -28,5 +24,5 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Friendsh
     @Query("SELECT u FROM User u WHERE u.id IN " +
             "(SELECT CASE WHEN f.invited.id = :id THEN f.inviter.id ELSE f.invited.id END FROM Friendship f " +
             "WHERE (f.invited.id = :id) AND (f.status = 0))")
-    Page<User> findRequestedFriendshipUsers(Long id, Pageable pageable);
+    Page<User> findFollowers(Long id, Pageable pageable);
 }
