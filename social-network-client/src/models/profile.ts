@@ -1,6 +1,11 @@
 export interface IProfileDetails {
     birthday: Date;
-    about: string;
-    country: string;
-    city: string;
+    gender: Gender;
+    about?: string;
+    country?: string;
+    city?: string;
+}
+
+export enum Gender {
+    MALE = "MALE", FEMALE = "FEMALE"
 }

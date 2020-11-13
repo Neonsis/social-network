@@ -67,7 +67,14 @@ export const ProfileAvatar = (({
     };
 
     const editButton = () => (
-        <Button fluid className="profile__button secondary-button">Редактировать</Button>
+        <Button
+            fluid
+            className="profile__button secondary-button"
+            as={Link}
+            to="/edit"
+        >
+            Редактировать
+        </Button>
     );
 
     const pendingButton = () => {

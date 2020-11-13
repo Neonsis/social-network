@@ -47,7 +47,8 @@ const User = {
     signup: (user: IUserFormValues): Promise<IUser> => requests.post("/auth/signup", user),
     current: (): Promise<IUser> => requests.get("/users/me"),
     get: (userId: string): Promise<IUserDetails> => requests.get(`/users/${userId}`),
-    profileDetails: (userId: string): Promise<IProfileDetails> => requests.get(`/profiles/${userId}`)
+    profileDetails: (userId: string): Promise<IProfileDetails> => requests.get(`/profiles/${userId}`),
+    saveDetails: (details: IProfileDetails): Promise<void> => requests.put(`/profiles`, details),
 }
 
 const Friendship = {
