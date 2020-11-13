@@ -1,10 +1,10 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect} from "react";
 import {Grid} from "semantic-ui-react";
 import {ProfileAvatar} from "../ProfileAvatar";
-import {RouteComponentProps} from 'react-router';
+import {RouteComponentProps} from "react-router";
 import {RootStoreContext} from "../../../stores/rootStore";
 import {observer} from "mobx-react-lite";
-import {LoadingComponent} from "../../../components/layot/LoadingComponent";
+import {ProfilesSection} from "../../../components/profiles/ProfilesSection";
 import {ProfileInfo} from "../ProfileInfo";
 
 interface ProfilePageProps {
@@ -13,30 +13,57 @@ interface ProfilePageProps {
 
 export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({match}) => {
     const rootStore = useContext(RootStoreContext);
-    const {loadingPage, userProfile, loadUser} = rootStore.profileStore;
+    const {
+        loadingPage,
+        user,
+        loadUser,
+        profileDetails,
+        loadingProfileDetails
+    } = rootStore.profileStore;
+    const {
+        loadProfileFriends,
+        profileFriends,
+        addToFriends,
+        deleteFriendship,
+        cancelFriendship,
+        confirmFriendship,
+        loadingFriends
+    } = rootStore.friendshipStore;
+    const {loadProfileDetails} = rootStore.profileStore;
 
     useEffect(() => {
         loadUser(match.params.userId);
-    }, [match.params.userId, loadUser])
-
-    if (loadingPage) return <LoadingComponent content="Loading app..."/>
+        loadProfileFriends(match.params.userId)
+        loadProfileDetails(match.params.userId);
+    }, [match.params.userId, loadUser, loadProfileFriends])
 
     return (
         <Grid>
             <Grid.Column width={5}>
                 <ProfileAvatar
+                    loadingPage={loadingPage}
                     id={match.params.userId}
-                    isFriend={userProfile!.isFriend}
-                    isLoggedInUser={userProfile!.isLoggedInUser}
-                    isPendingFriendship={userProfile!.isPendingFriendship}
-                    isFollower={userProfile!.isFollower}
+                    isFriend={user?.isFriend}
+                    isLoggedInUser={user?.isLoggedInUser}
+                    isPendingFriendship={user?.isPendingFriendship}
+                    isFollower={user?.isFollower}
+                    addToFriends={addToFriends}
+                    deleteFriendship={deleteFriendship}
+                    cancelFriendship={cancelFriendship}
+                    confirmFriendship={confirmFriendship}
+                />
+                <ProfilesSection
+                    header="Друзья"
+                    profiles={profileFriends!}
+                    loading={loadingFriends}
                 />
             </Grid.Column>
             <Grid.Column width={11}>
                 <ProfileInfo
-                    firstName={userProfile!.firstName}
-                    lastName={userProfile!.lastName}
-                    id={match.params.userId}
+                    firstName={user?.firstName}
+                    lastName={user?.lastName}
+                    profileDetails={profileDetails!}
+                    loading={loadingProfileDetails}
                 />
             </Grid.Column>
         </Grid>

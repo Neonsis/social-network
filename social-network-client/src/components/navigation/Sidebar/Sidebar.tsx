@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext} from "react";
 import {Icon, Label, Menu} from "semantic-ui-react";
 import {RootStoreContext} from "../../../stores/rootStore";
 import {Link} from "react-router-dom";

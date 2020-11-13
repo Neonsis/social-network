@@ -1,6 +1,8 @@
 import {RootStore} from "./rootStore";
 import {action, observable, runInAction} from "mobx";
 import agent from "../api/agent";
+import {IUser} from "../models/user";
+import {Page} from "../models/page";
 
 export default class FriendshipStore {
     rootStore: RootStore;
@@ -9,70 +11,88 @@ export default class FriendshipStore {
         this.rootStore = rootStore;
     }
 
-    @observable loading = false;
+    @observable loadingFriends = false;
+    @observable loadingFriendsRequest = false;
+    @observable profileFriends: Page<IUser[]> | null = null;
+
+    @action loadProfileFriends = async (userId: string) => {
+        this.loadingFriends = true;
+        try {
+            const friends = await agent.Friendship.getFriends(userId, 0, 6);
+            runInAction(() => {
+                this.profileFriends = friends;
+                this.loadingFriends = false;
+            })
+        } catch (error) {
+            runInAction(() => {
+                this.loadingFriends = false;
+            })
+            console.log(error);
+        }
+    }
 
     @action addToFriends = async (friendId: string) => {
-        this.loading = true;
+        this.loadingFriendsRequest = true;
         try {
             await agent.Friendship.post(friendId);
             runInAction(() => {
-                this.loading = false;
-                this.rootStore.profileStore.userProfile!.isPendingFriendship = true;
+                this.loadingFriendsRequest = false;
+                this.rootStore.profileStore.user!.isPendingFriendship = true;
             })
         } catch (error) {
             console.log(error);
             runInAction(() => {
-                this.loading = false
+                this.loadingFriendsRequest = false
             })
         }
     }
 
     @action deleteFriendship = async (friendId: string) => {
-        this.loading = true;
+        this.loadingFriendsRequest = true;
         try {
             await agent.Friendship.delete(friendId);
             runInAction(() => {
-                this.loading = false;
-                this.rootStore.profileStore.userProfile!.isFriend = false;
+                this.loadingFriendsRequest = false;
+                this.rootStore.profileStore.user!.isFriend = false;
             })
         } catch (error) {
             console.log(error);
             runInAction(() => {
-                this.loading = false
+                this.loadingFriendsRequest = false
             })
         }
     }
 
     @action confirmFriendship = async (friendId: string) => {
-        this.loading = true;
+        this.loadingFriendsRequest = true;
         try {
             await agent.Friendship.post(friendId);
             runInAction(() => {
-                this.loading = false;
-                this.rootStore.profileStore.userProfile!.isPendingFriendship = false;
-                this.rootStore.profileStore.userProfile!.isFollower = false;
-                this.rootStore.profileStore.userProfile!.isFriend = true;
+                this.rootStore.profileStore.user!.isPendingFriendship = false;
+                this.rootStore.profileStore.user!.isFollower = false;
+                this.rootStore.profileStore.user!.isFriend = true;
+                this.loadingFriendsRequest = false;
             })
         } catch (error) {
             console.log(error);
             runInAction(() => {
-                this.loading = false
+                this.loadingFriendsRequest = false
             })
         }
     }
 
     @action cancelFriendship = async (friendId: string) => {
-        this.loading = true;
+        this.loadingFriendsRequest = true;
         try {
             await agent.Friendship.delete(friendId);
             runInAction(() => {
-                this.loading = false;
-                this.rootStore.profileStore.userProfile!.isPendingFriendship = false;
+                this.rootStore.profileStore.user!.isPendingFriendship = false;
+                this.loadingFriendsRequest = false;
             });
         } catch (error) {
             console.log(error);
             runInAction(() => {
-                this.loading = false
+                this.loadingFriendsRequest = false
             })
         }
     }

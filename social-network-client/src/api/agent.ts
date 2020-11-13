@@ -1,6 +1,7 @@
 import axios, {AxiosResponse} from "axios";
 import {IUser, IUserDetails, IUserFormValues} from "../models/user";
 import {IProfileDetails} from "../models/profile";
+import {Page} from "../models/page";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
@@ -50,6 +51,8 @@ const User = {
 }
 
 const Friendship = {
+    getFriends: (userId: string, page: number, size: number)
+        : Promise<Page<IUser[]>> => requests.get(`/friends/${userId}?size=${size}&page=${page}`),
     post: (friendId: string): Promise<void> => requests.post(`/friends/${friendId}`, {}),
     delete: (friendId: string): Promise<void> => requests.del(`/friends/${friendId}`)
 }

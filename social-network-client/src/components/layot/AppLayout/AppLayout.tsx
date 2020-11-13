@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 import {Container, Grid} from "semantic-ui-react";
 import {Sidebar} from "../../navigation/Sidebar";
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch} from "react-router-dom";
 import "./AppLayout.scss";
-import * as Routes from '../../../util/routes';
+import * as Routes from "../../../util/routes";
 import {ProfilePage} from "../../../pages/profile/ProfilePage";
 
 /**

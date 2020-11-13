@@ -1,0 +1,15 @@
+@import "src/theme/variables.scss";
+
+.profile__section-item {
+  text-align: center;
+  margin: 5px 9px 0;
+  font-size: $default-font-size;
+
+  .profile__item-avatar-wrapper {
+    .profile__item-avatar {
+      width: 47px;
+      height: auto;
+      margin: 0 !important;
+    }
+  }
+}

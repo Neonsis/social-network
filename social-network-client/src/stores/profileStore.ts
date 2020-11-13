@@ -13,7 +13,7 @@ export default class ProfileStore {
 
     @observable loadingPage = true;
     @observable loadingProfileDetails = true;
-    @observable userProfile: IUserDetails | null = null;
+    @observable user: IUserDetails | null = null;
     @observable profileDetails: IProfileDetails | null = null;
 
     @action loadUser = async (userId: string) => {
@@ -23,7 +23,7 @@ export default class ProfileStore {
             runInAction(() => {
                 const loggedInUser = this.rootStore.userStore.user;
                 userProfile.isLoggedInUser = loggedInUser!.id === userId;
-                this.userProfile = userProfile;
+                this.user = userProfile;
             })
         } catch (error) {
             console.log(error);
