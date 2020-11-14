@@ -6,5 +6,5 @@ public interface ProfileService {
 
     ProfileDto findByUserId(Long userId);
 
-    ProfileDto updateProfile(ProfileDto profileDto, Long userId);
+    ProfileDto update(ProfileDto profileDto, Long userId);
 }

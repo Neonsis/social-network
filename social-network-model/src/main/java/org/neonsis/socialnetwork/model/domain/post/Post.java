@@ -24,7 +24,7 @@ public class Post extends BaseEntityAudit implements Serializable {
     private String content;
 
     @ManyToOne(optional = false)
-    private User user;
+    private User author;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "post_like",

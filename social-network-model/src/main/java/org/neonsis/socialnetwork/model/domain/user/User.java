@@ -40,16 +40,8 @@ public class User extends BaseEntityAudit implements Serializable {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
-    public User(String email, String encryptedPassword, String firstName, String lastName, Set<Role> roles) {
-        this.email = email;
-        this.encryptedPassword = encryptedPassword;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.roles = roles;
-    }
-
     @OneToMany(
-            mappedBy = "user",
+            mappedBy = "author",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
@@ -60,4 +52,12 @@ public class User extends BaseEntityAudit implements Serializable {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    public User(String email, String encryptedPassword, String firstName, String lastName, Set<Role> roles) {
+        this.email = email;
+        this.encryptedPassword = encryptedPassword;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.roles = roles;
+    }
 }

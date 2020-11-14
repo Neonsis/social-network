@@ -24,7 +24,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public ProfileDto updateProfile(ProfileDto profileDto, Long userId) {
+    public ProfileDto update(ProfileDto profileDto, Long userId) {
         profileRepository.findById(userId)
                 .orElseThrow(() -> new RecordNotFoundException("Profile not found by user id: " + userId));
 

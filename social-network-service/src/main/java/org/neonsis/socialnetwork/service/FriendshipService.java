@@ -12,7 +12,7 @@ public interface FriendshipService {
 
     PageDto<UserDto> getFollowers(Long userId, Pageable pageable);
 
-    void deleteFriendship(Long loggedInUserId, Long friendId);
+    void delete(Long loggedInUserId, Long friendId);
 
     boolean isUserFriend(Long loggedInUserId, Long friendId);
 

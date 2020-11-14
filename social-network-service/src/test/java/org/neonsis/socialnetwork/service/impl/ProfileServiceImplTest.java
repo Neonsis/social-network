@@ -74,7 +74,7 @@ class ProfileServiceImplTest {
         when(profileRepository.save(oldProfile)).thenReturn(updatedProfile);
         when(profileRepository.findById(1L)).thenReturn(Optional.of(oldProfile));
 
-        ProfileDto updateProfile = profileService.updateProfile(expectedProfileDto, 1L);
+        ProfileDto updateProfile = profileService.update(expectedProfileDto, 1L);
 
         assertEquals("Minsk", updateProfile.getCity());
         assertEquals("Belarus", updateProfile.getCountry());
@@ -91,7 +91,7 @@ class ProfileServiceImplTest {
         when(profileRepository.findById(1L)).thenReturn(Optional.empty());
 
         RecordNotFoundException exception = assertThrows(RecordNotFoundException.class, () -> {
-            profileService.updateProfile(profileDto, 1L);
+            profileService.update(profileDto, 1L);
         });
 
         String expected = "Profile not found by id: 1";

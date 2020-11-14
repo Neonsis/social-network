@@ -60,7 +60,7 @@ public class FriendsController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteFriend(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long id) {
-        friendshipService.deleteFriendship(userPrincipal.getId(), id);
+        friendshipService.delete(userPrincipal.getId(), id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

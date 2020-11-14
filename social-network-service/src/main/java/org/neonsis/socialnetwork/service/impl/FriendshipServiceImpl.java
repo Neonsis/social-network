@@ -73,7 +73,7 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public void deleteFriendship(Long loggedInUserId, Long friendId) {
+    public void delete(Long loggedInUserId, Long friendId) {
         Friendship friendship = friendshipRepository.findFriendship(friendId, loggedInUserId)
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Friendship not found by ids: %s,%s", loggedInUserId, friendId)));
 
