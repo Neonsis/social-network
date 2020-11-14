@@ -4,8 +4,7 @@ import {Sidebar} from "../../navigation/Sidebar";
 import {Route, Switch} from "react-router-dom";
 import "./AppLayout.scss";
 import * as Routes from "../../../util/routes";
-import {ProfilePage} from "../../../pages/profile/ProfilePage";
-import {EditProfile} from "../../../pages/profile/EditProfile";
+import {EditProfilePage, ProfilePage} from "../../../pages/";
 
 /**
  * Main layout of the app, when user is authenticated
@@ -21,7 +20,7 @@ export const AppLayout = () => {
                     <div className="page-body">
                         <Switch>
                             <Route exact path={Routes.PROFILE} component={ProfilePage}/>
-                            <Route exact path={Routes.EDIT} component={EditProfile}/>
+                            <Route exact path={Routes.EDIT} component={EditProfilePage}/>
                         </Switch>
                     </div>
                 </Grid.Column>

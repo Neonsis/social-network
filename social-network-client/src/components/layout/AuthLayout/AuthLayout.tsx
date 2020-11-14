@@ -2,7 +2,7 @@ import React from "react";
 import {Container} from "semantic-ui-react";
 import {Redirect, Route, Switch} from "react-router-dom";
 import * as Routes from "../../../util/routes";
-import {HomePage} from "../HomePage";
+import {HomePage} from "../../../pages/HomePage";
 
 /**
  * Main Layout for the app, when user isn't authenticated

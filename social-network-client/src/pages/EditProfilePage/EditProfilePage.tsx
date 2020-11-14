@@ -1,9 +1,9 @@
 import React, {ChangeEvent, SyntheticEvent, useContext, useEffect} from 'react';
-import "./EditProfile.scss";
-import {RootStoreContext} from "../../../stores/rootStore";
+import "./EditProfilePage.scss";
+import {RootStoreContext} from "../../stores/rootStore";
 import {Button, DropdownProps, Form, Grid, Header, Segment, Select} from "semantic-ui-react";
 import {useForm} from "react-hook-form";
-import {Gender, IProfileDetails} from "../../../models/profile";
+import {Gender, IProfileDetails} from "../../models/profile";
 import SemanticDatepicker from "react-semantic-ui-datepickers";
 import {observer} from "mobx-react-lite";
 import {SemanticDatepickerProps} from "react-semantic-ui-datepickers/dist/types";
@@ -14,7 +14,7 @@ const options = [
     {key: "m", text: "Female", value: Gender.MALE.toLocaleString()}
 ]
 
-export const EditProfile = observer(() => {
+export const EditProfilePage = observer(() => {
     const rootStore = useContext(RootStoreContext);
     const {
         user

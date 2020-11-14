@@ -1,11 +1,9 @@
 import React, {useContext, useEffect} from "react";
 import {Grid} from "semantic-ui-react";
-import {ProfileAvatar} from "../ProfileAvatar";
 import {RouteComponentProps} from "react-router";
-import {RootStoreContext} from "../../../stores/rootStore";
+import {RootStoreContext} from "../../stores/rootStore";
 import {observer} from "mobx-react-lite";
-import {ProfilesSection} from "../../../components/profiles/ProfilesSection";
-import {ProfileInfo} from "../ProfileInfo";
+import {ProfileAvatar, ProfileInfo, ProfilesSection} from "../../components/profiles";
 
 interface ProfilePageProps {
     userId: string;

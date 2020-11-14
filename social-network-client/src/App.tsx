@@ -3,8 +3,7 @@ import {AppNavBar} from "./components/navigation";
 import {Route, Switch} from "react-router-dom";
 import {RootStoreContext} from "./stores/rootStore";
 import {observer} from "mobx-react-lite";
-import {AppLayout, LoadingComponent} from "./components/layot";
-import {AuthLayout} from "./pages/auth/AuthLayout";
+import {AppLayout, AuthLayout, LoadingComponent} from "./components/layout";
 
 function App() {
     const rootStore = useContext(RootStoreContext);

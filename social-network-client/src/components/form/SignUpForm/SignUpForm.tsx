@@ -4,17 +4,18 @@ import SemanticDatepicker from "react-semantic-ui-datepickers";
 import "./SignUpForm.scss";
 import {useForm} from "react-hook-form";
 import {IUserFormValues} from "../../../models/user";
-import {ErrorMessages} from "../../../components/form";
+import {ErrorMessages} from "../index";
 import {AxiosResponse} from "axios";
 import {SemanticDatepickerProps} from "react-semantic-ui-datepickers/dist/types";
 import {RootStoreContext} from "../../../stores/rootStore";
+import {observer} from "mobx-react-lite";
 
 const options = [
     {key: "m", text: "Male", value: "MALE"},
     {key: "f", text: "Female", value: "FEMALE"}
 ]
 
-export const SignUpForm = () => {
+export const SignUpForm = observer(() => {
     const rootStore = useContext(RootStoreContext);
     const {register: registerRequest, loading} = rootStore.userStore;
     const {register, handleSubmit, errors, setValue, trigger} = useForm<IUserFormValues>();
@@ -105,4 +106,4 @@ export const SignUpForm = () => {
             </Form>
         </Segment>
     );
-};
+});
