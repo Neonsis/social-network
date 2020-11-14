@@ -60,7 +60,9 @@ const Friendship = {
 }
 
 const Post = {
-    create: (post: IPostFormValues): Promise<IPost> => requests.post(`/posts/`, post)
+    create: (post: IPostFormValues): Promise<IPost> => requests.post(`/posts/`, post),
+    getUserPosts: (userId: string, size: number, page: number)
+        : Promise<Page<IPost[]>> => requests.get(`/posts/${userId}?page=${page}&size=${size}`)
 }
 
 export default {

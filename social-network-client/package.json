@@ -21,6 +21,7 @@
     "react-content-loader": "^5.1.4",
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.11.0",
+    "react-infinite-scroll-component": "^5.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "react-semantic-ui-datepickers": "^2.12.0",

@@ -34,7 +34,7 @@ public class PostController {
     public ResponseEntity<PageDto<PostResponse>> getUserPosts(
             @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
             @SortDefault.SortDefaults({
-                    @SortDefault(sort = "createdAt", direction = Sort.Direction.ASC)
+                    @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
             }) Pageable pageable,
             @PathVariable Long userId) {
         PageDto<PostDto> userPosts = postService.getUserPosts(userId, pageable);
