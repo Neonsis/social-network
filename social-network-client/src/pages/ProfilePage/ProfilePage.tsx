@@ -4,6 +4,7 @@ import {RouteComponentProps} from "react-router";
 import {RootStoreContext} from "../../stores/rootStore";
 import {observer} from "mobx-react-lite";
 import {ProfileAvatar, ProfileInfo, ProfilesSection} from "../../components/profiles";
+import {PostCreateForm} from "../../components/posts/PostCreateForm";
 
 interface ProfilePageProps {
     userId: string;
@@ -63,6 +64,7 @@ export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({mat
                     profileDetails={profileDetails!}
                     loading={loadingProfileDetails}
                 />
+                <PostCreateForm/>
             </Grid.Column>
         </Grid>
     );

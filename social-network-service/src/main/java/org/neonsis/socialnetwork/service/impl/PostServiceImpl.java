@@ -3,6 +3,7 @@ package org.neonsis.socialnetwork.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.exception.RecordNotFoundException;
 import org.neonsis.socialnetwork.model.domain.post.Post;
+import org.neonsis.socialnetwork.model.domain.user.User;
 import org.neonsis.socialnetwork.model.dto.PageDto;
 import org.neonsis.socialnetwork.model.dto.PostDto;
 import org.neonsis.socialnetwork.model.dto.mapper.PostMapper;
@@ -31,10 +32,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto create(Long userId, PostDto postDto) {
-        userRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RecordNotFoundException("User not found by id: " + userId));
 
         Post post = postMapper.postDtoToPost(postDto);
+        post.setAuthor(user);
         Post saved = postRepository.save(post);
         return postMapper.postToPostDto(saved);
     }

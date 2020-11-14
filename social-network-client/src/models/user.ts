@@ -2,8 +2,12 @@ export interface IUser {
     id: string;
     firstName: string;
     lastName: string;
-    token: string;
     avatarUrl?: string;
+}
+
+
+export interface IUserAuth extends IUser{
+    token: string;
 }
 
 export interface IUserDetails {
