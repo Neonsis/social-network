@@ -1,6 +1,7 @@
 package org.neonsis.socialnetwork.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
 import org.neonsis.socialnetwork.exception.RecordNotFoundException;
 import org.neonsis.socialnetwork.model.domain.post.Post;
 import org.neonsis.socialnetwork.model.domain.user.User;
@@ -23,10 +24,12 @@ public class PostServiceImpl implements PostService {
     private final PostMapper postMapper;
 
     @Override
-    public PageDto<PostDto> getUserPosts(Long userId, Pageable pageable) {
+    public PageDto<PostDto> getUserPosts(Long userId, Long loggedInUserId, Pageable pageable) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new RecordNotFoundException("User not found by id: " + userId));
         Page<Post> userPosts = postRepository.findPostsByAuthorId(userId, pageable);
+        userPosts.getContent()
+                .forEach(post -> post.setIsLiked(postRepository.isAlreadyLiked(post.getId(), loggedInUserId)));
         return postMapper.pagePostToPageDtoPostDto(userPosts);
     }
 
@@ -46,5 +49,29 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findPostByIdAndAuthorId(postId, authorId)
                 .orElseThrow(() -> new RecordNotFoundException("Post not found by id: " + postId));
         postRepository.delete(post);
+    }
+
+    @Override
+    public void likePost(Long postId, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RecordNotFoundException("User not found by id: " + userId));
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RecordNotFoundException("Post not found by id: " + postId));
+        boolean alreadyLiked = postRepository.isAlreadyLiked(postId, userId);
+        if (alreadyLiked) {
+            throw new InvalidWorkFlowException("You have already liked post with id: " + postId);
+        }
+        post.addLike(user);
+        postRepository.save(post);
+    }
+
+    @Override
+    public void unlikePost(Long postId, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RecordNotFoundException("User not found by id: " + userId));
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RecordNotFoundException("Post not found by id: " + postId));
+        post.deleteLike(user);
+        postRepository.save(post);
     }
 }

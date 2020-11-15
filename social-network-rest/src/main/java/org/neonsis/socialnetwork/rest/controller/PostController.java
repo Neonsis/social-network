@@ -36,8 +36,9 @@ public class PostController {
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
             }) Pageable pageable,
+            @CurrentUser UserPrincipal userPrincipal,
             @PathVariable Long userId) {
-        PageDto<PostDto> userPosts = postService.getUserPosts(userId, pageable);
+        PageDto<PostDto> userPosts = postService.getUserPosts(userId, userPrincipal.getId(), pageable);
         return new ResponseEntity<>(postRestMapper.pageDtoPostDtoToPageDtoPostResponse(userPosts), HttpStatus.OK);
     }
 
@@ -47,6 +48,18 @@ public class PostController {
         PostDto postDto = postRestMapper.postCreateRequestToPostDto(postCreateRequest);
         PostDto createdPost = postService.create(userPrincipal.getId(), postDto);
         return new ResponseEntity<>(postRestMapper.postDtoToPostResponse(createdPost), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{postId}/like")
+    public ResponseEntity<HttpStatus> likePost(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long postId) {
+        postService.likePost(postId, userPrincipal.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/{postId}/unlike")
+    public ResponseEntity<HttpStatus> unlikePost(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long postId) {
+        postService.unlikePost(postId, userPrincipal.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{postId}")
