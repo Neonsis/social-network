@@ -17,12 +17,14 @@ export const PostsList = observer(({userId}: PostListProps) => {
         userPosts,
         fetchMorePosts,
         userPostsPage,
-        loadingInitialPosts
+        loadingInitialPosts,
+        like,
+        unlike
     } = rootStore.postStore;
 
     useEffect(() => {
         loadUserPosts(userId);
-    }, [])
+    }, [userId])
 
     if (loadingInitialPosts) return (
         <Segment className="posts-loader">
@@ -39,8 +41,8 @@ export const PostsList = observer(({userId}: PostListProps) => {
             loader={<h4>Loading...</h4>}
             dataLength={userPosts.length}
         >
-            {userPosts.map(post => (
-                <Post key={post.id} post={post}/>
+            {userPosts && userPosts.map(post => (
+                <Post key={post.id} post={post} like={like} unlike={unlike}/>
             ))}
         </InfiniteScroll>
     );

@@ -1,12 +1,15 @@
 import React from 'react';
-import {Card, Image} from "semantic-ui-react";
+import {Card, Divider, Icon, Image} from "semantic-ui-react";
 import AvatarNotFound from "../../../assets/avatar_not_found.png";
 import "./Post.scss";
 import {IPost} from "../../../models/post";
 import {Link} from "react-router-dom";
+import {observer} from "mobx-react-lite";
 
 export interface PostProps {
     post: IPost;
+    like: (postId: string) => void;
+    unlike: (postId: string) => void;
 }
 
 const parseDate = (date: Date): string => {
@@ -27,13 +30,23 @@ const parseDate = (date: Date): string => {
     }
 }
 
-export const Post = ({post}: PostProps) => {
-
+export const Post = observer(({post, like, unlike}: PostProps) => {
     const {
         content,
         author,
-        createdAt
+        createdAt,
+        id,
+        isLiked,
+        countLike
     } = post;
+
+    const handleLike = () => {
+        like(id);
+    }
+
+    const handleUnlike = () => {
+        unlike(id);
+    }
 
     return (
         <Card className="post" fluid>
@@ -56,7 +69,14 @@ export const Post = ({post}: PostProps) => {
                 <Card.Description>
                     {content}
                 </Card.Description>
+                <Divider/>
+                <Card.Content extra>
+                    <a onClick={isLiked ? handleUnlike : handleLike}>
+                        <Icon className={isLiked ? "liked" : ""} name="like" size="large"/>
+                        {countLike}
+                    </a>
+                </Card.Content>
             </Card.Content>
         </Card>
     );
-};
+});

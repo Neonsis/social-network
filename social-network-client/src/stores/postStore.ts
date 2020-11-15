@@ -24,6 +24,7 @@ export default class PostStore {
         try {
             const createdPost = await agent.Post.create(post);
             runInAction(() => {
+                createdPost.countLike = 0;
                 this.userPosts.unshift(createdPost);
             })
         } catch (error) {
@@ -58,6 +59,32 @@ export default class PostStore {
             runInAction(() => {
                 this.userPostsPage = createdPost;
                 this.userPosts.push(...createdPost.content)
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    @action like = async (postId: string) => {
+        try {
+            await agent.Post.like(postId);
+            runInAction(() => {
+                let find = this.userPosts.find(post => post.id === postId);
+                find!.isLiked = true;
+                find!.countLike++;
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    @action unlike = async (postId: string) => {
+        try {
+            await agent.Post.unlike(postId);
+            runInAction(() => {
+                let find = this.userPosts.find(post => post.id === postId);
+                find!.isLiked = false;
+                find!.countLike--;
             })
         } catch (error) {
             console.log(error);

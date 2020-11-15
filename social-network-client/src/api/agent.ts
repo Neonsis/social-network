@@ -62,7 +62,9 @@ const Friendship = {
 const Post = {
     create: (post: IPostFormValues): Promise<IPost> => requests.post(`/posts/`, post),
     getUserPosts: (userId: string, size: number, page: number)
-        : Promise<Page<IPost[]>> => requests.get(`/posts/${userId}?page=${page}&size=${size}`)
+        : Promise<Page<IPost[]>> => requests.get(`/posts/${userId}?page=${page}&size=${size}`),
+    like: (postId: string): Promise<null> => requests.post(`/posts/${postId}/like`, {}),
+    unlike: (postId: string): Promise<null> => requests.post(`/posts/${postId}/unlike`, {}),
 }
 
 export default {

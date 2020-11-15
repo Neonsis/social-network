@@ -5,6 +5,8 @@ export interface IPost {
     content: string;
     createdAt: string;
     author: IUser;
+    isLiked: boolean;
+    countLike: number;
 }
 
 export interface IPostFormValues {
