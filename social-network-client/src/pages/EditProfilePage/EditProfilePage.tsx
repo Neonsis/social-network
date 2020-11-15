@@ -1,7 +1,7 @@
 import React, {ChangeEvent, SyntheticEvent, useContext, useEffect} from 'react';
 import "./EditProfilePage.scss";
 import {RootStoreContext} from "../../stores/rootStore";
-import {Button, DropdownProps, Form, Grid, Header, Segment, Select} from "semantic-ui-react";
+import {Button, DropdownProps, Form, Grid, Header, Message, Segment, Select} from "semantic-ui-react";
 import {useForm} from "react-hook-form";
 import {Gender, IProfileDetails} from "../../models/profile";
 import SemanticDatepicker from "react-semantic-ui-datepickers";
@@ -24,7 +24,8 @@ export const EditProfilePage = observer(() => {
         loadProfileDetails,
         saveProfileDetails,
         loadingProfileDetails,
-        loadingSaveProfileDetails
+        loadingSaveProfileDetails,
+        successUpdated
     } = rootStore.profileStore;
     const {register, handleSubmit, setValue, errors} = useForm<IProfileDetails>();
 
@@ -94,6 +95,10 @@ export const EditProfilePage = observer(() => {
                     <Header as="h3">
                         Основное
                     </Header>
+                    {successUpdated && <Message positive>
+                        <Message.Header>Изменения сохранены</Message.Header>
+                        Новые данные будут отражены на Вашей странице.
+                    </Message>}
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <Form.Field inline>
                             <label>Страна:</label>

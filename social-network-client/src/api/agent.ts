@@ -49,7 +49,7 @@ const User = {
     current: (): Promise<IUser> => requests.get("/users/me"),
     get: (userId: string): Promise<IUserDetails> => requests.get(`/users/${userId}`),
     profileDetails: (userId: string): Promise<IProfileDetails> => requests.get(`/profiles/${userId}`),
-    saveDetails: (details: IProfileDetails): Promise<void> => requests.put(`/profiles`, details),
+    saveDetails: (details: IProfileDetails): Promise<IProfileDetails> => requests.put(`/profiles`, details),
 }
 
 const Friendship = {

@@ -29,8 +29,8 @@ public class ProfileController {
     }
 
     @PutMapping
-    public ResponseEntity<HttpStatus> updateProfile(@Valid @RequestBody ProfileUpdateRequest profileUpdateRequest, @CurrentUser UserPrincipal userPrincipal) {
-        profileService.update(profileRestMapper.profileRequestToProfileDto(profileUpdateRequest), userPrincipal.getId());
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ProfileResponse> updateProfile(@Valid @RequestBody ProfileUpdateRequest profileUpdateRequest, @CurrentUser UserPrincipal userPrincipal) {
+        ProfileDto updated = profileService.update(profileRestMapper.profileRequestToProfileDto(profileUpdateRequest), userPrincipal.getId());
+        return new ResponseEntity<>(profileRestMapper.profileDtoToProfileResponse(updated), HttpStatus.OK);
     }
 }
