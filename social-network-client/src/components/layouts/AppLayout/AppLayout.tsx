@@ -1,10 +1,10 @@
 import React from "react";
+import "./AppLayout.scss";
 import {Container, Grid} from "semantic-ui-react";
 import {Sidebar} from "../../navigation/Sidebar";
 import {Route, Switch} from "react-router-dom";
-import "./AppLayout.scss";
+import {EditProfilePage, ProfilePage} from "../../../pages";
 import * as Routes from "../../../util/routes";
-import {EditProfilePage, ProfilePage} from "../../../pages/";
 
 /**
  * Main layout of the app, when user is authenticated

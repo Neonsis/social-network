@@ -10,7 +10,7 @@ export interface PostProps {
 }
 
 const parseDate = (date: Date): string => {
-    if (date.toLocaleDateString() === date.toLocaleDateString()) {
+    if (new Date().toLocaleDateString() === date.toLocaleDateString()) {
         // Today
         const time = date.toLocaleTimeString("ru-RU", {
             hour: '2-digit',

@@ -15,6 +15,7 @@ export default class PostStore {
 
     @observable saveLoadingPost = false;
     @observable loadingPosts = false;
+    @observable loadingInitialPosts = true;
     @observable userPostsPage: Page<IPost[]> | null = null;
     @observable userPosts: IPost[] = [];
 
@@ -34,10 +35,10 @@ export default class PostStore {
         }
     }
 
-    @action loadUserPosts = async (userId: string, page: number) => {
-        this.loadingPosts = true;
+    @action loadUserPosts = async (userId: string) => {
+        this.loadingInitialPosts = true;
         try {
-            const createdPost = await agent.Post.getUserPosts(userId, POST_PAGE_SIZE, page);
+            const createdPost = await agent.Post.getUserPosts(userId, POST_PAGE_SIZE, 0);
             runInAction(() => {
                 this.userPostsPage = createdPost;
                 this.userPosts = createdPost.content;
@@ -46,8 +47,20 @@ export default class PostStore {
             console.log(error);
         } finally {
             runInAction(() => {
-                this.saveLoadingPost = false;
+                this.loadingInitialPosts = false;
             })
+        }
+    }
+
+    @action fetchMorePosts = async (userId: string) => {
+        try {
+            const createdPost = await agent.Post.getUserPosts(userId, POST_PAGE_SIZE, this.userPostsPage!.number + 1);
+            runInAction(() => {
+                this.userPostsPage = createdPost;
+                this.userPosts.push(...createdPost.content)
+            })
+        } catch (error) {
+            console.log(error);
         }
     }
 }

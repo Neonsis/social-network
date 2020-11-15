@@ -23,8 +23,6 @@ export const PostCreateForm = observer(() => {
         }
     }
 
-    console.log(userPosts);
-
     return (
         <Segment>
             <Form className="post__form" onSubmit={handleSubmit}>

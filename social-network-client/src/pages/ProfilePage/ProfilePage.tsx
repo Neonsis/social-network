@@ -5,7 +5,7 @@ import {RootStoreContext} from "../../stores/rootStore";
 import {observer} from "mobx-react-lite";
 import {ProfileAvatar, ProfileInfo, ProfilesSection} from "../../components/profiles";
 import {PostCreateForm} from "../../components/posts/PostCreateForm";
-import {Post} from "../../components/posts/Post";
+import {PostsList} from "../../components/posts/PostsList";
 
 interface ProfilePageProps {
     userId: string;
@@ -29,10 +29,6 @@ export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({mat
         confirmFriendship,
         loadingFriends
     } = rootStore.friendshipStore;
-    const {
-        loadUserPosts,
-        userPosts
-    } = rootStore.postStore;
     const {loadProfileDetails} = rootStore.profileStore;
 
     useEffect(() => {
@@ -40,9 +36,7 @@ export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({mat
         loadUser(userId);
         loadProfileFriends(userId)
         loadProfileDetails(userId);
-        loadUserPosts(userId, 0);
-    }, [match.params.userId, loadUser, loadProfileFriends, loadUserPosts])
-
+    }, [match.params.userId, loadUser, loadProfileFriends])
 
     return (
         <Grid>
@@ -73,9 +67,7 @@ export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({mat
                     loading={loadingProfileDetails}
                 />
                 {user?.isLoggedInUser && <PostCreateForm/>}
-                {userPosts && userPosts.map(post => (
-                    <Post post={post}/>
-                ))}
+                <PostsList userId={match.params.userId}/>
             </Grid.Column>
         </Grid>
     );
