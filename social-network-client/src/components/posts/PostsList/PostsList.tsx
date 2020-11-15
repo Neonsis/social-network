@@ -3,6 +3,8 @@ import {RootStoreContext} from "../../../stores/rootStore";
 import {Post} from "../Post";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {observer} from "mobx-react-lite";
+import {Dimmer, Loader, Segment} from "semantic-ui-react";
+import "./PostsList.scss";
 
 export interface PostListProps {
     userId: string;
@@ -22,9 +24,13 @@ export const PostsList = observer(({userId}: PostListProps) => {
         loadUserPosts(userId);
     }, [])
 
-    if (loadingInitialPosts) return null;
-
-    console.log(userPosts.length)
+    if (loadingInitialPosts) return (
+        <Segment className="posts-loader">
+            <Dimmer active inverted>
+                <Loader inverted content='Loading posts'/>
+            </Dimmer>
+        </Segment>
+    );
 
     return (
         <InfiniteScroll
