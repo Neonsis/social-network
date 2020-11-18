@@ -26,14 +26,14 @@ public class Profile extends AbstractBaseEntity {
     private static final long serialVersionUID = 4644116734879167994L;
 
     /**
-     * The user gender.
+     * The user's gender.
      */
     @Column(name = "gender")
     @Enumerated(EnumType.ORDINAL)
     private Gender gender;
 
     /**
-     * The user birthday.
+     * The user's birthday.
      */
     @Column(name = "birthday")
     private LocalDate birthday;

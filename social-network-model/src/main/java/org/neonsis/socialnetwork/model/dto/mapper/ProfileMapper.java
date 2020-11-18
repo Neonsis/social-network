@@ -2,7 +2,7 @@ package org.neonsis.socialnetwork.model.dto.mapper;
 
 import org.mapstruct.Mapper;
 import org.neonsis.socialnetwork.model.domain.user.Profile;
-import org.neonsis.socialnetwork.model.dto.ProfileDto;
+import org.neonsis.socialnetwork.model.dto.post.ProfileDto;
 
 @Mapper(componentModel = "spring")
 public interface ProfileMapper {

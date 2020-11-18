@@ -3,7 +3,7 @@ package org.neonsis.socialnetwork.model.dto.mapper;
 import org.mapstruct.Mapper;
 import org.neonsis.socialnetwork.model.domain.user.User;
 import org.neonsis.socialnetwork.model.dto.PageDto;
-import org.neonsis.socialnetwork.model.dto.UserDto;
+import org.neonsis.socialnetwork.model.dto.post.UserDto;
 import org.neonsis.socialnetwork.model.dto.mapper.impl.PageMapperImpl;
 import org.springframework.data.domain.Page;
 

@@ -3,7 +3,7 @@ package org.neonsis.socialnetwork.model.dto.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.neonsis.socialnetwork.model.domain.post.Comment;
-import org.neonsis.socialnetwork.model.dto.CommentDto;
+import org.neonsis.socialnetwork.model.dto.post.CommentDto;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
