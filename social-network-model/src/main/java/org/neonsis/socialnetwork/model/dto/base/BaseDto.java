@@ -1,4 +1,4 @@
-package org.neonsis.socialnetwork.model.dto;
+package org.neonsis.socialnetwork.model.dto.base;
 
 public class BaseDto {
 }

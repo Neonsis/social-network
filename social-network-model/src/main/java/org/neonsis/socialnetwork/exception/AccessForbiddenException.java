@@ -1,7 +1,7 @@
 package org.neonsis.socialnetwork.exception;
 
 /**
- * Throws when user don't have permission to resource
+ * Throws when user doesn't have permission to resource
  *
  * @author neonsis
  */

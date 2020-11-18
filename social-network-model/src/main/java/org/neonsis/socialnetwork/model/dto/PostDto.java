@@ -3,6 +3,7 @@ package org.neonsis.socialnetwork.model.dto;
 import lombok.*;
 
 import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,4 +18,5 @@ public class PostDto {
     private Date createdAt;
     private Boolean isLiked;
     private Integer countLike;
+    private Set<CommentDto> comments;
 }

@@ -1,7 +1,7 @@
 package org.neonsis.socialnetwork.exception;
 
 /**
- * Abstract exception for business logic, don't print stack trace
+ * Abstract exception for business logic, doesn't print stack trace
  *
  * @author neonsis
  */

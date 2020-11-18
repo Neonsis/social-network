@@ -10,6 +10,11 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * The Unique Identifier (primary key) of the friendship.
+ *
+ * @author neonsis
+ */
 @Getter
 @Setter
 @Embeddable
@@ -17,11 +22,20 @@ import java.util.Objects;
 @AllArgsConstructor
 public class FriendshipId implements Serializable {
 
+    /**
+     * The {@code serialVersionUID}.
+     */
     private static final long serialVersionUID = -6500400027286181854L;
 
+    /**
+     * The user id who invite(create) friendship.
+     */
     @Column(name = "inviter_id")
     private Long inviterId;
 
+    /**
+     * The user id who is invited by another user.
+     */
     @Column(name = "invited_id")
     private Long invitedId;
 

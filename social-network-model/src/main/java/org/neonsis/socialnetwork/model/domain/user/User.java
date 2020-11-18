@@ -4,42 +4,67 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.neonsis.socialnetwork.model.domain.base.BaseEntityAudit;
+import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
 import org.neonsis.socialnetwork.model.domain.post.Post;
 import org.neonsis.socialnetwork.model.domain.user.security.Role;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * User.
+ *
+ * @author neonsis
+ */
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user")
-public class User extends BaseEntityAudit implements Serializable {
+@Table(name = "user_account")
+public class User extends AbstractBaseEntity {
 
+    /**
+     * The {@code serialVersionUID}.
+     */
     private static final long serialVersionUID = 4943199878136168288L;
 
+    /**
+     * The user's account email.
+     */
     @Column(name = "email", nullable = false, unique = true, length = 50)
     private String email;
 
+    /**
+     * The user's account hashed password.
+     */
     @Column(name = "encrypted_password", nullable = false)
     private String encryptedPassword;
 
+    /**
+     * The user's first name.
+     */
     @Column(name = "first_name", nullable = false, length = 30)
     private String firstName;
 
+    /**
+     * The user's lsat name.
+     */
     @Column(name = "last_name", nullable = false, length = 30)
     private String lastName;
 
+    /**
+     * The user's main avatar.
+     */
     @Column(name = "avatar_url")
     private String avatarUrl;
 
+    /**
+     * The user's published posts.
+     */
     @OneToMany(
             mappedBy = "author",
             cascade = CascadeType.ALL,
@@ -47,17 +72,89 @@ public class User extends BaseEntityAudit implements Serializable {
     )
     private final List<Post> posts = new ArrayList<>();
 
+    /**
+     * Foreign key (relation) to the user's roles.
+     */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User(String email, String encryptedPassword, String firstName, String lastName, Set<Role> roles) {
-        this.email = email;
-        this.encryptedPassword = encryptedPassword;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.roles = roles;
+    /**
+     * Get a new {@link UserBuilder}.
+     *
+     * @return a new {@link UserBuilder}.
+     */
+    public static UserBuilder builder() {
+        return new UserBuilder();
+    }
+
+    public static class UserBuilder extends AbstractBaseEntity.Builder<User> {
+
+        @Override
+        protected User buildEntity() {
+            return new User();
+        }
+
+        /**
+         * Set the user email and return the builder.
+         *
+         * @param email the email of the user being built.
+         * @return the builder.
+         * @see User#setEmail(String)
+         */
+        public UserBuilder email(String email) {
+            this.getEntity().setEmail(email);
+            return this;
+        }
+
+        /**
+         * Set the user password and return the builder.
+         *
+         * @param password the password of the user being built.
+         * @return the builder.
+         * @see User#setEncryptedPassword(String)
+         */
+        public UserBuilder password(String password) {
+            this.getEntity().setEncryptedPassword(password);
+            return this;
+        }
+
+        /**
+         * Set the user first name and return the builder.
+         *
+         * @param firstName the first name of the user being built.
+         * @return the builder.
+         * @see User#setFirstName(String)
+         */
+        public UserBuilder firstName(String firstName) {
+            this.getEntity().setFirstName(firstName);
+            return this;
+        }
+
+        /**
+         * Set the user last name and return the builder.
+         *
+         * @param lastName the last name of the user being built.
+         * @return the builder.
+         * @see User#setLastName(String)
+         */
+        public UserBuilder lastName(String lastName) {
+            this.getEntity().setLastName(lastName);
+            return this;
+        }
+
+        /**
+         * Set the user avatar and return the builder.
+         *
+         * @param avatarUrl the avatar of the user being built.
+         * @return the builder.
+         * @see User#setAvatarUrl(String)
+         */
+        public UserBuilder avatar(String avatarUrl) {
+            this.getEntity().setAvatarUrl(avatarUrl);
+            return this;
+        }
     }
 }
