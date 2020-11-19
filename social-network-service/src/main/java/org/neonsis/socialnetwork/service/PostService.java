@@ -1,18 +1,19 @@
 package org.neonsis.socialnetwork.service;
 
 import org.neonsis.socialnetwork.model.dto.PageDto;
-import org.neonsis.socialnetwork.model.dto.PostDto;
+import org.neonsis.socialnetwork.model.dto.post.PostCreateDto;
+import org.neonsis.socialnetwork.model.dto.post.PostDto;
 import org.springframework.data.domain.Pageable;
 
 public interface PostService {
 
-    PageDto<PostDto> getUserPosts(Long userId, Long loggedInUserId, Pageable pageable);
+    PageDto<PostDto> getUserPosts(Long userId, Pageable pageable);
 
-    PostDto create(Long userId, PostDto postDto);
+    PostDto create(PostCreateDto postDto);
 
-    void delete(Long postId, Long authorId);
+    void delete(Long postId);
 
-    void likePost(Long postId, Long userId);
+    void likePost(Long postId);
 
-    void unlikePost(Long postId, Long userId);
+    void unlikePost(Long postId);
 }

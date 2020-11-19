@@ -1,16 +1,18 @@
 package org.neonsis.socialnetwork.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
-import org.neonsis.socialnetwork.exception.RecordNotFoundException;
 import org.neonsis.socialnetwork.model.domain.post.Post;
 import org.neonsis.socialnetwork.model.domain.user.User;
 import org.neonsis.socialnetwork.model.dto.PageDto;
-import org.neonsis.socialnetwork.model.dto.PostDto;
 import org.neonsis.socialnetwork.model.dto.mapper.PostMapper;
+import org.neonsis.socialnetwork.model.dto.post.PostCreateDto;
+import org.neonsis.socialnetwork.model.dto.post.PostDto;
 import org.neonsis.socialnetwork.persistence.repository.PostRepository;
 import org.neonsis.socialnetwork.persistence.repository.UserRepository;
 import org.neonsis.socialnetwork.service.PostService;
+import org.neonsis.socialnetwork.service.security.IAuthenticationFacade;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,43 +23,52 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+
     private final PostMapper postMapper;
 
+    private final IAuthenticationFacade authenticationFacade;
+
     @Override
-    public PageDto<PostDto> getUserPosts(Long userId, Long loggedInUserId, Pageable pageable) {
-        userRepository.findById(userId)
-                .orElseThrow(() -> new RecordNotFoundException("User not found by id: " + userId));
-        Page<Post> userPosts = postRepository.findPostsByAuthorId(userId, pageable);
-        userPosts.getContent()
-                .forEach(post -> post.setIsLiked(postRepository.isAlreadyLiked(post.getId(), loggedInUserId)));
-        return postMapper.pagePostToPageDtoPostDto(userPosts);
+    public PageDto<PostDto> getUserPosts(Long authorId, Pageable pageable) {
+        userRepository.findById(authorId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found by id: " + authorId));
+
+        Page<Post> userPosts = postRepository.findPostsByAuthorId(authorId, pageable);
+
+        PageDto<PostDto> postDtoPageDto = toPageDto(userPosts);
+        postDtoPageDto.getContent()
+                .forEach(post -> post.setIsLiked(postRepository.isAlreadyLiked(post.getId(), authenticationFacade.getUserId())));
+
+        return postDtoPageDto;
     }
 
     @Override
-    public PostDto create(Long userId, PostDto postDto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RecordNotFoundException("User not found by id: " + userId));
+    public PostDto create(PostCreateDto postDto) {
+        User user = authenticationFacade.getLoggedInUser();
 
-        Post post = postMapper.postDtoToPost(postDto);
-        post.setAuthor(user);
-        Post saved = postRepository.save(post);
-        return postMapper.postToPostDto(saved);
+        Post post = Post.builder()
+                .content(postDto.getContent())
+                .author(user)
+                .build();
+
+        postRepository.save(post);
+
+        return toDto(post);
     }
 
     @Override
-    public void delete(Long postId, Long authorId) {
-        Post post = postRepository.findPostByIdAndAuthorId(postId, authorId)
-                .orElseThrow(() -> new RecordNotFoundException("Post not found by id: " + postId));
+    public void delete(Long postId) {
+        Post post = postRepository.findPostByIdAndAuthorId(postId, authenticationFacade.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("Post not found by id: " + postId));
         postRepository.delete(post);
     }
 
     @Override
-    public void likePost(Long postId, Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RecordNotFoundException("User not found by id: " + userId));
+    public void likePost(Long postId) {
+        User user = authenticationFacade.getLoggedInUser();
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RecordNotFoundException("Post not found by id: " + postId));
-        boolean alreadyLiked = postRepository.isAlreadyLiked(postId, userId);
+                .orElseThrow(() -> new EntityNotFoundException("Post not found by id: " + postId));
+        boolean alreadyLiked = postRepository.isAlreadyLiked(postId, user.getId());
         if (alreadyLiked) {
             throw new InvalidWorkFlowException("You have already liked post with id: " + postId);
         }
@@ -66,12 +77,19 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void unlikePost(Long postId, Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RecordNotFoundException("User not found by id: " + userId));
+    public void unlikePost(Long postId) {
+        User user = authenticationFacade.getLoggedInUser();
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RecordNotFoundException("Post not found by id: " + postId));
+                .orElseThrow(() -> new EntityNotFoundException("Post not found by id: " + postId));
         post.deleteLike(user);
         postRepository.save(post);
+    }
+
+    private PostDto toDto(Post post) {
+        return postMapper.postToPostDto(post);
+    }
+
+    private PageDto<PostDto> toPageDto(Page<Post> postPage) {
+        return postMapper.pagePostToPageDtoPostDto(postPage);
     }
 }

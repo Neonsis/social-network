@@ -1,22 +1,22 @@
 package org.neonsis.socialnetwork.service;
 
 import org.neonsis.socialnetwork.model.dto.PageDto;
-import org.neonsis.socialnetwork.model.dto.UserDto;
+import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.springframework.data.domain.Pageable;
 
 public interface FriendshipService {
 
-    void addToFriends(Long loggedInUserId, Long friendId);
+    void addToFriends(Long friendId);
 
-    PageDto<UserDto> getFriends(Long userId, Pageable pageable);
+    PageDto<UserDto> getUserFriends(Long userId, Pageable pageable);
 
     PageDto<UserDto> getFollowers(Long userId, Pageable pageable);
 
-    void delete(Long loggedInUserId, Long friendId);
+    void delete(Long friendId);
 
-    boolean isUserFriend(Long loggedInUserId, Long friendId);
+    boolean isUserFriend(Long friendId);
 
-    boolean isFollower(Long loggedInUserId, Long followerId);
+    boolean isFollower(Long followerId);
 
-    boolean isPendingFriendship(Long loggedInUserId, Long followerId);
+    boolean isPendingFriendship(Long followerId);
 }
