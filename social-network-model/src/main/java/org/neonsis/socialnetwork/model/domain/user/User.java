@@ -156,5 +156,17 @@ public class User extends AbstractBaseEntity {
             this.getEntity().setAvatarUrl(avatarUrl);
             return this;
         }
+
+        /**
+         * Set the user roles and return the builder.
+         *
+         * @param roles the roles of the user being built.
+         * @return the builder.
+         * @see User#setRoles(Set)
+         */
+        public UserBuilder roles(Set<Role> roles) {
+            this.getEntity().setRoles(roles);
+            return this;
+        }
     }
 }

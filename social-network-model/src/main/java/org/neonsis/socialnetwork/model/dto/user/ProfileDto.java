@@ -1,4 +1,4 @@
-package org.neonsis.socialnetwork.model.dto.post;
+package org.neonsis.socialnetwork.model.dto.user;
 
 import lombok.*;
 import org.neonsis.socialnetwork.model.domain.user.Gender;

@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.neonsis.socialnetwork.model.dto.base.AbstractBaseDto;
+import org.neonsis.socialnetwork.model.dto.user.UserDto;
 
 import java.util.Set;
 
