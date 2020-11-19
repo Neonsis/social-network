@@ -1,11 +1,11 @@
 package org.neonsis.socialnetwork.rest.exception;
 
-import org.neonsis.socialnetwork.exception.InternalServerException;
+import org.neonsis.socialnetwork.exception.InternalServerErrorException;
 import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
-import org.neonsis.socialnetwork.exception.RecordNotFoundException;
+import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.rest.exception.model.ValidationError;
-import org.neonsis.socialnetwork.rest.payload.request.ApiErrorRequest;
-import org.neonsis.socialnetwork.rest.payload.request.ApiValidationErrorRequest;
+import org.neonsis.socialnetwork.rest.model.request.ApiErrorRequest;
+import org.neonsis.socialnetwork.rest.model.request.ApiValidationErrorRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
@@ -57,16 +57,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(apiError);
     }
 
-    @ExceptionHandler(InternalServerException.class)
-    protected ResponseEntity<Object> handleInternalServerException(InternalServerException ex) {
+    @ExceptionHandler(InternalServerErrorException.class)
+    protected ResponseEntity<Object> handleInternalServerException(InternalServerErrorException ex) {
         logger.error("Responding with internal server error.  Message - {}", ex.getMessage());
         ApiErrorRequest apiError = new ApiErrorRequest(INTERNAL_SERVER_ERROR);
         apiError.setMessage("Server error");
         return buildResponseEntity(apiError);
     }
 
-    @ExceptionHandler(RecordNotFoundException.class)
-    protected ResponseEntity<Object> handleRecordNotFound(RecordNotFoundException ex) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<Object> handleRecordNotFound(EntityNotFoundException ex) {
         ApiErrorRequest apiError = new ApiErrorRequest(NOT_FOUND);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
