@@ -50,7 +50,7 @@ export const ProfileInfo = observer(({firstName, lastName, profileDetails, loadi
                 backgroundColor="#f3ecec"
                 foregroundColor="#ffffff"
             >
-                <rect x="0" y="14" rx="0" ry="0" width="510" height="76" />
+                <rect x="0" y="14" rx="0" ry="0" width="510" height="76"/>
             </ContentLoader>
         </Segment>
     )
@@ -66,7 +66,7 @@ export const ProfileInfo = observer(({firstName, lastName, profileDetails, loadi
     let profileInfo = profileFields
         .filter(field => profileDetails![field.contentField]) // if undefined skip
         .map((field) => (
-            <div className="profile__info-item">
+            <div className="profile__info-item" key={field.label}>
                 <div className="profile__item-label">
                     {`${field.label}:`}
                 </div>

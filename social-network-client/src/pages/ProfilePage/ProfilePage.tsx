@@ -23,10 +23,6 @@ export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({mat
     const {
         loadProfileFriends,
         profileFriends,
-        addToFriends,
-        deleteFriendship,
-        cancelFriendship,
-        confirmFriendship,
         loadingFriends
     } = rootStore.friendshipStore;
     const {loadProfileDetails} = rootStore.profileStore;
@@ -48,10 +44,6 @@ export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({mat
                     isLoggedInUser={user?.isLoggedInUser}
                     isPendingFriendship={user?.isPendingFriendship}
                     isFollower={user?.isFollower}
-                    addToFriends={addToFriends}
-                    deleteFriendship={deleteFriendship}
-                    cancelFriendship={cancelFriendship}
-                    confirmFriendship={confirmFriendship}
                 />
                 <ProfilesSection
                     header="Друзья"

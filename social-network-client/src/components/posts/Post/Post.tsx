@@ -1,43 +1,30 @@
-import React from 'react';
+import React from "react";
 import {Card, Divider, Icon, Image} from "semantic-ui-react";
 import AvatarNotFound from "../../../assets/avatar_not_found.png";
 import "./Post.scss";
 import {IPost} from "../../../models/post";
 import {Link} from "react-router-dom";
 import {observer} from "mobx-react-lite";
+import {CommentsSection} from "../../comments/CommentsSection";
+import {parseDate} from "../../../util/util";
 
 export interface PostProps {
     post: IPost;
     like: (postId: string) => void;
     unlike: (postId: string) => void;
+    userId: string;
+    onDelete: (postId: string) => void;
 }
 
-const parseDate = (date: Date): string => {
-    if (new Date().toLocaleDateString() === date.toLocaleDateString()) {
-        // Today
-        const time = date.toLocaleTimeString("ru-RU", {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-        return "сегодня в " + time;
-    } else {
-        return date.toLocaleTimeString("ru-RU", {
-            day: "2-digit",
-            month: "short",
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    }
-}
-
-export const Post = observer(({post, like, unlike}: PostProps) => {
+export const Post = observer(({post, like, unlike, userId, onDelete}: PostProps) => {
     const {
         content,
         author,
         createdAt,
         id,
         isLiked,
-        countLike
+        countLike,
+        comments
     } = post;
 
     const handleLike = () => {
@@ -65,6 +52,7 @@ export const Post = observer(({post, like, unlike}: PostProps) => {
                 >
                     {author.firstName} {author.lastName}
                 </Card.Header>
+                {post.author.id === userId && <Icon name="delete" className="post-delete" onClick={() => onDelete(post.id)}/>}
                 <Card.Meta className="post__date">{parseDate(new Date(createdAt))}</Card.Meta>
                 <Card.Description>
                     {content}
@@ -76,6 +64,9 @@ export const Post = observer(({post, like, unlike}: PostProps) => {
                         {countLike}
                     </a>
                 </Card.Content>
+            </Card.Content>
+            <Card.Content extra>
+                <CommentsSection postId={id} comments={comments}/>
             </Card.Content>
         </Card>
     );

@@ -16,7 +16,7 @@ export const ProfilesSection = ({header, profiles, loading}: ProfilesSectionProp
 
     if (loading || !profiles) return (
         <Segment className="profile__section">
-            <Header as='h5'>{header}</Header>
+            <Header as="h5">{header}</Header>
             <div className="profile__section-list">
                 <ContentLoader
                     speed={2}
@@ -41,7 +41,7 @@ export const ProfilesSection = ({header, profiles, loading}: ProfilesSectionProp
 
     return (
         <Segment className="profile__section">
-            <Header as='h5'>{header} {profiles.totalElements}</Header>
+            <Header as="h5">{header} {profiles.totalElements}</Header>
             <div className="profile__section-list">
                 {profiles && profiles.content.map(profile => (
                     <UserAvatar key={profile.id} user={profile}/>

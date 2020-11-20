@@ -1,8 +1,7 @@
 import {RootStore} from "./rootStore";
 import {action, observable, runInAction} from "mobx";
-import {IPost, IPostFormValues} from "../models/post";
+import {ICommentFormValues, IPost, IPostFormValues} from "../models/post";
 import agent from "../api/agent";
-import {Page} from "../models/page";
 
 const POST_PAGE_SIZE = 10;
 
@@ -16,8 +15,9 @@ export default class PostStore {
     @observable saveLoadingPost = false;
     @observable loadingPosts = false;
     @observable loadingInitialPosts = true;
-    @observable userPostsPage: Page<IPost[]> | null = null;
     @observable userPosts: IPost[] = [];
+    @observable isLastPage: boolean = false;
+    @observable pageNumber = 0;
 
     @action createPost = async (post: IPostFormValues) => {
         this.saveLoadingPost = true;
@@ -36,13 +36,24 @@ export default class PostStore {
         }
     }
 
+    @action deletePost = async (postId: string) => {
+        try {
+            await agent.Post.delete(postId);
+            runInAction(() => {
+                this.userPosts = this.userPosts.filter(post => post.id !== postId);
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     @action loadUserPosts = async (userId: string) => {
         this.loadingInitialPosts = true;
         try {
             const createdPost = await agent.Post.getUserPosts(userId, POST_PAGE_SIZE, 0);
             runInAction(() => {
-                this.userPostsPage = createdPost;
                 this.userPosts = createdPost.content;
+                this.isLastPage = createdPost.last;
             })
         } catch (error) {
             console.log(error);
@@ -55,10 +66,11 @@ export default class PostStore {
 
     @action fetchMorePosts = async (userId: string) => {
         try {
-            const createdPost = await agent.Post.getUserPosts(userId, POST_PAGE_SIZE, this.userPostsPage!.number + 1);
+            const createdPost = await agent.Post.getUserPosts(userId, POST_PAGE_SIZE, this.pageNumber + 1);
             runInAction(() => {
-                this.userPostsPage = createdPost;
-                this.userPosts.push(...createdPost.content)
+                this.userPosts = [...this.userPosts, ...createdPost.content];
+                this.isLastPage = createdPost.last;
+                this.pageNumber = createdPost.number;
             })
         } catch (error) {
             console.log(error);
@@ -85,6 +97,18 @@ export default class PostStore {
                 let find = this.userPosts.find(post => post.id === postId);
                 find!.isLiked = false;
                 find!.countLike--;
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    @action addComment = async (postId: string, values: ICommentFormValues) => {
+        try {
+            const comment = await agent.Post.addComment(postId, values);
+            runInAction(() => {
+                const post = this.userPosts.find(post => post.id === postId);
+                post!.comments = [comment, ...post!.comments]
             })
         } catch (error) {
             console.log(error);

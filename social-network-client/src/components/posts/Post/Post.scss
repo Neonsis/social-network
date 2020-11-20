@@ -11,10 +11,16 @@
     margin-top: 2px;
     font-size: $default-font-size;
     color: $color-primary-1-active;
+    display: inline-block;
 
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  .post-delete {
+    float: right;
+    cursor: pointer;
   }
 
   .extra.content .like.liked {

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect} from "react";
 import {RootStoreContext} from "../../../stores/rootStore";
 import {Post} from "../Post";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -14,12 +14,13 @@ export const PostsList = observer(({userId}: PostListProps) => {
     const rootStore = useContext(RootStoreContext);
     const {
         loadUserPosts,
-        userPosts,
         fetchMorePosts,
-        userPostsPage,
         loadingInitialPosts,
         like,
-        unlike
+        userPosts,
+        unlike,
+        isLastPage,
+        deletePost
     } = rootStore.postStore;
 
     useEffect(() => {
@@ -29,7 +30,7 @@ export const PostsList = observer(({userId}: PostListProps) => {
     if (loadingInitialPosts) return (
         <Segment className="posts-loader">
             <Dimmer active inverted>
-                <Loader inverted content='Loading posts'/>
+                <Loader inverted content="Loading posts"/>
             </Dimmer>
         </Segment>
     );
@@ -37,12 +38,19 @@ export const PostsList = observer(({userId}: PostListProps) => {
     return (
         <InfiniteScroll
             next={() => fetchMorePosts(userId)}
-            hasMore={!userPostsPage!.isLast}
+            hasMore={!isLastPage}
             loader={<h4>Loading...</h4>}
             dataLength={userPosts.length}
         >
             {userPosts && userPosts.map(post => (
-                <Post key={post.id} post={post} like={like} unlike={unlike}/>
+                <Post
+                    key={post.id}
+                    post={post}
+                    like={like}
+                    unlike={unlike}
+                    userId={userId}
+                    onDelete={deletePost}
+                />
             ))}
         </InfiniteScroll>
     );

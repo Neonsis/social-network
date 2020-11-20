@@ -1,4 +1,4 @@
-import React, {ChangeEvent, SyntheticEvent, useContext, useEffect} from 'react';
+import React, {ChangeEvent, SyntheticEvent, useContext, useEffect} from "react";
 import "./EditProfilePage.scss";
 import {RootStoreContext} from "../../stores/rootStore";
 import {Button, DropdownProps, Form, Grid, Header, Message, Segment, Select} from "semantic-ui-react";
@@ -143,7 +143,7 @@ export const EditProfilePage = observer(() => {
                                 defaultValue={profileDetails.about}
                                 name="about"
                                 className="text-area"
-                                placeholder='Tell us more about you...'
+                                placeholder="Tell us more about you..."
                                 onChange={onAboutChange}
                             />
                         </Form.Field>

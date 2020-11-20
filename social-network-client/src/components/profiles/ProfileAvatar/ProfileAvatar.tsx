@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useContext} from "react";
 import {Button, Dropdown, Image, Segment} from "semantic-ui-react";
 import NotFoundAvatar from "../../../assets/avatar_not_found.png";
 import "./ProfileAvatar.scss";
 import {Link} from "react-router-dom";
 import ContentLoader from "react-content-loader";
+import {RootStoreContext} from "../../../stores/rootStore";
 
 export interface ProfileAvatarProps {
     avatarUrl?: string;
@@ -12,11 +13,7 @@ export interface ProfileAvatarProps {
     isLoggedInUser?: boolean;
     isFollower?: boolean;
     isPendingFriendship?: boolean;
-    loadingPage: boolean;
-    confirmFriendship: (id: string) => void;
-    addToFriends: (id: string) => void;
-    cancelFriendship: (id: string) => void;
-    deleteFriendship: (id: string) => void;
+    loadingPage: boolean
 }
 
 export const ProfileAvatar = (({
@@ -27,11 +24,14 @@ export const ProfileAvatar = (({
                                    isFollower,
                                    id,
                                    loadingPage,
-                                   confirmFriendship,
-                                   addToFriends,
-                                   cancelFriendship,
-                                   deleteFriendship
                                }: ProfileAvatarProps) => {
+    const rootStore = useContext(RootStoreContext);
+    const {
+        addToFriends,
+        deleteFriendship,
+        cancelFriendship,
+        confirmFriendship
+    } = rootStore.friendshipStore;
 
     const writeMessageButton = () => (
         <Button

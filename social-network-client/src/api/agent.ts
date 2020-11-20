@@ -2,7 +2,7 @@ import axios, {AxiosResponse} from "axios";
 import {IUser, IUserAuth, IUserDetails, IUserFormValues} from "../models/user";
 import {IProfileDetails} from "../models/profile";
 import {Page} from "../models/page";
-import {IPost, IPostFormValues} from "../models/post";
+import {IComment, ICommentFormValues, IPost, IPostFormValues} from "../models/post";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
@@ -54,7 +54,7 @@ const User = {
 
 const Friendship = {
     getFriends: (userId: string, page: number, size: number)
-        : Promise<Page<IUser[]>> => requests.get(`/friends/${userId}?size=${size}&page=${page}`),
+        : Promise<Page<IUser[]>> => requests.get(`/users/${userId}/friends?size=${size}&page=${page}`),
     post: (friendId: string): Promise<void> => requests.post(`/friends/${friendId}`, {}),
     delete: (friendId: string): Promise<void> => requests.del(`/friends/${friendId}`)
 }
@@ -62,9 +62,11 @@ const Friendship = {
 const Post = {
     create: (post: IPostFormValues): Promise<IPost> => requests.post(`/posts/`, post),
     getUserPosts: (userId: string, size: number, page: number)
-        : Promise<Page<IPost[]>> => requests.get(`/posts/${userId}?page=${page}&size=${size}`),
-    like: (postId: string): Promise<null> => requests.post(`/posts/${postId}/like`, {}),
-    unlike: (postId: string): Promise<null> => requests.post(`/posts/${postId}/unlike`, {}),
+        : Promise<Page<IPost[]>> => requests.get(`/users/${userId}/posts?page=${page}&size=${size}`),
+    delete: (postId: string): Promise<void> => requests.del(`/posts/${postId}`),
+    like: (postId: string): Promise<void> => requests.post(`/posts/${postId}/like`, {}),
+    unlike: (postId: string): Promise<void> => requests.post(`/posts/${postId}/unlike`, {}),
+    addComment: (postId: string, comment: ICommentFormValues): Promise<IComment> => requests.post(`/posts/${postId}/comment`, comment)
 }
 
 export default {

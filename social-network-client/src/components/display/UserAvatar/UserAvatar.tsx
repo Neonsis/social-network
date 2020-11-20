@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {Image} from "semantic-ui-react";
 import {IUser} from "../../../models/user";
 import {Link} from "react-router-dom";
