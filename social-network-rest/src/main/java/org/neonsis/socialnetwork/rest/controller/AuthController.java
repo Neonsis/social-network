@@ -1,13 +1,12 @@
 package org.neonsis.socialnetwork.rest.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.neonsis.socialnetwork.exception.RecordNotFoundException;
-import org.neonsis.socialnetwork.model.dto.ProfileDto;
-import org.neonsis.socialnetwork.model.dto.UserDto;
-import org.neonsis.socialnetwork.rest.payload.mapper.AuthRestMapper;
-import org.neonsis.socialnetwork.rest.payload.request.LoginRequest;
-import org.neonsis.socialnetwork.rest.payload.request.SignUpRequest;
-import org.neonsis.socialnetwork.rest.payload.response.UserAuthResponse;
+import org.neonsis.socialnetwork.exception.EntityNotFoundException;
+import org.neonsis.socialnetwork.model.dto.user.LoginDto;
+import org.neonsis.socialnetwork.model.dto.user.RegistrationDto;
+import org.neonsis.socialnetwork.model.dto.user.UserDto;
+import org.neonsis.socialnetwork.rest.model.mapper.RestMapper;
+import org.neonsis.socialnetwork.rest.model.response.UserAuthResponse;
 import org.neonsis.socialnetwork.rest.security.JwtTokenProvider;
 import org.neonsis.socialnetwork.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -32,40 +31,41 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final UserService userService;
-    private final AuthRestMapper authRestMapper;
+    private final RestMapper restMapper;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDto loginDto) {
         try {
-            String email = loginRequest.getEmail();
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, loginRequest.getPassword()));
+            String email = loginDto.getEmail();
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, loginDto.getPassword()));
             UserDto loggedInUser = userService.findByEmail(email);
             String token = jwtTokenProvider.generateToken(email);
             loggedInUser.setToken(token);
 
-            return new ResponseEntity<>(authRestMapper.userDtoToUserAuthResponse(loggedInUser), HttpStatus.OK);
-        } catch (AuthenticationException | RecordNotFoundException e) {
+            return ResponseEntity.ok(toResponse(loggedInUser));
+        } catch (AuthenticationException | EntityNotFoundException e) {
             throw new BadCredentialsException("Invalid username or password");
         }
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserAuthResponse> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        UserDto userDto = authRestMapper.signUpRequestToUserDto(signUpRequest);
-        ProfileDto profileDto = authRestMapper.signUpRequestToProfileDto(signUpRequest);
-
-        UserDto registeredUser = userService.signUp(userDto, profileDto);
+    public ResponseEntity<UserAuthResponse> registerUser(@Valid @RequestBody RegistrationDto registrationDto) {
+        UserDto registeredUser = userService.signUp(registrationDto);
         String token = jwtTokenProvider.generateToken(registeredUser.getEmail());
         registeredUser.setToken(token);
 
-        return new ResponseEntity<>(authRestMapper.userDtoToUserAuthResponse(registeredUser), HttpStatus.CREATED);
+        return new ResponseEntity<>(toResponse(registeredUser), HttpStatus.CREATED);
     }
 
     @PostMapping("/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
         securityContextLogoutHandler.logout(request, response, null);
+    }
+
+    private UserAuthResponse toResponse(UserDto user) {
+        return restMapper.userDtoToUserAuthResponse(user);
     }
 }

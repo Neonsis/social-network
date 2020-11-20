@@ -4,6 +4,7 @@ import UserStore from "./userStore";
 import CommonStore from "./commonStore";
 import ProfileStore from "./profileStore";
 import FriendshipStore from "./friendshipStore";
+import PostStore from "./postStore";
 
 configure({enforceActions: "always"});
 
@@ -12,12 +13,14 @@ export class RootStore {
     commonStore: CommonStore;
     profileStore: ProfileStore;
     friendshipStore: FriendshipStore;
+    postStore: PostStore;
 
     constructor() {
         this.userStore = new UserStore(this);
         this.commonStore = new CommonStore(this);
         this.profileStore = new ProfileStore(this);
         this.friendshipStore = new FriendshipStore(this);
+        this.postStore = new PostStore(this);
     }
 }
 

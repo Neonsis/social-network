@@ -1,14 +1,12 @@
 package org.neonsis.socialnetwork.rest.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.neonsis.socialnetwork.model.dto.ProfileDto;
-import org.neonsis.socialnetwork.rest.payload.mapper.ProfileRestMapper;
-import org.neonsis.socialnetwork.rest.payload.request.ProfileUpdateRequest;
-import org.neonsis.socialnetwork.rest.payload.response.ProfileResponse;
+import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
+import org.neonsis.socialnetwork.rest.model.mapper.RestMapper;
+import org.neonsis.socialnetwork.rest.model.response.ProfileResponse;
 import org.neonsis.socialnetwork.rest.security.CurrentUser;
-import org.neonsis.socialnetwork.rest.security.UserPrincipal;
 import org.neonsis.socialnetwork.service.ProfileService;
-import org.springframework.http.HttpStatus;
+import org.neonsis.socialnetwork.service.security.UserPrincipal;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,17 +18,22 @@ import javax.validation.Valid;
 public class ProfileController {
 
     private final ProfileService profileService;
-    private final ProfileRestMapper profileRestMapper;
+    private final RestMapper restMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<ProfileResponse> getProfile(@PathVariable Long id) {
         ProfileDto profile = profileService.findByUserId(id);
-        return new ResponseEntity<>(profileRestMapper.profileDtoToProfileResponse(profile), HttpStatus.OK);
+        return ResponseEntity.ok(toDto(profile));
     }
 
     @PutMapping
-    public ResponseEntity<HttpStatus> updateProfile(@Valid @RequestBody ProfileUpdateRequest profileUpdateRequest, @CurrentUser UserPrincipal userPrincipal) {
-        profileService.updateProfile(profileRestMapper.profileRequestToProfileDto(profileUpdateRequest), userPrincipal.getId());
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ProfileResponse> updateProfile(@Valid @RequestBody ProfileDto profileDto, @CurrentUser UserPrincipal userPrincipal) {
+        profileDto.setId(userPrincipal.getId());
+        ProfileDto updated = profileService.update(profileDto);
+        return ResponseEntity.ok(toDto(updated));
+    }
+
+    private ProfileResponse toDto(ProfileDto profileDto) {
+        return restMapper.profileDtoToProfileResponse(profileDto);
     }
 }

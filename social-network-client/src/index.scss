@@ -22,6 +22,10 @@ body {
   font-weight: 400;
 }
 
+.app .primary-button:hover {
+  opacity: .85;
+}
+
 .app .secondary-button,
 .app .secondary-button:hover,
 .app .secondary-button:active,

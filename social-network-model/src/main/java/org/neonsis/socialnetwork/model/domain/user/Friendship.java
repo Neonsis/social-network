@@ -11,6 +11,11 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Friendship.
+ *
+ * @author neonsis
+ */
 @Getter
 @Setter
 @Entity
@@ -19,23 +24,41 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 public class Friendship implements Serializable {
 
+    /**
+     * The {@code serialVersionUID}.
+     */
     private static final long serialVersionUID = -3623764064798214158L;
 
+    /**
+     * The Unique Identifier (primary key) of this record.
+     */
     @EmbeddedId
     private FriendshipId id;
 
+    /**
+     * The user who invite(create) friendship.
+     */
     @MapsId("inviter_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private User inviter;
 
+    /**
+     * The user who is invited by another user.
+     */
     @MapsId("invited_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private User invited;
 
+    /**
+     * An auto-populating date/time stamp of when the record was created.
+     */
     @CreatedDate
-    @Column(name = "created_at")
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP", updatable = false)
     private Date createdAt;
 
+    /**
+     * The status of this friendship.
+     */
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status", nullable = false)
     private Status status;
@@ -51,5 +74,91 @@ public class Friendship implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    /**
+     * Get a new {@link FriendshipBuilder}.
+     *
+     * @return a new {@link FriendshipBuilder}.
+     */
+    public static FriendshipBuilder builder() {
+        return new FriendshipBuilder();
+    }
+
+    /**
+     * A functional programming {@link FriendshipBuilder} builder.
+     *
+     * @author neonsis
+     */
+    public static class FriendshipBuilder {
+
+        /**
+         * The friendship currently being built.
+         */
+        private final Friendship friendship;
+
+        /**
+         * Create a {@link Friendship.FriendshipBuilder} with no initial property.
+         */
+        public FriendshipBuilder() {
+            this.friendship = new Friendship();
+        }
+
+        /**
+         * Build the friendship prepared by the builder.
+         *
+         * @return a new friendship as prepared by the builder.
+         */
+        public Friendship build() {
+            return friendship;
+        }
+
+        /**
+         * Set the id and return the builder.
+         *
+         * @param id the id of the friendship being built.
+         * @return the builder.
+         * @see Friendship#setId(FriendshipId)
+         */
+        public Friendship.FriendshipBuilder id(FriendshipId id) {
+            friendship.setId(id);
+            return this;
+        }
+
+        /**
+         * Set the inviter and return the builder.
+         *
+         * @param inviter the inviter of the friendship being built.
+         * @return the builder.
+         * @see Friendship#setInviter(User)
+         */
+        public Friendship.FriendshipBuilder inviter(User inviter) {
+            friendship.setInviter(inviter);
+            return this;
+        }
+
+        /**
+         * Set the invited and return the builder.
+         *
+         * @param invited the invited of the friendship being built.
+         * @return the builder.
+         * @see Friendship#setInvited(User)
+         */
+        public Friendship.FriendshipBuilder invited(User invited) {
+            friendship.setInvited(invited);
+            return this;
+        }
+
+        /**
+         * Set the status and return the builder.
+         *
+         * @param status the status of the friendship being built.
+         * @return the builder.
+         * @see Friendship#setStatus(Status)
+         */
+        public Friendship.FriendshipBuilder status(Status status) {
+            friendship.setStatus(status);
+            return this;
+        }
     }
 }

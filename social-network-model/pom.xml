@@ -30,6 +30,20 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            **/*org/neonsis/socialnetwork/exception/*
+                        </exclude>
+                        <exclude>
+                            **/*org/neonsis/socialnetwork/model/dto/**/*
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.5.1</version>
@@ -52,4 +66,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

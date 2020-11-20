@@ -13,6 +13,7 @@ export default class ProfileStore {
 
     @observable loadingPage = true;
     @observable loadingProfileDetails = true;
+    @observable successUpdated = false;
     @observable loadingSaveProfileDetails = false;
     @observable user: IUserDetails | null = null;
     @observable profileDetails: IProfileDetails | null = null;
@@ -37,6 +38,7 @@ export default class ProfileStore {
 
     @action loadProfileDetails = async (userId: string) => {
         this.loadingProfileDetails = true;
+        this.successUpdated = false;
         try {
             const profileDetails = await agent.User.profileDetails(userId);
             runInAction(() => {
@@ -53,10 +55,13 @@ export default class ProfileStore {
 
     @action saveProfileDetails = async (details: IProfileDetails) => {
         this.loadingSaveProfileDetails = true;
+        this.successUpdated = false;
         try {
-            await agent.User.saveDetails(details);
+            const profileDetails = await agent.User.saveDetails(details);
             runInAction(() => {
+                this.profileDetails = profileDetails;
                 this.loadingSaveProfileDetails = false;
+                this.successUpdated = true;
             })
         } catch (error) {
             console.log(error);

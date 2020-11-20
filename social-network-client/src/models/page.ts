@@ -2,7 +2,7 @@ export interface Page<T> {
     content: T;
     totalPages: number;
     totalElements: number;
-    Boolean: boolean;
+    last: boolean;
     number: number;
     size: number;
 }

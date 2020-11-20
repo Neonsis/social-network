@@ -4,12 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.neonsis.socialnetwork.exception.RecordNotFoundException;
-import org.neonsis.socialnetwork.model.domain.user.Gender;
+import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.model.domain.user.Profile;
-import org.neonsis.socialnetwork.model.dto.ProfileDto;
 import org.neonsis.socialnetwork.model.dto.mapper.ProfileMapper;
+import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
 import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;
 import org.neonsis.socialnetwork.service.ProfileService;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -37,9 +37,9 @@ class ProfileServiceImplTest {
         );
     }
 
-    /*@Test
-    public void testFindById_whenExists_shouldReturnProfile() {
-        Profile expected = createProfile();
+    @Test
+    public void testFindByIdSuccess() {
+        Profile expected = buildTestEntity();
         when(profileRepository.findById(1L)).thenReturn(Optional.of(expected));
 
         ProfileDto profile = profileService.findByUserId(1L);
@@ -51,47 +51,48 @@ class ProfileServiceImplTest {
     }
 
     @Test
-    public void testFindById_whenNotExists_shouldThrowException() {
+    public void testFindByIdFailure() {
         when(profileRepository.findById(1L)).thenReturn(Optional.empty());
 
-        RecordNotFoundException exception = assertThrows(RecordNotFoundException.class, () -> {
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             profileService.findByUserId(1L);
         });
 
-        String expected = "Profile not found by id: 1";
+        String expected = "Profile not found by user id: 1";
         String actual = exception.getMessage();
         assertEquals(expected, actual);
 
         verify(profileRepository, times(1)).findById(1L);
-    }*/
+    }
+
 
     @Test
-    public void testUpdateProfile_whenExists_shouldReturnUpdatedProfile() {
-        Profile oldProfile = createProfile();
-        ProfileDto expectedProfileDto = createProfileDto();
-        Profile updatedProfile = profileMapper.profileDtoToProfile(expectedProfileDto);
+    public void testUpdateProfileSuccess() {
+        ProfileDto profileDto = new ProfileDto();
+        profileDto.setId(1L);
+        profileDto.setAbout("TEST");
 
-        when(profileRepository.save(oldProfile)).thenReturn(updatedProfile);
-        when(profileRepository.findById(1L)).thenReturn(Optional.of(oldProfile));
+        when(profileRepository.findById(1L)).thenReturn(Optional.of(buildTestEntity()));
 
-        ProfileDto updateProfile = profileService.updateProfile(expectedProfileDto, 1L);
+        profileService.update(profileDto);
 
-        assertEquals("Minsk", updateProfile.getCity());
-        assertEquals("Belarus", updateProfile.getCountry());
-        assertEquals(Gender.FEMALE, updateProfile.getGender());
-        assertEquals("About", updateProfile.getAbout());
+        ArgumentCaptor<Profile> argument = ArgumentCaptor.forClass(Profile.class);
+        verify(profileRepository, times(1)).save(argument.capture());
 
-        verify(profileRepository, times(1)).findById(1L);
-        verify(profileRepository, times(1)).save(oldProfile);
+        Profile value = argument.getValue();
+
+        assertEquals(profileDto.getId(), value.getId());
+        assertEquals(profileDto.getAbout(), value.getAbout());
     }
 
     @Test
-    public void testUpdateProfile_whenNotExists_shouldThrowException() {
+    public void testUpdateProfileFailure() {
         ProfileDto profileDto = new ProfileDto();
+        profileDto.setId(1L);
         when(profileRepository.findById(1L)).thenReturn(Optional.empty());
 
-        RecordNotFoundException exception = assertThrows(RecordNotFoundException.class, () -> {
-            profileService.updateProfile(profileDto, 1L);
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+            profileService.update(profileDto);
         });
 
         String expected = "Profile not found by id: 1";
@@ -102,17 +103,8 @@ class ProfileServiceImplTest {
         verify(profileRepository, times(0)).save(any(Profile.class));
     }
 
-    public ProfileDto createProfileDto() {
-        return ProfileDto.builder()
-                .id(1L)
-                .city("Minsk")
-                .country("Belarus")
-                .gender(Gender.FEMALE)
-                .about("About")
-                .build();
-    }
 
-    public Profile createProfile() {
+    public Profile buildTestEntity() {
         Profile profile = new Profile();
         profile.setId(1L);
         return profile;

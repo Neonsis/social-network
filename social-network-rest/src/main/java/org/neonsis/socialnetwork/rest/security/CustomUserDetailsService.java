@@ -3,6 +3,7 @@ package org.neonsis.socialnetwork.rest.security;
 import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.model.domain.user.User;
 import org.neonsis.socialnetwork.persistence.repository.UserRepository;
+import org.neonsis.socialnetwork.service.security.UserPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

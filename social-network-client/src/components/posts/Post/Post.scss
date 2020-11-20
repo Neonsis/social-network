@@ -1,0 +1,33 @@
+@import "src/theme/variables.scss";
+
+.post.card .content {
+  img.post__avatar {
+    margin-bottom: 10px;
+    margin-right: 10px;
+    display: inline-block;
+  }
+
+  .header.post__author-name {
+    margin-top: 2px;
+    font-size: $default-font-size;
+    color: $color-primary-1-active;
+    display: inline-block;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .post-delete {
+    float: right;
+    cursor: pointer;
+  }
+
+  .extra.content .like.liked {
+    color: #ff2733;
+  }
+
+  .post__date {
+    font-size: $default-font-size;
+  }
+}

@@ -24,7 +24,7 @@ export const AppNavBar = observer(() => {
                                 trigger={
                                     <React.Fragment>
                                         <span className="app-navbar__profile-name">{user.firstName}</span>
-                                        <Image avatar src={AvatarNotFound}/>
+                                        <Image avatar src={user.avatarUrl ? user.avatarUrl : AvatarNotFound}/>
                                     </React.Fragment>
                                 }
                                 className="app-navbar__dropdown"
