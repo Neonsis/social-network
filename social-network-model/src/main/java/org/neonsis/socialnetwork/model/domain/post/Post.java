@@ -8,9 +8,7 @@ import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
 import org.neonsis.socialnetwork.model.domain.user.User;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Post.
@@ -63,13 +61,14 @@ public class Post extends AbstractBaseEntity {
     /**
      * Comments that users writes to this post.
      */
+    @OrderBy("createdAt DESC")
     @OneToMany(
             mappedBy = "post",
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
             orphanRemoval = true
     )
-    private final Set<Comment> comments = new HashSet<>();
+    private final List<Comment> comments = new ArrayList<>();
 
     /**
      * Add the {@link #user} that likes this post to {@link usersLikes}.

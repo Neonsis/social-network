@@ -1,11 +1,11 @@
 package org.neonsis.socialnetwork.model.dto.post;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.neonsis.socialnetwork.model.dto.base.AbstractBaseDto;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -16,7 +16,6 @@ import java.util.Set;
  */
 @Getter
 @Setter
-@Builder
 public class PostDto extends AbstractBaseDto {
 
     /**
@@ -42,5 +41,5 @@ public class PostDto extends AbstractBaseDto {
     /**
      * Comments that users writes to this post.
      */
-    private Set<CommentDto> comments;
+    private List<CommentDto> comments;
 }

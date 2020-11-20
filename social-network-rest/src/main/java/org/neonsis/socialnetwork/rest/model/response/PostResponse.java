@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 
@@ -19,5 +20,5 @@ public class PostResponse {
     @JsonProperty(value = "isLiked")
     private Boolean isLiked;
     private Integer countLike;
-    private Set<CommentResponse> comments;
+    private List<CommentResponse> comments;
 }

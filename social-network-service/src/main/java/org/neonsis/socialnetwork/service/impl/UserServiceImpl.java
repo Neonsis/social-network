@@ -3,6 +3,7 @@ package org.neonsis.socialnetwork.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.exception.InternalServerErrorException;
+import org.neonsis.socialnetwork.exception.ValidationException;
 import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.User;
 import org.neonsis.socialnetwork.model.domain.user.security.Role;
@@ -37,6 +38,13 @@ public class UserServiceImpl implements UserService {
     public UserDto signUp(RegistrationDto registrationDto) {
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
                 .orElseThrow(() -> new InternalServerErrorException("Default ROLE_USER not found"));
+
+        if (userRepository.existsByEmail(registrationDto.getEmail())) {
+            throw new ValidationException(
+                    "email",
+                    String.format("User with email '%s' already exists", registrationDto.getEmail())
+            );
+        }
 
         String encryptedPassword = passwordEncoder.encode(registrationDto.getPassword());
 

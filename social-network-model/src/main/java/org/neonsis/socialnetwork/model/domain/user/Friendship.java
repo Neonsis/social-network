@@ -53,7 +53,7 @@ public class Friendship implements Serializable {
      * An auto-populating date/time stamp of when the record was created.
      */
     @CreatedDate
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP", nullable = false, updatable = false)
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP", updatable = false)
     private Date createdAt;
 
     /**

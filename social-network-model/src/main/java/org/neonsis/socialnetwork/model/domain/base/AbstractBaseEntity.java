@@ -46,7 +46,7 @@ public abstract class AbstractBaseEntity implements Serializable {
      */
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP", nullable = false, updatable = false)
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP", updatable = false)
     private Date createdAt;
 
     /**
@@ -54,7 +54,7 @@ public abstract class AbstractBaseEntity implements Serializable {
      */
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP", nullable = true, insertable = false)
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP", insertable = false)
     private Date updatedAt;
 
     /**

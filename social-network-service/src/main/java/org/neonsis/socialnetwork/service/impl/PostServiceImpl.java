@@ -5,7 +5,6 @@ import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
 import org.neonsis.socialnetwork.model.domain.post.Post;
 import org.neonsis.socialnetwork.model.domain.user.User;
-import org.neonsis.socialnetwork.model.dto.PageDto;
 import org.neonsis.socialnetwork.model.dto.mapper.PostMapper;
 import org.neonsis.socialnetwork.model.dto.post.PostCreateDto;
 import org.neonsis.socialnetwork.model.dto.post.PostDto;
@@ -29,13 +28,14 @@ public class PostServiceImpl implements PostService {
     private final IAuthenticationFacade authenticationFacade;
 
     @Override
-    public PageDto<PostDto> getUserPosts(Long authorId, Pageable pageable) {
+    public Page<PostDto> getUserPosts(Long authorId, Pageable pageable) {
         userRepository.findById(authorId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found by id: " + authorId));
 
         Page<Post> userPosts = postRepository.findPostsByAuthorId(authorId, pageable);
 
-        PageDto<PostDto> postDtoPageDto = toPageDto(userPosts);
+        Page<PostDto> postDtoPageDto = toPageDto(userPosts);
+
         postDtoPageDto.getContent()
                 .forEach(post -> post.setIsLiked(postRepository.isAlreadyLiked(post.getId(), authenticationFacade.getUserId())));
 
@@ -89,7 +89,7 @@ public class PostServiceImpl implements PostService {
         return postMapper.postToPostDto(post);
     }
 
-    private PageDto<PostDto> toPageDto(Page<Post> postPage) {
-        return postMapper.pagePostToPageDtoPostDto(postPage);
+    private Page<PostDto> toPageDto(Page<Post> postPage) {
+        return postPage.map(postMapper::postToPostDto);
     }
 }

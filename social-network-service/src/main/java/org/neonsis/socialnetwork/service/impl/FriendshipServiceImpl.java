@@ -7,7 +7,6 @@ import org.neonsis.socialnetwork.model.domain.user.Friendship;
 import org.neonsis.socialnetwork.model.domain.user.FriendshipId;
 import org.neonsis.socialnetwork.model.domain.user.Status;
 import org.neonsis.socialnetwork.model.domain.user.User;
-import org.neonsis.socialnetwork.model.dto.PageDto;
 import org.neonsis.socialnetwork.model.dto.mapper.UserMapper;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.neonsis.socialnetwork.persistence.repository.FriendshipRepository;
@@ -54,7 +53,7 @@ public class FriendshipServiceImpl implements FriendshipService {
                 throw new InvalidWorkFlowException(String.format("User with id '%s' is already your friend", friendId));
             }
         } else {
-            FriendshipId friendshipId = new FriendshipId(currentUser.getId(), friend.getId());
+            FriendshipId friendshipId = new FriendshipId(loggedInUserId, friend.getId());
             friendship = new Friendship();
             friendship.setId(friendshipId);
             friendship.setStatus(Status.FOLLOWER);
@@ -64,7 +63,7 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public PageDto<UserDto> getUserFriends(Long userId, Pageable pageable) {
+    public Page<UserDto> getUserFriends(Long userId, Pageable pageable) {
         User user = authenticationFacade.getLoggedInUser();
         Page<User> friends = friendshipRepository.findFriends(user.getId(), pageable);
 
@@ -72,7 +71,7 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public PageDto<UserDto> getFollowers(Long userId, Pageable pageable) {
+    public Page<UserDto> getFollowers(Long userId, Pageable pageable) {
         User user = authenticationFacade.getLoggedInUser();
         Page<User> followers = friendshipRepository.findFollowers(user.getId(), pageable);
 
@@ -106,7 +105,7 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     @Override
     public boolean isPendingFriendship(Long userId) {
-        Optional<Friendship> friendship = findFriendship(userId);
+        Optional<Friendship> friendship = friendshipRepository.findFriendship(authenticationFacade.getUserId(), userId);
         Long loggedInUserId = authenticationFacade.getUserId();
 
         return friendship.isPresent()
@@ -118,7 +117,7 @@ public class FriendshipServiceImpl implements FriendshipService {
         return friendshipRepository.findFriendship(authenticationFacade.getUserId(), userId);
     }
 
-    private PageDto<UserDto> toPageDto(Page<User> user) {
-        return userMapper.pageUserToPageDtoUserDto(user);
+    private Page<UserDto> toPageDto(Page<User> userPage) {
+        return userPage.map(userMapper::userToUserDto);
     }
 }

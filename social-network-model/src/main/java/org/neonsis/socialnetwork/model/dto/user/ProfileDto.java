@@ -14,7 +14,8 @@ import java.time.LocalDate;
  */
 @Getter
 @Setter
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProfileDto extends AbstractBaseDto {
 
     /**
