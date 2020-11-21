@@ -19,8 +19,9 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Friendsh
 
     @Query("SELECT u FROM User u WHERE u.id IN " +
             "(SELECT CASE WHEN f.invited.id = :id THEN f.inviter.id ELSE f.invited.id END FROM Friendship f " +
-            "WHERE (f.invited.id = :id OR f.inviter.id = :id) AND (f.status = 1))")
-    Page<User> findFriends(Long id, Pageable pageable);
+            "WHERE (f.invited.id = :id OR f.inviter.id = :id) AND (f.status = 1)) " +
+            "AND LOWER(u.fullName) LIKE LOWER(CONCAT('%',:search,'%'))")
+    Page<User> findFriends(Long id, String search, Pageable pageable);
 
     @Query("SELECT u FROM User u WHERE u.id IN " +
             "(SELECT CASE WHEN f.invited.id = :id THEN f.inviter.id ELSE f.invited.id END FROM Friendship f " +

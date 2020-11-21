@@ -39,9 +39,20 @@ class FriendshipRepositoryTest {
 
     @Test
     public void testFindFriends() {
-        Page<User> friends = friendshipRepository.findFriends(1L, null);
-        Page<User> friends2 = friendshipRepository.findFriends(2L, null);
-        Page<User> friends3 = friendshipRepository.findFriends(3L, null);
+        Page<User> friends = friendshipRepository.findFriends(1L, "", null);
+        Page<User> friends2 = friendshipRepository.findFriends(2L, "", null);
+        Page<User> friends3 = friendshipRepository.findFriends(3L, "", null);
+
+        assertEquals(1, friends.getSize());
+        assertEquals(1, friends2.getSize());
+        assertEquals(0, friends3.getSize());
+    }
+
+    @Test
+    public void testFindFriendsWithSearch() {
+        Page<User> friends = friendshipRepository.findFriends(1L, "Test2", null);
+        Page<User> friends2 = friendshipRepository.findFriends(2L, "", null);
+        Page<User> friends3 = friendshipRepository.findFriends(3L, "Test3", null);
 
         assertEquals(1, friends.getSize());
         assertEquals(1, friends2.getSize());

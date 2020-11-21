@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
 import org.neonsis.socialnetwork.model.domain.post.Post;
 import org.neonsis.socialnetwork.model.domain.user.security.Role;
@@ -55,6 +56,10 @@ public class User extends AbstractBaseEntity {
      */
     @Column(name = "last_name", nullable = false, length = 30)
     private String lastName;
+
+    @Column(insertable = false)
+    @Formula(value = "concat(first_name, ' ', last_name)")
+    private String fullName;
 
     /**
      * The user's main avatar.
