@@ -18,7 +18,7 @@ export default class FriendshipStore {
     @action loadProfileFriends = async (userId: string) => {
         this.loadingFriends = true;
         try {
-            const friends = await agent.Friendship.getFriends(userId, 0, 6);
+            const friends = await agent.Friendship.getFriends(userId, "", 0, 6);
             runInAction(() => {
                 this.profileFriends = friends;
                 this.loadingFriends = false;

@@ -14,7 +14,7 @@ export const Sidebar = () => {
                 <Icon name="home"/>
                 Моя страница
             </Menu.Item>
-            <Menu.Item as={Link} to="/" className="main-sidebar__item pad ">
+            <Menu.Item as={Link} to="/" className="main-sidebar__item">
                 <Icon name="newspaper outline"/>
                 Новости
             </Menu.Item>
@@ -22,6 +22,10 @@ export const Sidebar = () => {
                 <Icon name="chat"/>
                 Мессенджер
                 <Label>1</Label>
+            </Menu.Item>
+            <Menu.Item as={Link} to={`/friends`} className="main-sidebar__item">
+                <Icon name="user"/>
+                Друзья
             </Menu.Item>
             <Menu.Item as={Link} to="/groups" className="main-sidebar__item">
                 <Icon name="users"/>

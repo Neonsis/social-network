@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {Card} from "semantic-ui-react";
 import "./CommentsSection.scss";
 import {CommentForm} from "../CommentForm";

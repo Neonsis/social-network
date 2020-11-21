@@ -1,18 +1,20 @@
 import React from "react";
-import "./ProfilesSection.scss";
 import {Header, Segment} from "semantic-ui-react";
 import {IUser} from "../../../models/user";
 import {UserAvatar} from "../../display/UserAvatar";
 import {Page} from "../../../models/page";
 import ContentLoader from "react-content-loader";
+import {Link} from "react-router-dom";
+import "./ProfilesSection.scss";
 
 export interface ProfilesSectionProps {
     profiles: Page<IUser[]> | null;
     header: string;
     loading: boolean;
+    userId?: string;
 }
 
-export const ProfilesSection = ({header, profiles, loading}: ProfilesSectionProps) => {
+export const ProfilesSection = ({header, profiles, loading, userId}: ProfilesSectionProps) => {
 
     if (loading || !profiles) return (
         <Segment className="profile__section">
@@ -41,7 +43,7 @@ export const ProfilesSection = ({header, profiles, loading}: ProfilesSectionProp
 
     return (
         <Segment className="profile__section">
-            <Header as="h5">{header} {profiles.totalElements}</Header>
+            <Header as={Link} to={`/friends?id=${userId}`}>{header} {profiles.totalElements}</Header>
             <div className="profile__section-list">
                 {profiles && profiles.content.map(profile => (
                     <UserAvatar key={profile.id} user={profile}/>

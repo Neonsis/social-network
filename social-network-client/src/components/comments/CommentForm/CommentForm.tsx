@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState} from "react";
 import {Form, Icon} from "semantic-ui-react";
 import {InputOnChangeData} from "semantic-ui-react/dist/commonjs/elements/Input/Input";
 import "./CommentForm.scss";

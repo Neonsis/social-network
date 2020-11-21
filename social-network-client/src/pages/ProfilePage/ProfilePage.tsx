@@ -46,6 +46,7 @@ export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({mat
                     isFollower={user?.isFollower}
                 />
                 <ProfilesSection
+                    userId={user?.id}
                     header="Друзья"
                     profiles={profileFriends!}
                     loading={loadingFriends}
