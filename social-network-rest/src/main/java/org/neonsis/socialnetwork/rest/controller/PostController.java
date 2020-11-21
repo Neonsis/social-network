@@ -45,6 +45,15 @@ public class PostController {
         return ResponseEntity.ok(map);
     }
 
+    @GetMapping("/users/feed")
+    public ResponseEntity<Page<PostResponse>> getFeedPosts(
+            @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
+            @SortDefault.SortDefaults({
+                    @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
+            }) Pageable pageable
+    ) {
+        return ResponseEntity.ok(postService.getFeedPosts(pageable).map(restMapper::postDtoToPostResponse));
+    }
 
     @PostMapping("/posts")
     public ResponseEntity<PostResponse> createPost(@Valid @RequestBody PostCreateDto postCreateDto) {

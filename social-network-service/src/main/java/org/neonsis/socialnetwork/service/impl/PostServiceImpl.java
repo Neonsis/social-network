@@ -43,6 +43,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Page<PostDto> getFeedPosts(Pageable pageable) {
+        return toPageDto(postRepository.findFriendsPosts(authenticationFacade.getUserId(), pageable));
+    }
+
+    @Override
     public PostDto create(PostCreateDto postDto) {
         User user = authenticationFacade.getLoggedInUser();
 

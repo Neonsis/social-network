@@ -14,6 +14,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<Post> findPostByIdAndAuthorId(Long postId, Long authorId);
 
+    @Query("SELECT p FROM Post p WHERE p.author.id IN " +
+            "(SELECT CASE WHEN f.invited.id = :userId THEN f.inviter.id ELSE f.invited.id END " +
+            "FROM Friendship f WHERE (f.invited.id = :userId OR f.inviter.id = :userId) AND (f.status = 1))")
+    Page<Post> findFriendsPosts(Long userId, Pageable pageable);
+
     @Query("SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM Post p " +
             "JOIN p.usersLikes ul WHERE ul.id = :userId AND p.id = :postId")
     boolean isAlreadyLiked(Long postId, Long userId);

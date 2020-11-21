@@ -63,4 +63,11 @@ class PostRepositoryTest {
 
         assertFalse(alreadyLiked);
     }
+
+    @Test
+    public void testFindFriendsPosts() {
+        Page<Post> friendsPosts = postRepository.findFriendsPosts(2L, null);
+
+        assertEquals(1, friendsPosts.getSize());
+    }
 }

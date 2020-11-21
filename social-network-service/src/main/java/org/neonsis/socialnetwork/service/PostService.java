@@ -9,6 +9,8 @@ public interface PostService {
 
     Page<PostDto> getUserPosts(Long userId, Pageable pageable);
 
+    Page<PostDto> getFeedPosts(Pageable pageable);
+
     PostDto create(PostCreateDto postDto);
 
     void delete(Long postId);
