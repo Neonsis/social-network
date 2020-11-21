@@ -1,0 +1,14 @@
+@import "src/theme/variables.scss";
+
+.friends-list__item {
+  padding: 10px !important;
+
+  .content {
+    font-size: 13px;
+    padding: 10px 10px !important;
+
+    .description {
+      margin-top: 10px!important;
+    }
+  }
+}

@@ -8,7 +8,7 @@ public interface FriendshipService {
 
     void addToFriends(Long friendId);
 
-    Page<UserDto> getUserFriends(Long userId, Pageable pageable);
+    Page<UserDto> getUserFriends(Long userId,String search, Pageable pageable);
 
     Page<UserDto> getFollowers(Long userId, Pageable pageable);
 

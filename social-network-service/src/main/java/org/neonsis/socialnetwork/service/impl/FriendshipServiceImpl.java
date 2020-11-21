@@ -63,17 +63,15 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public Page<UserDto> getUserFriends(Long userId, Pageable pageable) {
-        User user = authenticationFacade.getLoggedInUser();
-        Page<User> friends = friendshipRepository.findFriends(user.getId(), pageable);
+    public Page<UserDto> getUserFriends(Long userId, String search, Pageable pageable) {
+        Page<User> friends = friendshipRepository.findFriends(userId, search, pageable);
 
         return toPageDto(friends);
     }
 
     @Override
     public Page<UserDto> getFollowers(Long userId, Pageable pageable) {
-        User user = authenticationFacade.getLoggedInUser();
-        Page<User> followers = friendshipRepository.findFollowers(user.getId(), pageable);
+        Page<User> followers = friendshipRepository.findFollowers(userId, pageable);
 
         return toPageDto(followers);
     }

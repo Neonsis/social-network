@@ -53,8 +53,10 @@ const User = {
 }
 
 const Friendship = {
-    getFriends: (userId: string, page: number, size: number)
-        : Promise<Page<IUser[]>> => requests.get(`/users/${userId}/friends?size=${size}&page=${page}`),
+    getFriends: (userId: string, search: string, page: number, size: number)
+        : Promise<Page<IUser[]>> => requests.get(`/users/${userId}/friends?size=${size}&page=${page}&search=${search}`),
+    getFollowers: (userId: string, page: number, size: number)
+        : Promise<Page<IUser[]>> => requests.get(`/users/${userId}/followers`),
     post: (friendId: string): Promise<void> => requests.post(`/friends/${friendId}`, {}),
     delete: (friendId: string): Promise<void> => requests.del(`/friends/${friendId}`)
 }

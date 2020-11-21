@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {IComment} from "../../../models/post";
 import {Comment} from "semantic-ui-react";
 import AvatarNotFound from "../../../assets/avatar_not_found.png";

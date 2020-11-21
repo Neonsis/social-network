@@ -150,27 +150,19 @@ class FriendshipServiceImplTest {
 
     @Test
     public void testGetFriendsSuccess() {
-        User user = User.builder().id(1L).build();
+        when(friendshipRepository.findFriends(1L, "", null)).thenReturn(new PageImpl<>(Collections.emptyList()));
 
-        when(authenticationFacade.getLoggedInUser()).thenReturn(user);
-        when(friendshipRepository.findFriends(1L, null)).thenReturn(new PageImpl<>(Collections.emptyList()));
+        friendshipService.getUserFriends(1L, "", null);
 
-        friendshipService.getUserFriends(1L, null);
-
-        verify(authenticationFacade, times(1)).getLoggedInUser();
-        verify(friendshipRepository, times(1)).findFriends(1L, null);
+        verify(friendshipRepository, times(1)).findFriends(1L, "", null);
     }
 
     @Test
     public void testGetFollowersSuccess() {
-        User user = User.builder().id(1L).build();
-
-        when(authenticationFacade.getLoggedInUser()).thenReturn(user);
         when(friendshipRepository.findFollowers(1L, null)).thenReturn(new PageImpl<>(Collections.emptyList()));
 
         friendshipService.getFollowers(1L, null);
 
-        verify(authenticationFacade, times(1)).getLoggedInUser();
         verify(friendshipRepository, times(1)).findFollowers(1L, null);
     }
 

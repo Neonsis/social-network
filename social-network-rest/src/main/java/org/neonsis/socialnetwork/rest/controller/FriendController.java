@@ -32,13 +32,14 @@ public class FriendController {
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "id", direction = Sort.Direction.ASC)
             }) Pageable pageable,
+            @RequestParam(name = "search", defaultValue = "", required = false) String search,
             @PathVariable Long id) {
-        Page<UserDto> friendsDto = friendshipService.getUserFriends(id, pageable);
+        Page<UserDto> friendsDto = friendshipService.getUserFriends(id, search, pageable);
 
         return ResponseEntity.ok(toPageResponse(friendsDto));
     }
 
-    @GetMapping("/users/{id}/follower")
+    @GetMapping("/users/{id}/followers")
     public ResponseEntity<Page<UserResponse>> findUserFollowers(
             @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
             @SortDefault.SortDefaults({

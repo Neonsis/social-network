@@ -1,5 +1,12 @@
-.profile__section-list {
-  margin-top: 7px;
-  display: flex;
-  flex-wrap: wrap;
+.profile__section {
+
+  .ui.header {
+    font-size: 14px;
+  }
+
+  .profile__section-list {
+    margin-top: 7px;
+    display: flex;
+    flex-wrap: wrap;
+  }
 }
