@@ -2,7 +2,7 @@ import React from "react";
 import {Card, Divider, Icon, Image} from "semantic-ui-react";
 import AvatarNotFound from "../../../assets/avatar_not_found.png";
 import "./Post.scss";
-import {IPost} from "../../../models/post";
+import {ICommentFormValues, IPost} from "../../../models/post";
 import {Link} from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import {CommentsSection} from "../../comments/CommentsSection";
@@ -12,11 +12,12 @@ export interface PostProps {
     post: IPost;
     like: (postId: string) => void;
     unlike: (postId: string) => void;
-    userId: string;
+    loggedInUserId: string;
     onDelete: (postId: string) => void;
+    addComment: (postId: string, values: ICommentFormValues) => void;
 }
 
-export const Post = observer(({post, like, unlike, userId, onDelete}: PostProps) => {
+export const Post = observer(({post, like, unlike, loggedInUserId, onDelete, addComment}: PostProps) => {
     const {
         content,
         author,
@@ -52,7 +53,8 @@ export const Post = observer(({post, like, unlike, userId, onDelete}: PostProps)
                 >
                     {author.firstName} {author.lastName}
                 </Card.Header>
-                {post.author.id === userId && <Icon name="delete" className="post-delete" onClick={() => onDelete(post.id)}/>}
+                {post.author.id === loggedInUserId &&
+                <Icon name="delete" className="post-delete" onClick={() => onDelete(post.id)}/>}
                 <Card.Meta className="post__date">{parseDate(new Date(createdAt))}</Card.Meta>
                 <Card.Description>
                     {content}
@@ -66,7 +68,7 @@ export const Post = observer(({post, like, unlike, userId, onDelete}: PostProps)
                 </Card.Content>
             </Card.Content>
             <Card.Content extra>
-                <CommentsSection postId={id} comments={comments}/>
+                <CommentsSection postId={id} comments={comments} addComment={addComment}/>
             </Card.Content>
         </Card>
     );

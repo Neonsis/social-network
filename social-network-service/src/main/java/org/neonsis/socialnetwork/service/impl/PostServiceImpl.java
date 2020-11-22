@@ -44,7 +44,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<PostDto> getFeedPosts(Pageable pageable) {
-        return toPageDto(postRepository.findFriendsPosts(authenticationFacade.getUserId(), pageable));
+        Page<Post> friendsPosts = postRepository.findFriendsPosts(authenticationFacade.getUserId(), pageable);
+
+        Page<PostDto> postDtos = toPageDto(friendsPosts);
+
+        postDtos.getContent()
+                .forEach(post -> post.setIsLiked(postRepository.isAlreadyLiked(post.getId(), authenticationFacade.getUserId())));
+
+        return postDtos;
     }
 
     @Override

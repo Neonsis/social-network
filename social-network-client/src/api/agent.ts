@@ -65,6 +65,7 @@ const Post = {
     create: (post: IPostFormValues): Promise<IPost> => requests.post(`/posts/`, post),
     getUserPosts: (userId: string, size: number, page: number)
         : Promise<Page<IPost[]>> => requests.get(`/users/${userId}/posts?page=${page}&size=${size}`),
+    feed: (size:number,page:number) :Promise<Page<IPost[]>> => requests.get(`/users/feed?page=${page}&size=${size}`),
     delete: (postId: string): Promise<void> => requests.del(`/posts/${postId}`),
     like: (postId: string): Promise<void> => requests.post(`/posts/${postId}/like`, {}),
     unlike: (postId: string): Promise<void> => requests.post(`/posts/${postId}/unlike`, {}),

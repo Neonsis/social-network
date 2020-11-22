@@ -20,8 +20,12 @@ export const PostsList = observer(({userId}: PostListProps) => {
         userPosts,
         unlike,
         isLastPage,
-        deletePost
+        deletePost,
+        addComment
     } = rootStore.postStore;
+    const {
+        user
+    } = rootStore.userStore;
 
     useEffect(() => {
         loadUserPosts(userId);
@@ -48,8 +52,9 @@ export const PostsList = observer(({userId}: PostListProps) => {
                     post={post}
                     like={like}
                     unlike={unlike}
-                    userId={userId}
+                    loggedInUserId={user!.id}
                     onDelete={deletePost}
+                    addComment={addComment}
                 />
             ))}
         </InfiniteScroll>

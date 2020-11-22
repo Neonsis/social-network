@@ -14,7 +14,7 @@ export const Sidebar = () => {
                 <Icon name="home"/>
                 Моя страница
             </Menu.Item>
-            <Menu.Item as={Link} to="/" className="main-sidebar__item">
+            <Menu.Item as={Link} to="/feed" className="main-sidebar__item">
                 <Icon name="newspaper outline"/>
                 Новости
             </Menu.Item>

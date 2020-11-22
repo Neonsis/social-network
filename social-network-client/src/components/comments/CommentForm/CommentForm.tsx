@@ -1,18 +1,15 @@
-import React, {useContext, useState} from "react";
+import React, {useState} from "react";
 import {Form, Icon} from "semantic-ui-react";
 import {InputOnChangeData} from "semantic-ui-react/dist/commonjs/elements/Input/Input";
 import "./CommentForm.scss";
-import {RootStoreContext} from "../../../stores/rootStore";
+import {ICommentFormValues} from "../../../models/post";
 
 export interface CommentFormProps {
     postId: string;
+    addComment: (postId: string, values: ICommentFormValues) => void;
 }
 
-export const CommentForm = ({postId}: CommentFormProps) => {
-    const rootStore = useContext(RootStoreContext);
-    const {
-        addComment
-    } = rootStore.postStore;
+export const CommentForm = ({postId, addComment}: CommentFormProps) => {
     const [commentValue, setCommentValue] = useState("");
 
     const onCommentChange = (_: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
