@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * Friendship.
+ * Friendship between two users.
  *
  * @author neonsis
  */

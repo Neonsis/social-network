@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * The Unique Identifier (primary key) of the friendship.
+ * The Unique Identifier (primary key) of the {@link Friendship}.
  *
  * @author neonsis
  */
@@ -30,13 +30,13 @@ public class FriendshipId implements Serializable {
     /**
      * The user id who invite(create) friendship.
      */
-    @Column(name = "inviter_id")
+    @Column(name = "inviter_id", nullable = false)
     private Long inviterId;
 
     /**
      * The user id who is invited by another user.
      */
-    @Column(name = "invited_id")
+    @Column(name = "invited_id", nullable = false)
     private Long invitedId;
 
     @Override
@@ -59,5 +59,67 @@ public class FriendshipId implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(inviterId, invitedId);
+    }
+
+    /**
+     * Get a new {@link FriendshipIdBuilder}.
+     *
+     * @return a new {@link FriendshipIdBuilder}.
+     */
+    public static FriendshipIdBuilder builder() {
+        return new FriendshipIdBuilder();
+    }
+
+    /**
+     * A functional programming {@link FriendshipId.FriendshipIdBuilder} builder.
+     *
+     * @author neonsis
+     */
+    public static class FriendshipIdBuilder {
+
+        /**
+         * The friendshipId currently being built.
+         */
+        private final FriendshipId friendshipId;
+
+        /**
+         * Create a {@link FriendshipId.FriendshipIdBuilder} with no initial property.
+         */
+        public FriendshipIdBuilder() {
+            this.friendshipId = new FriendshipId();
+        }
+
+        /**
+         * Build the friendship id prepared by the builder.
+         *
+         * @return a new friendship id as prepared by the builder.
+         */
+        public FriendshipId build() {
+            return friendshipId;
+        }
+
+        /**
+         * Set the inviter id and return the builder.
+         *
+         * @param id the inviter id of the friendship id being built.
+         * @return the builder.
+         * @see FriendshipId#setInviterId(Long)
+         */
+        public FriendshipId.FriendshipIdBuilder inviterId(Long id) {
+            friendshipId.setInviterId(id);
+            return this;
+        }
+
+        /**
+         * Set the invited id and return the builder.
+         *
+         * @param id the invited id of the friendship id being built.
+         * @return the builder.
+         * @see FriendshipId#setInvitedId(Long)
+         */
+        public FriendshipId.FriendshipIdBuilder invitedId(Long id) {
+            friendshipId.setInvitedId(id);
+            return this;
+        }
     }
 }
