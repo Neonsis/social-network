@@ -13,7 +13,7 @@ public class CommentCreateDto {
     /**
      * The comment's content.
      */
-    @NotBlank
+    @NotBlank(message = "{config.data.validation.comment_content_not_null}")
     private String content;
 
     /**

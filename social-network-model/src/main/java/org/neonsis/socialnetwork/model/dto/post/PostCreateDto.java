@@ -12,6 +12,6 @@ public class PostCreateDto {
     /**
      * The post's content.
      */
-    @NotBlank
+    @NotBlank(message = "{config.data.validation.post_content_not_null}")
     private String content;
 }

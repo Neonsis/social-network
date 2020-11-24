@@ -10,9 +10,9 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class MessageCreateDto {
 
-    @NotNull
+    @NotNull(message = "{config.data.validation.message_recipient_id_not_null=}")
     private Long recipientId;
 
-    @NotBlank
+    @NotBlank(message = "{config.data.validation.message_content_not_null}")
     private String content;
 }

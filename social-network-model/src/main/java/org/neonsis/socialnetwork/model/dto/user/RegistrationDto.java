@@ -18,23 +18,21 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class RegistrationDto {
 
-    @NotBlank(message = "{user.first-name.not-empty}")
+    @NotBlank(message = "{config.data.validation.user_first_name_not_blank}")
     private String firstName;
 
-    @NotBlank(message = "{user.last-name.not-empty}")
+    @NotBlank(message = "{config.data.validation.user_last_name_not_blank}")
     private String lastName;
 
-    @Email(message = "{user.email.valid}")
-    @NotBlank(message = "{user.email.not-empty}")
+    @Email(message = "{config.data.validation.user_email_valid}")
     private String email;
 
-    @NotBlank(message = "{user.password.not-empty}")
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", message = "{user.password.valid}")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", message = "{config.data.validation.user_password_valid}")
     private String password;
 
-    @NotNull(message = "{user.gender.not-empty}")
+    @NotNull(message = "{config.data.validation.user_gender_not_null}")
     private Gender gender;
 
-    @NotNull(message = "{user.birthday.not-empty}")
+    @NotNull(message = "{config.data.validation.user_birthday_not_null}")
     private LocalDate birthday;
 }
