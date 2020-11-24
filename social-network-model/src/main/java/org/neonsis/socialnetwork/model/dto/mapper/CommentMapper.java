@@ -7,5 +7,5 @@ import org.neonsis.socialnetwork.model.dto.post.CommentDto;
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
 
-    CommentDto commentToCommentDto(Comment comment);
+    CommentDto commentToDto(Comment comment);
 }

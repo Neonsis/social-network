@@ -7,5 +7,5 @@ import org.neonsis.socialnetwork.model.dto.post.PostDto;
 @Mapper(componentModel = "spring")
 public interface PostMapper {
 
-    PostDto postToPostDto(Post post);
+    PostDto postToDto(Post post);
 }
