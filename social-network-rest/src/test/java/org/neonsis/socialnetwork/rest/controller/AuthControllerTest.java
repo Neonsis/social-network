@@ -1,13 +1,10 @@
 package org.neonsis.socialnetwork.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.neonsis.socialnetwork.model.domain.user.Gender;
 import org.neonsis.socialnetwork.model.dto.user.LoginDto;
-import org.neonsis.socialnetwork.model.dto.user.RegistrationDto;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.neonsis.socialnetwork.rest.SpringSecurityTextConfig;
 import org.neonsis.socialnetwork.rest.config.AuditingConfig;
@@ -23,8 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;

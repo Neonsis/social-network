@@ -1,17 +1,19 @@
 package org.neonsis.socialnetwork.rest.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.neonsis.socialnetwork.service.ConversationService;
 import org.neonsis.socialnetwork.model.dto.chat.MessageCreateDto;
 import org.neonsis.socialnetwork.model.dto.chat.MessageDto;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.neonsis.socialnetwork.rest.model.mapper.RestMapper;
 import org.neonsis.socialnetwork.rest.model.response.MessageResponse;
 import org.neonsis.socialnetwork.rest.model.response.UserResponse;
+import org.neonsis.socialnetwork.service.ConversationService;
 import org.neonsis.socialnetwork.service.MessageService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -45,7 +47,10 @@ public class ChatController {
 
     @GetMapping("/messages/{recipientId}")
     public ResponseEntity<Page<MessageResponse>> getConversationMessages(
-            @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE) Pageable pageable,
+            @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
+            @SortDefault.SortDefaults({
+                    @SortDefault(sort = "id", direction = Sort.Direction.DESC)
+            }) Pageable pageable,
             @PathVariable Long recipientId) {
         Page<MessageDto> messages = messageService.findConversationMessages(recipientId, pageable);
 
