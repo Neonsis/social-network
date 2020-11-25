@@ -4,6 +4,8 @@ import {Route, Switch} from "react-router-dom";
 import {RootStoreContext} from "./stores/rootStore";
 import {observer} from "mobx-react-lite";
 import {AppLayout, AuthLayout, LoadingComponent} from "./components/layouts";
+import 'react-notifications-component/dist/theme.css';
+import ReactNotification from 'react-notifications-component'
 
 function App() {
     const rootStore = useContext(RootStoreContext);
@@ -22,6 +24,7 @@ function App() {
 
     return (
         <div className="app social-network">
+            <ReactNotification/>
             <AppNavBar/>
             <Switch>
                 {user

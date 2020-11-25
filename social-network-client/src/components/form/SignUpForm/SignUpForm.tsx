@@ -25,7 +25,7 @@ export const SignUpForm = observer(() => {
     useEffect(() => {
         register({name: "gender"}, {required: true});
         register({name: "birthday"}, {required: true});
-    }, []);
+    }, [register]);
 
     const onSubmit = (values: IUserFormValues) => {
         setError(false);

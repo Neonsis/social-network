@@ -32,7 +32,7 @@ export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({mat
         loadUser(userId);
         loadProfileFriends(userId)
         loadProfileDetails(userId);
-    }, [match.params.userId, loadUser, loadProfileFriends])
+    }, [match.params.userId, loadUser, loadProfileFriends, loadProfileDetails])
 
     return (
         <Grid>

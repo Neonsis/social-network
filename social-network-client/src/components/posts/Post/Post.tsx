@@ -61,7 +61,7 @@ export const Post = observer(({post, like, unlike, loggedInUserId, onDelete, add
                 </Card.Description>
                 <Divider/>
                 <Card.Content extra>
-                    <a onClick={isLiked ? handleUnlike : handleLike}>
+                    <a href="" onClick={isLiked ? handleUnlike : handleLike}>
                         <Icon className={isLiked ? "liked" : ""} name="like" size="large"/>
                         {countLike}
                     </a>

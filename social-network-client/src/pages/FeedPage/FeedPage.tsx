@@ -21,7 +21,7 @@ export const FeedPage = observer(() => {
 
     useEffect(() => {
         getFeedPosts();
-    }, [])
+    }, [getFeedPosts])
 
     return (
         <InfiniteScroll
