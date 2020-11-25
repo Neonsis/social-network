@@ -48,6 +48,15 @@ public class Message extends AbstractBaseEntity {
     private String content;
 
     /**
+     * Get a new {@link MessageBuilder}.
+     *
+     * @return a new {@link MessageBuilder}.
+     */
+    public static MessageBuilder builder() {
+        return new MessageBuilder();
+    }
+
+    /**
      * A functional programming {@link MessageBuilder} builder.
      *
      * @author neonsis

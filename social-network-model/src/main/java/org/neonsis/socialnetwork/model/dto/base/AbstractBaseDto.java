@@ -2,6 +2,7 @@ package org.neonsis.socialnetwork.model.dto.base;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
 
 import java.io.Serializable;
@@ -36,4 +37,9 @@ public class AbstractBaseDto implements Serializable {
      * An auto-populating date/time stamp of when the record was last updated.
      */
     private Date updatedAt;
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
 }
