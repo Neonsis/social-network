@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext, useEffect} from "react";
 import "./AppLayout.scss";
 import {Container, Grid} from "semantic-ui-react";
 import {Sidebar} from "../../navigation/Sidebar";
@@ -7,11 +7,20 @@ import {EditProfilePage, ProfilePage} from "../../../pages";
 import * as Routes from "../../../util/routes";
 import {FriendsPage} from "../../../pages/FriendsPage";
 import {FeedPage} from "../../../pages/FeedPage";
+import {Chat, ChatList} from "../../chat";
+import {RootStoreContext} from "../../../stores/rootStore";
 
 /**
  * Main layout of the app, when user is authenticated
  */
 export const AppLayout = () => {
+    const rootStore = useContext(RootStoreContext);
+    const {connectMessages} = rootStore.chatStore;
+
+    useEffect(() => {
+        connectMessages()
+    }, [connectMessages])
+
     return (
         <Container className="main-layout">
             <Grid>
@@ -25,6 +34,8 @@ export const AppLayout = () => {
                             <Route exact path={Routes.EDIT} component={EditProfilePage}/>
                             <Route exact path={Routes.FRIENDS} component={FriendsPage}/>
                             <Route exact path={Routes.FEED} component={FeedPage}/>
+                            <Route exact path={Routes.CHATS} component={ChatList}/>
+                            <Route exact path={Routes.CHAT} component={Chat}/>
                         </Switch>
                     </div>
                 </Grid.Column>

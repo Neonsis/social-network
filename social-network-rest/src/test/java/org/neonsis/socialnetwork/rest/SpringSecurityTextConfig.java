@@ -6,7 +6,6 @@ import org.neonsis.socialnetwork.model.domain.user.security.RoleName;
 import org.neonsis.socialnetwork.rest.model.mapper.RestMapper;
 import org.neonsis.socialnetwork.rest.model.mapper.RestMapperImpl;
 import org.neonsis.socialnetwork.service.security.UserPrincipal;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

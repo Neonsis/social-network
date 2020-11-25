@@ -7,7 +7,5 @@ import org.neonsis.socialnetwork.model.dto.user.UserDto;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    UserDto userToUserDto(User user);
-
-    User userDtoToUser(UserDto userDto);
+    UserDto userToDto(User user);
 }

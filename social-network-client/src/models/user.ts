@@ -5,7 +5,7 @@ export interface IUser {
     avatarUrl?: string;
 }
 
-export interface IUserAuth extends IUser{
+export interface IUserAuth extends IUser {
     token: string;
 }
 

@@ -1,0 +1,24 @@
+.chat {
+  height: 85vh;
+  position: relative;
+
+  #chat-feed {
+    max-height: 90%;
+    overflow: hidden;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column-reverse;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .post__message {
+    position: absolute;
+    bottom: 0;
+    width: 95%;
+  }
+}

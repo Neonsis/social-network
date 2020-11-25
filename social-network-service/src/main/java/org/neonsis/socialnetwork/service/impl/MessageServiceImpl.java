@@ -1,0 +1,71 @@
+package org.neonsis.socialnetwork.service.impl;
+
+import lombok.RequiredArgsConstructor;
+import org.neonsis.socialnetwork.model.domain.chat.Conversation;
+import org.neonsis.socialnetwork.model.domain.chat.ConversationId;
+import org.neonsis.socialnetwork.model.domain.chat.Message;
+import org.neonsis.socialnetwork.model.domain.user.User;
+import org.neonsis.socialnetwork.model.dto.chat.MessageCreateDto;
+import org.neonsis.socialnetwork.model.dto.chat.MessageDto;
+import org.neonsis.socialnetwork.model.dto.mapper.ChatMapper;
+import org.neonsis.socialnetwork.persistence.repository.ConversationRepository;
+import org.neonsis.socialnetwork.persistence.repository.MessageRepository;
+import org.neonsis.socialnetwork.service.ConversationService;
+import org.neonsis.socialnetwork.service.MessageService;
+import org.neonsis.socialnetwork.service.security.IAuthenticationFacade;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.Optional;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class MessageServiceImpl implements MessageService {
+
+    private final ConversationService conversationService;
+
+    private final ConversationRepository conversationRepository;
+    private final MessageRepository messageRepository;
+
+    private final IAuthenticationFacade authenticationFacade;
+
+    private final ChatMapper chatMapper;
+
+    @Override
+    public MessageDto save(MessageCreateDto messageCreateDto) {
+        ConversationId conversationId =
+                conversationService.getConversationId(messageCreateDto.getRecipientId(), true).get(); // always exists
+
+        User loggedInUser = authenticationFacade.getLoggedInUser();
+        Conversation conversation = conversationRepository.findById(conversationId).get();
+
+        Message message = Message.builder()
+                .sender(loggedInUser)
+                .content(messageCreateDto.getContent())
+                .conversation(conversation)
+                .build();
+
+        messageRepository.save(message);
+
+        return chatMapper.messageToDto(message);
+    }
+
+    @Override
+    public Page<MessageDto> findConversationMessages(Long recipientId, Pageable pageable) {
+        Optional<ConversationId> conversationId = conversationService.getConversationId(recipientId, false);
+
+        // If it's empty then logged in user never sent messages to the recipient
+        if (conversationId.isEmpty()) {
+            return new PageImpl<MessageDto>(Collections.emptyList());
+        }
+
+        Page<Message> messages = messageRepository.findMessagesByConversationId(conversationId.get(), pageable);
+
+        return messages.map(chatMapper::messageToDto);
+    }
+}

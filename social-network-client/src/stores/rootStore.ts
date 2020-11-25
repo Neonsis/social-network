@@ -7,6 +7,7 @@ import FriendshipStore from "./friendshipStore";
 import PostStore from "./postStore";
 import FriendsStore from "./friendsStore";
 import FeedStore from "./feedStore";
+import ChatStore from "./chatStore";
 
 configure({enforceActions: "always"});
 
@@ -18,6 +19,7 @@ export class RootStore {
     postStore: PostStore;
     friendsStore: FriendsStore;
     feedStore: FeedStore;
+    chatStore: ChatStore;
 
     constructor() {
         this.userStore = new UserStore(this);
@@ -27,6 +29,7 @@ export class RootStore {
         this.postStore = new PostStore(this);
         this.friendsStore = new FriendsStore(this);
         this.feedStore = new FeedStore(this);
+        this.chatStore = new ChatStore(this);
     }
 }
 

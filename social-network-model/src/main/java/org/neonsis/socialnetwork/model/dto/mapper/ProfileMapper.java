@@ -7,7 +7,7 @@ import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
 @Mapper(componentModel = "spring")
 public interface ProfileMapper {
 
-    ProfileDto profileToProfileDto(Profile profile);
+    ProfileDto profileToDto(Profile profile);
 
-    Profile profileDtoToProfile(ProfileDto profileDto);
+    Profile dtoToProfile(ProfileDto profileDto);
 }

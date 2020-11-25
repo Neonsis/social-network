@@ -45,7 +45,16 @@ public class CommentServiceImpl implements CommentService {
         return toDto(comment);
     }
 
+    @Override
+    public void deleteById(Long id) {
+        Long userId = authenticationFacade.getUserId();
+        Comment comment = commentRepository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new EntityNotFoundException("Comment not found by id: " + id));
+
+        commentRepository.delete(comment);
+    }
+
     public CommentDto toDto(Comment comment) {
-        return commentMapper.commentToCommentDto(comment);
+        return commentMapper.commentToDto(comment);
     }
 }

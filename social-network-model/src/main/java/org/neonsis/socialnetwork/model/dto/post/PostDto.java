@@ -6,7 +6,6 @@ import org.neonsis.socialnetwork.model.dto.base.AbstractBaseDto;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
 
 import java.util.List;
-import java.util.Set;
 
 
 /**

@@ -35,7 +35,7 @@ export const FriendsPage = observer(({location}: RouteComponentProps) => {
         } else {
             loadFriends(userId!, searchValue);
         }
-    }, [userId, isFollowersPage, searchValue])
+    }, [userId, isFollowersPage, searchValue, loadFriends, loadFollowers])
 
     return (
         <Grid className="friends-page">

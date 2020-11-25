@@ -28,13 +28,4 @@ public class CommentDto extends AbstractBaseDto {
      * The user who created this comment.
      */
     private UserDto user;
-
-    @Override
-    public String toString() {
-        return "CommentDto{" +
-                "content='" + content + '\'' +
-                ", postDto=" + postDto +
-                ", user=" + user +
-                '}';
-    }
 }

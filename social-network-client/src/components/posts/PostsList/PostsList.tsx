@@ -29,7 +29,7 @@ export const PostsList = observer(({userId}: PostListProps) => {
 
     useEffect(() => {
         loadUserPosts(userId);
-    }, [userId])
+    }, [userId, loadUserPosts])
 
     if (loadingInitialPosts) return (
         <Segment className="posts-loader">

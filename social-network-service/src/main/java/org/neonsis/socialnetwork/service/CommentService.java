@@ -6,4 +6,6 @@ import org.neonsis.socialnetwork.model.dto.post.CommentDto;
 public interface CommentService {
 
     CommentDto create(CommentCreateDto commentDto);
+
+    void deleteById(Long id);
 }

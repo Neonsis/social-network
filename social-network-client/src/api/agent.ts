@@ -3,6 +3,7 @@ import {IUser, IUserAuth, IUserDetails, IUserFormValues} from "../models/user";
 import {IProfileDetails} from "../models/profile";
 import {Page} from "../models/page";
 import {IComment, ICommentFormValues, IPost, IPostFormValues} from "../models/post";
+import {IMessage} from "../models/chat";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
@@ -65,15 +66,22 @@ const Post = {
     create: (post: IPostFormValues): Promise<IPost> => requests.post(`/posts/`, post),
     getUserPosts: (userId: string, size: number, page: number)
         : Promise<Page<IPost[]>> => requests.get(`/users/${userId}/posts?page=${page}&size=${size}`),
-    feed: (size:number,page:number) :Promise<Page<IPost[]>> => requests.get(`/users/feed?page=${page}&size=${size}`),
+    feed: (size: number, page: number): Promise<Page<IPost[]>> => requests.get(`/users/feed?page=${page}&size=${size}`),
     delete: (postId: string): Promise<void> => requests.del(`/posts/${postId}`),
     like: (postId: string): Promise<void> => requests.post(`/posts/${postId}/like`, {}),
     unlike: (postId: string): Promise<void> => requests.post(`/posts/${postId}/unlike`, {}),
     addComment: (postId: string, comment: ICommentFormValues): Promise<IComment> => requests.post(`/posts/${postId}/comment`, comment)
 }
 
+const Chat = {
+    getChats: (): Promise<Page<IUser[]>> => requests.get(`/me/conversations`),
+    getMessages: (recipientId: string, size: number, page: number)
+        : Promise<Page<IMessage[]>> => requests.get(`/messages/${recipientId}?page=${page}&size=${size}`)
+}
+
 export default {
     User,
     Friendship,
-    Post
+    Post,
+    Chat
 };

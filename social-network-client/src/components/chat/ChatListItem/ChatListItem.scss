@@ -1,0 +1,23 @@
+@import "src/theme/variables.scss";
+
+
+.chat-list__item {
+  padding: 10px !important;
+  background-color: #FFFFFF;
+
+  &.active,
+  &:hover {
+    background-color: $chat-active;
+  }
+
+  .ui.avatar.image {
+    width: 45px;
+    height: auto;
+  }
+
+  .content {
+    .description {
+      margin-top: 5px;
+    }
+  }
+}

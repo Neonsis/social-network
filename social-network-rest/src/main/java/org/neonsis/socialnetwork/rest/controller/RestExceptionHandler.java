@@ -1,8 +1,8 @@
-package org.neonsis.socialnetwork.rest.exception;
+package org.neonsis.socialnetwork.rest.controller;
 
+import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.exception.InternalServerErrorException;
 import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
-import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.rest.exception.model.ValidationError;
 import org.neonsis.socialnetwork.rest.model.request.ApiErrorRequest;
 import org.neonsis.socialnetwork.rest.model.request.ApiValidationErrorRequest;

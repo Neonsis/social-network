@@ -18,7 +18,7 @@ export const Sidebar = () => {
                 <Icon name="newspaper outline"/>
                 Новости
             </Menu.Item>
-            <Menu.Item as={Link} to="/messages" className="main-sidebar__item">
+            <Menu.Item as={Link} to="/chats" className="main-sidebar__item">
                 <Icon name="chat"/>
                 Мессенджер
                 <Label>1</Label>

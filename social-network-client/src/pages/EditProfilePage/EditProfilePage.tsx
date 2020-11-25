@@ -34,7 +34,7 @@ export const EditProfilePage = observer(() => {
         register({name: "about"}, {});
         register({name: "birthday"}, {required: true});
         register({name: "gender"}, {required: true});
-    }, []);
+    }, [register, loadProfileDetails, user]);
 
     const onSubmit = (values: IProfileDetails) => {
         if (!values.country) {

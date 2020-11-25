@@ -1,6 +1,9 @@
 package org.neonsis.socialnetwork.model.dto.user;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.neonsis.socialnetwork.model.domain.user.Gender;
 import org.neonsis.socialnetwork.model.dto.base.AbstractBaseDto;
 

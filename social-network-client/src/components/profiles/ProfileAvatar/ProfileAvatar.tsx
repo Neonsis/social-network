@@ -38,7 +38,7 @@ export const ProfileAvatar = (({
             fluid
             className="profile__button primary-button"
             as={Link}
-            to="/test"
+            to={`/chats/${id}`}
         >
             Написать сообщение
         </Button>
