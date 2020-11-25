@@ -1,7 +1,6 @@
 package org.neonsis.socialnetwork.service;
 
 import org.neonsis.socialnetwork.model.domain.chat.ConversationId;
-import org.neonsis.socialnetwork.model.dto.chat.ConversationDto;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

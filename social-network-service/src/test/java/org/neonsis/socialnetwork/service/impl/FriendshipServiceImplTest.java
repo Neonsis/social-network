@@ -47,8 +47,8 @@ class FriendshipServiceImplTest {
         this.friendshipService = new FriendshipServiceImpl(
                 friendshipRepository,
                 userRepository,
-                userMapper,
-                authenticationFacade
+                authenticationFacade,
+                userMapper
         );
     }
 

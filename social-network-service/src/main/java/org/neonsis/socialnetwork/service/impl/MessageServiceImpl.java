@@ -10,7 +10,6 @@ import org.neonsis.socialnetwork.model.dto.chat.MessageDto;
 import org.neonsis.socialnetwork.model.dto.mapper.ChatMapper;
 import org.neonsis.socialnetwork.persistence.repository.ConversationRepository;
 import org.neonsis.socialnetwork.persistence.repository.MessageRepository;
-import org.neonsis.socialnetwork.persistence.repository.UserRepository;
 import org.neonsis.socialnetwork.service.ConversationService;
 import org.neonsis.socialnetwork.service.MessageService;
 import org.neonsis.socialnetwork.service.security.IAuthenticationFacade;

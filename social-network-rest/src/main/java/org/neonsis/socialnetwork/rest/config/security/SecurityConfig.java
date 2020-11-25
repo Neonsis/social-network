@@ -1,4 +1,4 @@
-package org.neonsis.socialnetwork.rest.config;
+package org.neonsis.socialnetwork.rest.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.rest.security.filter.JwtAuthenticationEntryPoint;
