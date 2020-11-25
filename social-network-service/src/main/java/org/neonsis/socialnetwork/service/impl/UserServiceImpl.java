@@ -84,6 +84,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserDto toDto(User user) {
-        return userMapper.userToUserDto(user);
+        return userMapper.userToDto(user);
     }
 }

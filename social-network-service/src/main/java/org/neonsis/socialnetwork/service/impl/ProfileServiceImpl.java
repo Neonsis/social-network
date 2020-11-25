@@ -36,10 +36,10 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     private ProfileDto toDto(Profile profile) {
-        return profileMapper.profileToProfileDto(profile);
+        return profileMapper.profileToDto(profile);
     }
 
     private Profile toEntity(ProfileDto profileDto) {
-        return profileMapper.profileDtoToProfile(profileDto);
+        return profileMapper.dtoToProfile(profileDto);
     }
 }

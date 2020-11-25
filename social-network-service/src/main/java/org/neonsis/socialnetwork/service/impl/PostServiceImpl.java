@@ -98,10 +98,10 @@ public class PostServiceImpl implements PostService {
     }
 
     private PostDto toDto(Post post) {
-        return postMapper.postToPostDto(post);
+        return postMapper.postToDto(post);
     }
 
     private Page<PostDto> toPageDto(Page<Post> postPage) {
-        return postPage.map(postMapper::postToPostDto);
+        return postPage.map(postMapper::postToDto);
     }
 }

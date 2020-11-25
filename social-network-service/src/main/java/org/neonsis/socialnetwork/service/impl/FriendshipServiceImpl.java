@@ -25,9 +25,10 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     private final FriendshipRepository friendshipRepository;
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
     private final IAuthenticationFacade authenticationFacade;
+
+    private final UserMapper userMapper;
 
     @Override
     public void addToFriends(Long friendId) {
@@ -53,10 +54,14 @@ public class FriendshipServiceImpl implements FriendshipService {
                 throw new InvalidWorkFlowException(String.format("User with id '%s' is already your friend", friendId));
             }
         } else {
-            FriendshipId friendshipId = new FriendshipId(loggedInUserId, friend.getId());
-            friendship = new Friendship();
-            friendship.setId(friendshipId);
-            friendship.setStatus(Status.FOLLOWER);
+            friendship = Friendship.builder()
+                    .id(
+                            FriendshipId.builder()
+                                    .inviterId(loggedInUserId)
+                                    .invitedId(friend.getId())
+                                    .build())
+                    .status(Status.FOLLOWER)
+                    .build();
         }
 
         friendshipRepository.save(friendship);
@@ -116,6 +121,6 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     private Page<UserDto> toPageDto(Page<User> userPage) {
-        return userPage.map(userMapper::userToUserDto);
+        return userPage.map(userMapper::userToDto);
     }
 }
