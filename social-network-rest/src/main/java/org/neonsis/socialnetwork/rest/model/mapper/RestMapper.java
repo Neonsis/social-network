@@ -1,6 +1,7 @@
 package org.neonsis.socialnetwork.rest.model.mapper;
 
 import org.mapstruct.Mapper;
+import org.neonsis.socialnetwork.model.dto.chat.MessageDto;
 import org.neonsis.socialnetwork.model.dto.post.CommentDto;
 import org.neonsis.socialnetwork.model.dto.post.PostDto;
 import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
@@ -24,4 +25,6 @@ public interface RestMapper {
     ProfileResponse profileDtoToProfileResponse(ProfileDto profileDto);
 
     UserDetailsResponse userDtoToUserDetailsResponse(UserDto userDto);
+
+    MessageResponse messageDtoToResponse(MessageDto messageDto);
 }

@@ -1,4 +1,4 @@
-package org.neonsis.socialnetwork.rest.exception;
+package org.neonsis.socialnetwork.rest.controller;
 
 import org.neonsis.socialnetwork.exception.InternalServerErrorException;
 import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;

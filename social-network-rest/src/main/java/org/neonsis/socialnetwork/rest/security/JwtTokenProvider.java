@@ -44,10 +44,14 @@ public class JwtTokenProvider {
     }
 
     public String getJwtFromRequest(HttpServletRequest request) {
-        final int prefixLength = 7;
         String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(prefixLength);
+        return getJwtFromRequest(bearerToken);
+    }
+
+    public String getJwtFromRequest(String headerContent) {
+        final int prefixLength = 7;
+        if (StringUtils.hasText(headerContent) && headerContent.startsWith("Bearer ")) {
+            return headerContent.substring(prefixLength);
         }
         return null;
     }
