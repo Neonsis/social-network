@@ -16,6 +16,10 @@
     <description>The service module of the social-network project</description>
     <url>https://github.com/Neonsis/social-network</url>
 
+    <properties>
+        <cloudinary.version>1.27.0</cloudinary.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <artifactId>social-network-model</artifactId>
@@ -27,7 +31,10 @@
             <groupId>org.neonsis.socialnetwork</groupId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-http44</artifactId>
+            <version>${cloudinary.version}</version>
+        </dependency>
     </dependencies>
-
-
 </project>

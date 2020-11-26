@@ -34,13 +34,18 @@ public class UserPrincipal implements UserDetails {
                 new SimpleGrantedAuthority(role.getName().name())
         ).collect(Collectors.toList());
 
+        String avatar = null;
+        if (user.getAvatar() != null) {
+            avatar = user.getAvatar().getOriginalUrl();
+        }
+
         return new UserPrincipal(
                 user.getId(),
                 user.getEmail(),
                 user.getEncryptedPassword(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getAvatarUrl(),
+                avatar,
                 authorities
         );
     }
