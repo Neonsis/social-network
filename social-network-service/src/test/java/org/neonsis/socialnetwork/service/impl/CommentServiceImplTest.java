@@ -15,7 +15,7 @@ import org.neonsis.socialnetwork.model.dto.post.CommentCreateDto;
 import org.neonsis.socialnetwork.persistence.repository.CommentRepository;
 import org.neonsis.socialnetwork.persistence.repository.PostRepository;
 import org.neonsis.socialnetwork.service.CommentService;
-import org.neonsis.socialnetwork.service.security.IAuthenticationFacade;
+import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
@@ -35,7 +35,7 @@ class CommentServiceImplTest {
     private CommentRepository commentRepository;
 
     @Mock
-    private IAuthenticationFacade authenticationFacade;
+    private AuthenticationFacade authenticationFacade;
 
     private CommentService commentService;
 

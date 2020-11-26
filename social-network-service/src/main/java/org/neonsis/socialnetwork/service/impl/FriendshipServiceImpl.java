@@ -12,7 +12,7 @@ import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.neonsis.socialnetwork.persistence.repository.FriendshipRepository;
 import org.neonsis.socialnetwork.persistence.repository.UserRepository;
 import org.neonsis.socialnetwork.service.FriendshipService;
-import org.neonsis.socialnetwork.service.security.IAuthenticationFacade;
+import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class FriendshipServiceImpl implements FriendshipService {
     private final FriendshipRepository friendshipRepository;
     private final UserRepository userRepository;
 
-    private final IAuthenticationFacade authenticationFacade;
+    private final AuthenticationFacade authenticationFacade;
 
     private final UserMapper userMapper;
 

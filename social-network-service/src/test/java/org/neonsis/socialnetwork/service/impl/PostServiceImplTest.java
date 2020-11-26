@@ -12,10 +12,11 @@ import org.neonsis.socialnetwork.model.domain.post.Post;
 import org.neonsis.socialnetwork.model.domain.user.User;
 import org.neonsis.socialnetwork.model.dto.mapper.PostMapper;
 import org.neonsis.socialnetwork.model.dto.post.PostCreateDto;
+import org.neonsis.socialnetwork.persistence.repository.CommunityRepository;
 import org.neonsis.socialnetwork.persistence.repository.PostRepository;
 import org.neonsis.socialnetwork.persistence.repository.UserRepository;
 import org.neonsis.socialnetwork.service.PostService;
-import org.neonsis.socialnetwork.service.security.IAuthenticationFacade;
+import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -38,7 +39,10 @@ class PostServiceImplTest {
     private UserRepository userRepository;
 
     @Mock
-    private IAuthenticationFacade authenticationFacade;
+    private CommunityRepository communityRepositoryTest;
+
+    @Mock
+    private AuthenticationFacade authenticationFacade;
 
     private PostService postService;
 
@@ -47,6 +51,7 @@ class PostServiceImplTest {
         this.postService = new PostServiceImpl(
                 postRepository,
                 userRepository,
+                communityRepositoryTest,
                 postMapper,
                 authenticationFacade
         );
@@ -81,7 +86,7 @@ class PostServiceImplTest {
 
         when(authenticationFacade.getLoggedInUser()).thenReturn(User.builder().id(1L).build());
 
-        postService.create(postCreateDto);
+        postService.createUserPost(postCreateDto);
 
         ArgumentCaptor<Post> postArgument = ArgumentCaptor.forClass(Post.class);
         verify(authenticationFacade, times(1)).getLoggedInUser();

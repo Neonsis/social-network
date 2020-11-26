@@ -12,7 +12,7 @@ import org.neonsis.socialnetwork.persistence.repository.ConversationRepository;
 import org.neonsis.socialnetwork.persistence.repository.MessageRepository;
 import org.neonsis.socialnetwork.service.ConversationService;
 import org.neonsis.socialnetwork.service.MessageService;
-import org.neonsis.socialnetwork.service.security.IAuthenticationFacade;
+import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +32,7 @@ public class MessageServiceImpl implements MessageService {
     private final ConversationRepository conversationRepository;
     private final MessageRepository messageRepository;
 
-    private final IAuthenticationFacade authenticationFacade;
+    private final AuthenticationFacade authenticationFacade;
 
     private final ChatMapper chatMapper;
 

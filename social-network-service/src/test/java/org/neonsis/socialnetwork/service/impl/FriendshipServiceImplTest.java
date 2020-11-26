@@ -16,7 +16,7 @@ import org.neonsis.socialnetwork.model.dto.mapper.UserMapper;
 import org.neonsis.socialnetwork.persistence.repository.FriendshipRepository;
 import org.neonsis.socialnetwork.persistence.repository.UserRepository;
 import org.neonsis.socialnetwork.service.FriendshipService;
-import org.neonsis.socialnetwork.service.security.IAuthenticationFacade;
+import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -38,7 +38,7 @@ class FriendshipServiceImplTest {
     private UserRepository userRepository;
 
     @Mock
-    private IAuthenticationFacade authenticationFacade;
+    private AuthenticationFacade authenticationFacade;
 
     private FriendshipService friendshipService;
 

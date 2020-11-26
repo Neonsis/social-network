@@ -11,7 +11,7 @@ import org.neonsis.socialnetwork.model.dto.post.CommentDto;
 import org.neonsis.socialnetwork.persistence.repository.CommentRepository;
 import org.neonsis.socialnetwork.persistence.repository.PostRepository;
 import org.neonsis.socialnetwork.service.CommentService;
-import org.neonsis.socialnetwork.service.security.IAuthenticationFacade;
+import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +23,7 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentMapper commentMapper;
 
-    private final IAuthenticationFacade authenticationFacade;
+    private final AuthenticationFacade authenticationFacade;
 
     @Override
     public CommentDto create(CommentCreateDto commentDto) {
