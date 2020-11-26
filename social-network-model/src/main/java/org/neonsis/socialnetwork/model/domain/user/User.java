@@ -10,10 +10,7 @@ import org.neonsis.socialnetwork.model.domain.post.Post;
 import org.neonsis.socialnetwork.model.domain.user.security.Role;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * User.
@@ -85,6 +82,12 @@ public class User extends AbstractBaseEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    public void addPost(Post post) {
+        Objects.requireNonNull(post, "Post must not be null");
+        this.posts.add(post);
+        post.setAuthor(this);
+    }
 
     /**
      * Get a new {@link UserBuilder}.

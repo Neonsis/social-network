@@ -3,6 +3,7 @@ package org.neonsis.socialnetwork.model.dto.post;
 import lombok.Getter;
 import lombok.Setter;
 import org.neonsis.socialnetwork.model.dto.base.AbstractBaseDto;
+import org.neonsis.socialnetwork.model.dto.community.CommunityDto;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public class PostDto extends AbstractBaseDto {
      * The author of this post.
      */
     private UserDto author;
+
+    private CommunityDto community;
 
     /**
      * If the logged in user liked this post.

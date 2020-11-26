@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
 import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
+import org.neonsis.socialnetwork.model.domain.community.Community;
 import org.neonsis.socialnetwork.model.domain.user.User;
 
 import javax.persistence.*;
@@ -36,11 +37,29 @@ public class Post extends AbstractBaseEntity {
     /**
      * The author of this post.
      */
-    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = {
+    @ManyToOne(
+            optional = false, fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+            CascadeType.MERGE}
+    )
+    @JoinTable(
+            name = "post_user",
+            joinColumns = {@JoinColumn(name = "post_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+    )
     private User author;
+
+    @ManyToOne(
+            optional = false, fetch = FetchType.LAZY, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE}
+    )
+    @JoinTable(
+            name = "post_community",
+            joinColumns = {@JoinColumn(name = "post_id")},
+            inverseJoinColumns = {@JoinColumn(name = "community_id")}
+    )
+    private Community community;
 
     /**
      * The count of likes on this post.
@@ -144,6 +163,18 @@ public class Post extends AbstractBaseEntity {
          */
         public Post.PostBuilder author(User author) {
             this.getEntity().setAuthor(author);
+            return this;
+        }
+
+        /**
+         * Set the community of this post and return the builder.
+         *
+         * @param community the community of the post being built.
+         * @return the builder.
+         * @see Post#setCommunity(Community)
+         */
+        public Post.PostBuilder community(Community community) {
+            this.getEntity().setCommunity(community);
             return this;
         }
     }
