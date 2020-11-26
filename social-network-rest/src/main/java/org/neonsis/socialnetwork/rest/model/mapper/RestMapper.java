@@ -2,6 +2,7 @@ package org.neonsis.socialnetwork.rest.model.mapper;
 
 import org.mapstruct.Mapper;
 import org.neonsis.socialnetwork.model.dto.chat.MessageDto;
+import org.neonsis.socialnetwork.model.dto.community.CommunityDto;
 import org.neonsis.socialnetwork.model.dto.post.CommentDto;
 import org.neonsis.socialnetwork.model.dto.post.PostDto;
 import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
@@ -12,19 +13,21 @@ import org.neonsis.socialnetwork.service.security.UserPrincipal;
 @Mapper(componentModel = "spring")
 public interface RestMapper {
 
-    UserAuthResponse userDtoToUserAuthResponse(UserDto userDto);
+    UserAuthResponse userDtoToAuthResponse(UserDto userDto);
 
-    UserResponse userPrincipalToUserResponse(UserPrincipal userPrincipal);
+    UserResponse userPrincipalToResponse(UserPrincipal userPrincipal);
 
-    UserResponse userDtoToUserResponse(UserDto userDto);
+    UserResponse userDtoToResponse(UserDto userDto);
 
-    CommentResponse commentDtoToCommentResponse(CommentDto commentDto);
+    CommentResponse commentDtoToResponse(CommentDto commentDto);
 
-    PostResponse postDtoToPostResponse(PostDto postDto);
+    PostResponse postDtoToResponse(PostDto postDto);
 
-    ProfileResponse profileDtoToProfileResponse(ProfileDto profileDto);
+    ProfileResponse profileDtoToResponse(ProfileDto profileDto);
 
-    UserDetailsResponse userDtoToUserDetailsResponse(UserDto userDto);
+    UserDetailsResponse userDtoToDetailsResponse(UserDto userDto);
 
     MessageResponse messageDtoToResponse(MessageDto messageDto);
+
+    CommunityResponse communityDtoToResponse(CommunityDto communityDto);
 }

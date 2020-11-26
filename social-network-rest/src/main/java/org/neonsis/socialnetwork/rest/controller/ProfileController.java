@@ -34,6 +34,6 @@ public class ProfileController {
     }
 
     private ProfileResponse toDto(ProfileDto profileDto) {
-        return restMapper.profileDtoToProfileResponse(profileDto);
+        return restMapper.profileDtoToResponse(profileDto);
     }
 }

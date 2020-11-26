@@ -26,13 +26,13 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-        return ResponseEntity.ok(restMapper.userPrincipalToUserResponse(userPrincipal));
+        return ResponseEntity.ok(restMapper.userPrincipalToResponse(userPrincipal));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDetailsResponse> getProfileById(@PathVariable Long id) {
         UserDto user = userService.findById(id);
-        UserDetailsResponse userDetailsResponse = restMapper.userDtoToUserDetailsResponse(user);
+        UserDetailsResponse userDetailsResponse = restMapper.userDtoToDetailsResponse(user);
 
         boolean isUserFriend = friendshipService.isUserFriend(id);
         if (isUserFriend) {

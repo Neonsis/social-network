@@ -66,6 +66,6 @@ public class AuthController {
     }
 
     private UserAuthResponse toResponse(UserDto user) {
-        return restMapper.userDtoToUserAuthResponse(user);
+        return restMapper.userDtoToAuthResponse(user);
     }
 }

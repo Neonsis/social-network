@@ -4,8 +4,8 @@ import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.exception.InternalServerErrorException;
 import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
 import org.neonsis.socialnetwork.rest.exception.model.ValidationError;
-import org.neonsis.socialnetwork.rest.model.request.ApiErrorRequest;
-import org.neonsis.socialnetwork.rest.model.request.ApiValidationErrorRequest;
+import org.neonsis.socialnetwork.rest.model.response.ApiErrorResponse;
+import org.neonsis.socialnetwork.rest.model.response.ApiValidationErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
@@ -42,7 +42,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .map(fieldError -> new ValidationError(fieldError.getField(), fieldError.getDefaultMessage()))
                 .collect(Collectors.toList());
 
-        ApiValidationErrorRequest apiError = new ApiValidationErrorRequest(BAD_REQUEST);
+        ApiValidationErrorResponse apiError = new ApiValidationErrorResponse(BAD_REQUEST);
         apiError.setMessage("Validation error");
         apiError.setDetails(errors);
 
@@ -52,7 +52,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidWorkFlowException.class)
     protected ResponseEntity<Object> handleInvalidWorkflowException(InvalidWorkFlowException ex) {
         logger.warn("Responding with invalid workflow error.  Message - {}", ex.getMessage());
-        ApiErrorRequest apiError = new ApiErrorRequest(BAD_REQUEST);
+        ApiErrorResponse apiError = new ApiErrorResponse(BAD_REQUEST);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
@@ -60,14 +60,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InternalServerErrorException.class)
     protected ResponseEntity<Object> handleInternalServerException(InternalServerErrorException ex) {
         logger.error("Responding with internal server error.  Message - {}", ex.getMessage());
-        ApiErrorRequest apiError = new ApiErrorRequest(INTERNAL_SERVER_ERROR);
+        ApiErrorResponse apiError = new ApiErrorResponse(INTERNAL_SERVER_ERROR);
         apiError.setMessage("Server error");
         return buildResponseEntity(apiError);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleRecordNotFound(EntityNotFoundException ex) {
-        ApiErrorRequest apiError = new ApiErrorRequest(NOT_FOUND);
+        ApiErrorResponse apiError = new ApiErrorResponse(NOT_FOUND);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
@@ -75,10 +75,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         String error = "Malformed JSON request";
-        return buildResponseEntity(new ApiErrorRequest(BAD_REQUEST, error));
+        return buildResponseEntity(new ApiErrorResponse(BAD_REQUEST, error));
     }
 
-    private ResponseEntity<Object> buildResponseEntity(ApiErrorRequest apiError) {
+    private ResponseEntity<Object> buildResponseEntity(ApiErrorResponse apiError) {
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 

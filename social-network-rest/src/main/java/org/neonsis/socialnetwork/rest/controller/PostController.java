@@ -41,7 +41,19 @@ public class PostController {
             }) Pageable pageable,
             @PathVariable Long userId) {
         Page<PostDto> userPosts = postService.getUserPosts(userId, pageable);
-        Page<PostResponse> map = userPosts.map(restMapper::postDtoToPostResponse);
+        Page<PostResponse> map = userPosts.map(restMapper::postDtoToResponse);
+        return ResponseEntity.ok(map);
+    }
+
+    @GetMapping("/communities/{communityId}/posts")
+    public ResponseEntity<Page<PostResponse>> getCommunityPosts(
+            @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
+            @SortDefault.SortDefaults({
+                    @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
+            }) Pageable pageable,
+            @PathVariable Long communityId) {
+        Page<PostDto> communityPosts = postService.getCommunityPosts(communityId, pageable);
+        Page<PostResponse> map = communityPosts.map(restMapper::postDtoToResponse);
         return ResponseEntity.ok(map);
     }
 
@@ -52,13 +64,22 @@ public class PostController {
                     @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
             }) Pageable pageable
     ) {
-        return ResponseEntity.ok(postService.getFeedPosts(pageable).map(restMapper::postDtoToPostResponse));
+        return ResponseEntity.ok(postService.getFeedPosts(pageable).map(restMapper::postDtoToResponse));
     }
 
-    @PostMapping("/posts")
-    public ResponseEntity<PostResponse> createPost(@Valid @RequestBody PostCreateDto postCreateDto) {
-        PostDto createdPost = postService.create(postCreateDto);
-        return ResponseEntity.ok(restMapper.postDtoToPostResponse(createdPost));
+    @PostMapping("/users/posts")
+    public ResponseEntity<PostResponse> createUserPost(@Valid @RequestBody PostCreateDto postCreateDto) {
+        PostDto createdPost = postService.createUserPost(postCreateDto);
+        return ResponseEntity.ok(restMapper.postDtoToResponse(createdPost));
+    }
+
+    @PostMapping("/communities/{communityId}/posts")
+    public ResponseEntity<PostResponse> createCommunityPost(
+            @PathVariable Long communityId,
+            @Valid @RequestBody PostCreateDto postCreateDto
+    ) {
+        PostDto createdPost = postService.createCommunityPost(postCreateDto, communityId);
+        return ResponseEntity.ok(restMapper.postDtoToResponse(createdPost));
     }
 
     @PostMapping("/posts/{postId}/like")
@@ -86,6 +107,6 @@ public class PostController {
     ) {
         commentCreateDto.setPostId(postId);
         CommentDto createdComment = commentService.create(commentCreateDto);
-        return new ResponseEntity<>(restMapper.commentDtoToCommentResponse(createdComment), HttpStatus.CREATED);
+        return new ResponseEntity<>(restMapper.commentDtoToResponse(createdComment), HttpStatus.CREATED);
     }
 }

@@ -63,6 +63,6 @@ public class FriendController {
     }
 
     private Page<UserResponse> toPageResponse(Page<UserDto> userDtoPage) {
-        return userDtoPage.map(restMapper::userDtoToUserResponse);
+        return userDtoPage.map(restMapper::userDtoToResponse);
     }
 }

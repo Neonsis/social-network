@@ -1,4 +1,4 @@
-package org.neonsis.socialnetwork.rest.model.request;
+package org.neonsis.socialnetwork.rest.model.response;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,15 +9,15 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ApiValidationErrorRequest extends ApiErrorRequest {
+public class ApiValidationErrorResponse extends ApiErrorResponse {
 
     private List<ValidationError> details;
 
-    public ApiValidationErrorRequest(HttpStatus status) {
+    public ApiValidationErrorResponse(HttpStatus status) {
         super(status);
     }
 
-    public ApiValidationErrorRequest(HttpStatus status, String message, List<ValidationError> details) {
+    public ApiValidationErrorResponse(HttpStatus status, String message, List<ValidationError> details) {
         super(status, message);
         this.details = details;
     }

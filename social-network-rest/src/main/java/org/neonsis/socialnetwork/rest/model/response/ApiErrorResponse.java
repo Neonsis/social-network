@@ -1,4 +1,4 @@
-package org.neonsis.socialnetwork.rest.model.request;
+package org.neonsis.socialnetwork.rest.model.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
@@ -9,24 +9,24 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class ApiErrorRequest {
+public class ApiErrorResponse {
 
     private HttpStatus status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
     private String message;
 
-    private ApiErrorRequest() {
+    private ApiErrorResponse() {
         timestamp = LocalDateTime.now();
     }
 
-    public ApiErrorRequest(HttpStatus status) {
+    public ApiErrorResponse(HttpStatus status) {
         this();
         this.status = status;
     }
 
 
-    public ApiErrorRequest(HttpStatus status, String message) {
+    public ApiErrorResponse(HttpStatus status, String message) {
         this(status);
         this.message = message;
     }

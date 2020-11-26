@@ -62,6 +62,6 @@ public class ChatController {
             @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE) Pageable pageable
     ) {
         Page<UserDto> conversations = conversationService.getLoggedInUserConversations(pageable);
-        return ResponseEntity.ok(conversations.map(restMapper::userDtoToUserResponse));
+        return ResponseEntity.ok(conversations.map(restMapper::userDtoToResponse));
     }
 }
