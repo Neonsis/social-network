@@ -7,13 +7,13 @@ import org.neonsis.socialnetwork.rest.model.response.UserDetailsResponse;
 import org.neonsis.socialnetwork.rest.model.response.UserResponse;
 import org.neonsis.socialnetwork.rest.security.CurrentUser;
 import org.neonsis.socialnetwork.service.FriendshipService;
+import org.neonsis.socialnetwork.service.ImageService;
 import org.neonsis.socialnetwork.service.UserService;
 import org.neonsis.socialnetwork.service.security.UserPrincipal;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/users")
@@ -23,10 +23,17 @@ public class UserController {
     private final RestMapper restMapper;
     private final UserService userService;
     private final FriendshipService friendshipService;
+    private final ImageService imageService;
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
         return ResponseEntity.ok(restMapper.userPrincipalToResponse(userPrincipal));
+    }
+
+    @PostMapping("/uploadAvatar")
+    public ResponseEntity<HttpStatus> uploadAvatar(@RequestParam("file") MultipartFile file) {
+        imageService.uploadUserAvatar(file);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
