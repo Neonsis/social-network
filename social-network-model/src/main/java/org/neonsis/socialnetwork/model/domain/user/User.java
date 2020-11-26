@@ -61,8 +61,8 @@ public class User extends AbstractBaseEntity {
     /**
      * The user's main avatar.
      */
-    @Column(name = "avatar_url")
-    private String avatarUrl;
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+    private Image avatar;
 
     /**
      * The user's published posts.
@@ -156,12 +156,12 @@ public class User extends AbstractBaseEntity {
         /**
          * Set the user avatar and return the builder.
          *
-         * @param avatarUrl the avatar of the user being built.
+         * @param avatar the avatar of the user being built.
          * @return the builder.
-         * @see User#setAvatarUrl(String)
+         * @see User#setAvatar(Image)
          */
-        public UserBuilder avatar(String avatarUrl) {
-            this.getEntity().setAvatarUrl(avatarUrl);
+        public UserBuilder avatar(Image avatar) {
+            this.getEntity().setAvatar(avatar);
             return this;
         }
 

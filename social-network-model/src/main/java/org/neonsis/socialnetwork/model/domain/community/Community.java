@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
 import org.neonsis.socialnetwork.model.domain.post.Post;
+import org.neonsis.socialnetwork.model.domain.user.Image;
 import org.neonsis.socialnetwork.model.domain.user.User;
 
 import javax.persistence.*;
@@ -26,6 +27,9 @@ public class Community extends AbstractBaseEntity {
             CascadeType.MERGE}
     )
     private User moderator;
+
+    @OneToOne(orphanRemoval = false, cascade = CascadeType.ALL)
+    private Image avatar;
 
     @OneToMany(mappedBy = "community")
     private final List<Post> posts = new ArrayList<>();

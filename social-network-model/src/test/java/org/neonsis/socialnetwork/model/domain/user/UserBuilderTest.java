@@ -67,13 +67,14 @@ public class UserBuilderTest extends AbstractBaseEntityBuilderTest<User.UserBuil
 
     /**
      * Test method for
-     * {@link User.UserBuilder#avatar(String)}.
+     * {@link User.UserBuilder#avatar(Image)}.
      */
     @Test
     public void testAvatar() {
         assertEquals(this.getEntityBuilder(), this.getEntityBuilder().avatar(null));
 
-        String avatarUrl = "TEST";
-        assertEquals(avatarUrl, this.getEntityBuilder().avatar(avatarUrl).build().getAvatarUrl());
+        Image avatar = new Image();
+        avatar.setId(1L);
+        assertEquals(avatar.getId(), this.getEntityBuilder().avatar(avatar).build().getAvatar().getId());
     }
 }
