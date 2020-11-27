@@ -17,7 +17,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "chat_message")
+@Table(name = "message")
 public class Message extends AbstractBaseEntity {
 
     /**
@@ -28,17 +28,13 @@ public class Message extends AbstractBaseEntity {
     /**
      * The conversation to which this message belongs to.
      */
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE})
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Conversation conversation;
 
     /**
      * The user who sent this message.
      */
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE})
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private User sender;
 
     /**

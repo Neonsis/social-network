@@ -34,19 +34,13 @@ public class Comment extends AbstractBaseEntity {
     /**
      * The post to which this comment related.
      */
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     private Post post;
 
     /**
      * The user who created this comment.
      */
-    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     private User user;
 
     /**

@@ -30,13 +30,13 @@ public class ConversationId implements Serializable {
     /**
      * The first user id in the conversation.
      */
-    @Column(name = "user_one_id", nullable = false)
+    @Column(name = "user_one_id", nullable = false, updatable = false)
     private Long userOneId;
 
     /**
      * The second user id in the conversation.
      */
-    @Column(name = "user_two_id", nullable = false)
+    @Column(name = "user_two_id", nullable = false, updatable = false)
     private Long userTwoId;
 
     @Override
@@ -47,6 +47,9 @@ public class ConversationId implements Serializable {
                 '}';
     }
 
+    /**
+     * Check objects equality by {@link #userOneId} and {@link #userTwoId}
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

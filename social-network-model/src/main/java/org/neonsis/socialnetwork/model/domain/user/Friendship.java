@@ -39,14 +39,14 @@ public class Friendship implements Serializable {
      * The user who invite(create) friendship.
      */
     @MapsId("inviter_id")
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.MERGE})
     private User inviter;
 
     /**
      * The user who is invited by another user.
      */
     @MapsId("invited_id")
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.MERGE})
     private User invited;
 
     /**

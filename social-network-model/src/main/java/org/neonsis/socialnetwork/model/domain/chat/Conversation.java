@@ -7,6 +7,9 @@ import org.neonsis.socialnetwork.model.domain.user.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Conversation is stored messages between two users. It is established when one of the user send first message.
@@ -35,15 +38,51 @@ public class Conversation implements Serializable {
      * The first user in the conversation.
      */
     @MapsId("user_one_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private User userOne;
 
     /**
      * The second user in the conversation.
      */
     @MapsId("user_two_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private User userTwo;
+
+    /**
+     * Messages which is related to this conversation.
+     */
+    @OneToMany(mappedBy = "conversation", orphanRemoval = true)
+    private List<Message> messages = new ArrayList<>();
+
+    /**
+     * Add the message to {@link #messages}.
+     *
+     * @param message the message which we want to save.
+     * @throws NullPointerException if {@param message} is null.
+     */
+    public void addMessage(Message message) {
+        Objects.requireNonNull(message, "Message parameter is not initialized");
+        if (this.messages == null) {
+            this.messages = new ArrayList<>();
+        }
+        this.messages.add(message);
+        message.setConversation(this);
+    }
+
+    /**
+     * Remove the message from {@link #messages}.
+     *
+     * @param message the message which we want to remove.
+     * @throws NullPointerException if {@param message} is null.
+     */
+    public void removeMessage(Message message) {
+        Objects.requireNonNull(message, "Message parameter is not initialized");
+        if (this.messages == null) {
+            return;
+        }
+        this.messages.remove(message);
+        message.setConversation(null);
+    }
 
     /**
      * Get a new {@link ConversationBuilder}.

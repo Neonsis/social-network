@@ -9,7 +9,9 @@ import org.neonsis.socialnetwork.model.domain.community.Community;
 import org.neonsis.socialnetwork.model.domain.user.User;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Post.
@@ -37,11 +39,7 @@ public class Post extends AbstractBaseEntity {
     /**
      * The author of this post.
      */
-    @ManyToOne(
-            optional = false, fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE}
-    )
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "post_user",
             joinColumns = {@JoinColumn(name = "post_id")},
@@ -49,11 +47,10 @@ public class Post extends AbstractBaseEntity {
     )
     private User author;
 
-    @ManyToOne(
-            optional = false, fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE}
-    )
+    /**
+     * The community which made this post
+     */
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "post_community",
             joinColumns = {@JoinColumn(name = "post_id")},
@@ -70,12 +67,13 @@ public class Post extends AbstractBaseEntity {
     /**
      * Users that liked this post.
      */
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinTable(name = "post_like",
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "post_like",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private final Set<User> usersLikes = new HashSet<>();
+    private List<User> usersLikes = new ArrayList<>();
 
     /**
      * Comments that users writes to this post.
@@ -87,38 +85,61 @@ public class Post extends AbstractBaseEntity {
             fetch = FetchType.EAGER,
             orphanRemoval = true
     )
-    private final List<Comment> comments = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
     /**
-     * Add the {@link #user} that likes this post to {@link usersLikes}.
+     * Add the user that likes this post to {@link #usersLikes}.
      *
-     * @param user the {@link #user} that likes this post.
-     * @throws NullPointerException if {@link #user} is null.
+     * @param user the user that likes this post.
+     * @throws NullPointerException if {@param user} is null.
      */
     public void addLike(User user) {
-        Objects.requireNonNull(user, "User must not be null");
+        Objects.requireNonNull(user, "User parameter is not initialized");
+        if (this.usersLikes == null) {
+            this.usersLikes = new ArrayList<>();
+        }
         this.usersLikes.add(user);
     }
 
     /**
-     * Add the {@link #comment} to {@link comments}.
+     * Remove the user from {@link #usersLikes}.
      *
-     * @param comment the {@link #comment} to add.
-     * @throws NullPointerException if {@link #comment} is null
+     * @param user the user which we want to remove.
+     */
+    public void removeLike(User user) {
+        Objects.requireNonNull(user, "User parameter is not initialized");
+        if (this.usersLikes == null) {
+            return;
+        }
+        this.usersLikes.remove(user);
+    }
+
+    /**
+     * Add the comment to {@link #comments}.
+     *
+     * @param comment the comment to add.
+     * @throws NullPointerException if {@param comment} is null
      */
     public void addComment(Comment comment) {
-        Objects.requireNonNull(comment, "Comment must not be null");
+        Objects.requireNonNull(comment, "Comment parameter is not initialized");
+        if (this.comments == null) {
+            this.comments = new ArrayList<>();
+        }
         this.comments.add(comment);
         comment.setPost(this);
     }
 
     /**
-     * Delete the {@link #user} from {@link usersLikes}.
+     * Remove the comment from {@link #comments}.
      *
-     * @param user the {@link #user} to delete.
+     * @param comment the comment which we want to remove.
      */
-    public void deleteLike(User user) {
-        this.usersLikes.remove(user);
+    public void removeComment(Comment comment) {
+        Objects.requireNonNull(comment, "Comment parameter is not initialized");
+        if (this.comments == null) {
+            return;
+        }
+        this.comments.remove(comment);
     }
 
     /**

@@ -17,7 +17,7 @@ import java.util.Objects;
  * An abstract class for entities.
  *
  * <p>
- * Provides a Unique Identifier as primary key, creation and last updated date
+ * Provides a Unique Identifier as primary key, creation and last updated date.
  * </p>
  *
  * @author neonsis
@@ -38,7 +38,7 @@ public abstract class AbstractBaseEntity implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false)
+    @Column(name = "id", nullable = false, updatable = false, unique = true, insertable = false)
     private Long id;
 
     /**
@@ -54,11 +54,11 @@ public abstract class AbstractBaseEntity implements Serializable {
      */
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP", insertable = false)
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
     private Date updatedAt;
 
     /**
-     * Check objects equality by {@link id}
+     * Check objects equality by {@link #id}
      */
     @Override
     public boolean equals(Object o) {
@@ -73,6 +73,9 @@ public abstract class AbstractBaseEntity implements Serializable {
         return Objects.hash(id);
     }
 
+    /**
+     * Build a {@code toString} value using reflection.
+     */
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);

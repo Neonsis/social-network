@@ -30,13 +30,13 @@ public class FriendshipId implements Serializable {
     /**
      * The user id who invite(create) friendship.
      */
-    @Column(name = "inviter_id", nullable = false)
+    @Column(name = "inviter_id", nullable = false, updatable = false)
     private Long inviterId;
 
     /**
      * The user id who is invited by another user.
      */
-    @Column(name = "invited_id", nullable = false)
+    @Column(name = "invited_id", nullable = false, updatable = false)
     private Long invitedId;
 
     @Override
