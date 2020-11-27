@@ -2,10 +2,16 @@ package org.neonsis.socialnetwork.model.dto.post;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.neonsis.socialnetwork.model.domain.post.Comment;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 
+/**
+ * CommentCreateDto. {@link Comment}
+ *
+ * @author neonsis
+ */
 @Getter
 @Setter
 public class CommentCreateDto {

@@ -2,11 +2,12 @@ package org.neonsis.socialnetwork.model.dto.post;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.neonsis.socialnetwork.model.domain.post.Comment;
 import org.neonsis.socialnetwork.model.dto.base.AbstractBaseDto;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
 
 /**
- * CommentDto.
+ * CommentDto. {@link Comment}
  *
  * @author neonsis
  */
@@ -22,7 +23,7 @@ public class CommentDto extends AbstractBaseDto {
     /**
      * The post to which this comment related.
      */
-    private PostDto postDto;
+    private PostDto post;
 
     /**
      * The user who created this comment.

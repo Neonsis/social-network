@@ -16,12 +16,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class AbstractBaseDto implements Serializable {
-
-    /**
-     * The {@code serialVersionUID}.
-     */
-    private static final long serialVersionUID = -1620132505476863875L;
+public class AbstractBaseDto   {
 
     /**
      * The Unique Identifier (primary key) of this record.
