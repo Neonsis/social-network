@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author neonsis
  */
-public class CommentBuilderTest extends AbstractBaseEntityBuilderTest<Comment.CommentBuilder> {
+class CommentBuilderTest extends AbstractBaseEntityBuilderTest<Comment.CommentBuilder> {
 
     @Override
     protected Comment.CommentBuilder buildTestEntityBuilder() {

@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author neonsis
  */
-public class PostBuilderTest extends AbstractBaseEntityBuilderTest<Post.PostBuilder> {
+class PostBuilderTest extends AbstractBaseEntityBuilderTest<Post.PostBuilder> {
 
     @Override
     protected Post.PostBuilder buildTestEntityBuilder() {

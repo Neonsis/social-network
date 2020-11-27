@@ -19,7 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+import java.util.List;
 
 @Service
 @Transactional
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
                 .firstName(registrationDto.getFirstName())
                 .lastName(registrationDto.getLastName())
                 .password(encryptedPassword)
-                .roles(Collections.singleton(userRole))
+                .roles(List.of(userRole))
                 .build();
 
         userRepository.save(user);

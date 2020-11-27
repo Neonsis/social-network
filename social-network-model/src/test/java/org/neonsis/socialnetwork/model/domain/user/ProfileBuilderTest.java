@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author neonsis
  */
-public class ProfileBuilderTest extends AbstractBaseEntityBuilderTest<Profile.ProfileBuilder> {
+class ProfileBuilderTest extends AbstractBaseEntityBuilderTest<Profile.ProfileBuilder> {
 
     @Override
     protected Profile.ProfileBuilder buildTestEntityBuilder() {

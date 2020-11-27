@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author neonsis
  */
-public class UserBuilderTest extends AbstractBaseEntityBuilderTest<User.UserBuilder> {
+class UserBuilderTest extends AbstractBaseEntityBuilderTest<User.UserBuilder> {
 
     @Override
     protected User.UserBuilder buildTestEntityBuilder() {

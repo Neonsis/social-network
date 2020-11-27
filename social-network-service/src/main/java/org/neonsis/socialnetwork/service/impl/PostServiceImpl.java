@@ -128,7 +128,7 @@ public class PostServiceImpl implements PostService {
         User user = authenticationFacade.getLoggedInUser();
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found by id: " + postId));
-        post.deleteLike(user);
+        post.removeLike(user);
         postRepository.save(post);
     }
 

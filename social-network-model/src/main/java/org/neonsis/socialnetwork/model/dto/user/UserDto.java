@@ -37,7 +37,7 @@ public class UserDto extends AbstractBaseDto {
     /**
      * The user's main avatar.
      */
-    private String avatarUrl;
+    private ImageDto avatar;
 
     /**
      * JWT token

@@ -14,10 +14,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import java.util.Collections;
+import java.util.List;
 
 @TestConfiguration
 @ComponentScan("org.neonsis.socialnetwork.rest.security.filter")
-public class SpringSecurityTextConfig {
+public class SpringSecurityTestConfig {
 
     @Bean
     @Primary
@@ -25,7 +26,7 @@ public class SpringSecurityTextConfig {
         User user = User.builder()
                 .password("P4assword")
                 .email("test@gmail.com")
-                .roles(Collections.singleton(Role.builder().name(RoleName.ROLE_USER).build()))
+                .roles(List.of(Role.builder().name(RoleName.ROLE_USER).build()))
                 .id(1L)
                 .build();
         UserPrincipal basicActiveUser = UserPrincipal.create(user);

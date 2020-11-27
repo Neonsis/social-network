@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  *
  * @author neonsis
  */
-public class FriendshipBuilderTest {
+class FriendshipBuilderTest {
 
     /**
      * The tested entity builder.

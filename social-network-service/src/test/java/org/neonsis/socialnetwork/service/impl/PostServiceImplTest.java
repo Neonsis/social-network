@@ -170,7 +170,7 @@ class PostServiceImplTest {
         postService.unlikePost(1L);
 
         ArgumentCaptor<User> userArgument = ArgumentCaptor.forClass(User.class);
-        verify(post, times(1)).deleteLike(userArgument.capture());
+        verify(post, times(1)).removeLike(userArgument.capture());
         verify(postRepository, times(1)).save(post);
         verify(postRepository, times(1)).findById(1L);
 

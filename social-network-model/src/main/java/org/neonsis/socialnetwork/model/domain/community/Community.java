@@ -124,6 +124,15 @@ public class Community extends AbstractBaseEntity {
     }
 
     /**
+     * Get a new {@link CommunityBuilder}.
+     *
+     * @return a new {@link CommunityBuilder}.
+     */
+    public static CommunityBuilder builder() {
+        return new CommunityBuilder();
+    }
+
+    /**
      * A functional programming {@link CommunityBuilder} builder.
      *
      * @author neonsis
