@@ -33,14 +33,4 @@ public class CommunityDto extends AbstractBaseDto {
      * The avatar of this community.
      */
     private ImageDto avatar;
-
-    /**
-     * The published posts of this community.
-     */
-    private List<PostDto> posts;
-
-    /**
-     * Followers of this community.
-     */
-    private List<UserDto> followers;
 }

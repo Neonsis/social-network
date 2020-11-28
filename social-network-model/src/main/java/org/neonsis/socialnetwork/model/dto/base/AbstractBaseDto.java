@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,7 +15,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class AbstractBaseDto   {
+public class AbstractBaseDto {
 
     /**
      * The Unique Identifier (primary key) of this record.

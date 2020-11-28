@@ -21,11 +21,6 @@ public class CommentDto extends AbstractBaseDto {
     private String content;
 
     /**
-     * The post to which this comment related.
-     */
-    private PostDto post;
-
-    /**
      * The user who created this comment.
      */
     private UserDto user;

@@ -23,7 +23,7 @@ public class MessageDto extends AbstractBaseDto {
     /**
      * The conversation to which this message belongs to.
      */
-    private ConversationDto conversationDto;
+    private ConversationDto conversation;
 
     /**
      * The user who sent this message.

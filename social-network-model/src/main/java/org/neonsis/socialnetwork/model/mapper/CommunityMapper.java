@@ -1,4 +1,4 @@
-package org.neonsis.socialnetwork.model.dto.mapper;
+package org.neonsis.socialnetwork.model.mapper;
 
 import org.mapstruct.Mapper;
 import org.neonsis.socialnetwork.model.domain.community.Community;

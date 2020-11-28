@@ -18,7 +18,7 @@ public class ConversationDto {
     /**
      * The Unique Identifier (primary key) of this record.
      */
-    private ConversationId conversationId;
+    private ConversationId id;
 
     /**
      * The first user in the conversation.

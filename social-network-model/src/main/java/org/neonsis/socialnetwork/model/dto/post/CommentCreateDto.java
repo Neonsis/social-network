@@ -21,10 +21,4 @@ public class CommentCreateDto {
      */
     @NotBlank(message = "{config.data.validation.comment_content_not_null}")
     private String content;
-
-    /**
-     * The post id to which this comment is related.
-     */
-    @Null
-    private Long postId;
 }

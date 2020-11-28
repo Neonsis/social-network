@@ -13,4 +13,14 @@ import org.neonsis.socialnetwork.model.dto.base.AbstractBaseDto;
 @Getter
 @Setter
 public class ImageDto extends AbstractBaseDto {
+
+    /**
+     * The Unique Identifier that image service provides.
+     */
+    private String imageId;
+
+    /**
+     * Original URL where this image is stored.
+     */
+    private String originalUrl;
 }

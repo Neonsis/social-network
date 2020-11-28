@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
 import org.neonsis.socialnetwork.model.domain.community.Community;
 import org.neonsis.socialnetwork.model.domain.post.Post;
@@ -59,8 +60,12 @@ public class User extends AbstractBaseEntity {
     /**
      * The user's main avatar.
      */
-    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Image avatar;
+
+    @Column(insertable = false)
+    @Formula(value = "concat(first_name, ' ', last_name)")
+    private String fullName;
 
     /**
      * The user's published posts.
@@ -75,7 +80,7 @@ public class User extends AbstractBaseEntity {
     /**
      * Communities which this user created.
      */
-    @OneToMany(mappedBy = "moderator", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "moderator", orphanRemoval = true, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Community> createdCommunities = new ArrayList<>();
 
     /**
