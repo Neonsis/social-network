@@ -14,7 +14,7 @@ import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.User;
 import org.neonsis.socialnetwork.model.domain.user.security.Role;
 import org.neonsis.socialnetwork.model.domain.user.security.RoleName;
-import org.neonsis.socialnetwork.model.dto.mapper.UserMapper;
+import org.neonsis.socialnetwork.model.mapper.UserMapper;
 import org.neonsis.socialnetwork.model.dto.user.RegistrationDto;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;

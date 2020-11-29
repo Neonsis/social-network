@@ -12,7 +12,7 @@ import org.neonsis.socialnetwork.model.domain.user.Friendship;
 import org.neonsis.socialnetwork.model.domain.user.FriendshipId;
 import org.neonsis.socialnetwork.model.domain.user.Status;
 import org.neonsis.socialnetwork.model.domain.user.User;
-import org.neonsis.socialnetwork.model.dto.mapper.UserMapper;
+import org.neonsis.socialnetwork.model.mapper.UserMapper;
 import org.neonsis.socialnetwork.persistence.repository.FriendshipRepository;
 import org.neonsis.socialnetwork.persistence.repository.UserRepository;
 import org.neonsis.socialnetwork.service.FriendshipService;
@@ -152,7 +152,7 @@ class FriendshipServiceImplTest {
     public void testGetFriendsSuccess() {
         when(friendshipRepository.findFriends(1L, "", null)).thenReturn(new PageImpl<>(Collections.emptyList()));
 
-        friendshipService.getUserFriends(1L, "", null);
+        friendshipService.findUserFriends(1L, "", null);
 
         verify(friendshipRepository, times(1)).findFriends(1L, "", null);
     }
@@ -161,7 +161,7 @@ class FriendshipServiceImplTest {
     public void testGetFollowersSuccess() {
         when(friendshipRepository.findFollowers(1L, null)).thenReturn(new PageImpl<>(Collections.emptyList()));
 
-        friendshipService.getFollowers(1L, null);
+        friendshipService.findUserFollowers(1L, null);
 
         verify(friendshipRepository, times(1)).findFollowers(1L, null);
     }
@@ -170,13 +170,13 @@ class FriendshipServiceImplTest {
     public void testDeleteSuccess() {
         Friendship friendship = Friendship.builder().id(new FriendshipId(1L, 2L)).build();
 
-        when(authenticationFacade.getUserId()).thenReturn(1L);
+        when(authenticationFacade.getLoggedInUserId()).thenReturn(1L);
         when(friendshipRepository.findFriendship(1L, 2L)).thenReturn(Optional.of(friendship));
 
-        friendshipService.delete(2L);
+        friendshipService.deleteById(2L);
 
         ArgumentCaptor<Friendship> argument = ArgumentCaptor.forClass(Friendship.class);
-        verify(authenticationFacade, times(1)).getUserId();
+        verify(authenticationFacade, times(1)).getLoggedInUserId();
         verify(friendshipRepository, times(1)).delete(argument.capture());
 
         Friendship actual = argument.getValue();
@@ -187,19 +187,19 @@ class FriendshipServiceImplTest {
 
     @Test
     public void testDeleteFailure() {
-        assertThrows(EntityNotFoundException.class, () -> friendshipService.delete(2L));
+        assertThrows(EntityNotFoundException.class, () -> friendshipService.deleteById(2L));
     }
 
     @Test
     public void testIsFriendTrue() {
         Friendship friendship = Friendship.builder().id(new FriendshipId(1L, 2L)).status(Status.FRIEND).build();
 
-        when(authenticationFacade.getUserId()).thenReturn(1L);
+        when(authenticationFacade.getLoggedInUserId()).thenReturn(1L);
         when(friendshipRepository.findFriendship(1L, 2L)).thenReturn(Optional.of(friendship));
 
         boolean isFriend = friendshipService.isUserFriend(2L);
 
-        verify(authenticationFacade, times(1)).getUserId();
+        verify(authenticationFacade, times(1)).getLoggedInUserId();
         verify(friendshipRepository, times(1)).findFriendship(1L, 2L);
 
         assertTrue(isFriend);
@@ -207,12 +207,12 @@ class FriendshipServiceImplTest {
 
     @Test
     public void testIsFriendFalse() {
-        when(authenticationFacade.getUserId()).thenReturn(1L);
+        when(authenticationFacade.getLoggedInUserId()).thenReturn(1L);
         when(friendshipRepository.findFriendship(1L, 2L)).thenReturn(Optional.empty());
 
         boolean isFriend = friendshipService.isUserFriend(2L);
 
-        verify(authenticationFacade, times(1)).getUserId();
+        verify(authenticationFacade, times(1)).getLoggedInUserId();
         verify(friendshipRepository, times(1)).findFriendship(1L, 2L);
 
         assertFalse(isFriend);
@@ -223,12 +223,12 @@ class FriendshipServiceImplTest {
     public void testIsFollowerSuccess() {
         Friendship friendship = Friendship.builder().id(new FriendshipId(1L, 2L)).status(Status.FOLLOWER).build();
 
-        when(authenticationFacade.getUserId()).thenReturn(2L);
+        when(authenticationFacade.getLoggedInUserId()).thenReturn(2L);
         when(friendshipRepository.findFriendship(2L, 1L)).thenReturn(Optional.of(friendship));
 
         boolean isFollower = friendshipService.isFollower(1L);
 
-        verify(authenticationFacade, times(2)).getUserId();
+        verify(authenticationFacade, times(2)).getLoggedInUserId();
         verify(friendshipRepository, times(1)).findFriendship(2L, 1L);
 
         assertTrue(isFollower);
@@ -238,12 +238,12 @@ class FriendshipServiceImplTest {
     public void testIsFollowerFalse_whenNotFollowerButPending_returnFalse() {
         Friendship friendship = Friendship.builder().id(new FriendshipId(1L, 2L)).status(Status.FOLLOWER).build();
 
-        when(authenticationFacade.getUserId()).thenReturn(1L);
+        when(authenticationFacade.getLoggedInUserId()).thenReturn(1L);
         when(friendshipRepository.findFriendship(1L, 2L)).thenReturn(Optional.of(friendship));
 
         boolean isFollower = friendshipService.isFollower(2L);
 
-        verify(authenticationFacade, times(2)).getUserId();
+        verify(authenticationFacade, times(2)).getLoggedInUserId();
         verify(friendshipRepository, times(1)).findFriendship(1L, 2L);
 
         assertFalse(isFollower);
@@ -253,12 +253,12 @@ class FriendshipServiceImplTest {
     public void testIsPendingFriendshipSuccess() {
         Friendship friendship = Friendship.builder().id(new FriendshipId(1L, 2L)).status(Status.FOLLOWER).build();
 
-        when(authenticationFacade.getUserId()).thenReturn(1L);
+        when(authenticationFacade.getLoggedInUserId()).thenReturn(1L);
         when(friendshipRepository.findFriendship(1L, 2L)).thenReturn(Optional.of(friendship));
 
         boolean pendingFriendship = friendshipService.isPendingFriendship(2L);
 
-        verify(authenticationFacade, times(2)).getUserId();
+        verify(authenticationFacade, times(2)).getLoggedInUserId();
         verify(friendshipRepository, times(1)).findFriendship(1L, 2L);
 
         assertTrue(pendingFriendship);
@@ -266,12 +266,12 @@ class FriendshipServiceImplTest {
 
     @Test
     public void testIsPendingFriendship_whenNotFriends_returnFalse() {
-        when(authenticationFacade.getUserId()).thenReturn(1L);
+        when(authenticationFacade.getLoggedInUserId()).thenReturn(1L);
         when(friendshipRepository.findFriendship(1L, 2L)).thenReturn(Optional.empty());
 
         boolean pendingFriendship = friendshipService.isPendingFriendship(2L);
 
-        verify(authenticationFacade, times(2)).getUserId();
+        verify(authenticationFacade, times(2)).getLoggedInUserId();
         verify(friendshipRepository, times(1)).findFriendship(1L, 2L);
 
         assertFalse(pendingFriendship);

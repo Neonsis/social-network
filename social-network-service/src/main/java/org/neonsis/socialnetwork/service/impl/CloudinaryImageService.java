@@ -16,9 +16,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Map;
 
+/**
+ * {@link Image service interface.
+ *
+ * @author neonsis
+ */
 @Service
 @RequiredArgsConstructor
 public class CloudinaryImageService implements ImageService {
@@ -33,51 +37,59 @@ public class CloudinaryImageService implements ImageService {
     private final AuthenticationFacade authenticationFacade;
 
     @Override
-    public void uploadUserAvatar(MultipartFile file) {
+    public boolean uploadUserAvatar(MultipartFile file) {
         User loggedInUser = authenticationFacade.getLoggedInUser();
-        try {
-            Image avatar = upload(file);
+        Image avatar = upload(file);
 
-            loggedInUser.setAvatar(avatar);
-
-            userRepository.save(loggedInUser);
-
-            // logger.info("The user " + originalImageResult + " successfully uploaded the file: " + publicId);
-        } catch (Exception ex) {
-            logger.error("The user " + loggedInUser + " failed to load to Cloudinary the image file: " + file.getName());
-            logger.error(ex.getMessage());
+        if (avatar == null) {
+            return false;
         }
+
+        loggedInUser.setAvatar(avatar);
+
+        userRepository.save(loggedInUser);
+
+        return true;
     }
 
     @Override
-    public void uploadCommunityAvatar(MultipartFile file, Long communityId) {
-        Long userId = authenticationFacade.getUserId();
+    public boolean uploadCommunityAvatar(MultipartFile file, Long communityId) {
+        Long userId = authenticationFacade.getLoggedInUserId();
         Community community = communityRepository.findByIdAndModeratorId(communityId, userId)
                 .orElseThrow(() -> new EntityNotFoundException("Community not found by id: " + communityId));
-        try {
-            Image avatar = upload(file);
 
-            community.setAvatar(avatar);
+        Image avatar = upload(file);
 
-            communityRepository.save(community);
-        } catch (Exception ex) {
-            logger.error("The community with id `" + communityId + "` failed to load to Cloudinary the image file: " + file.getName());
-            logger.error(ex.getMessage());
+        if (avatar == null) {
+            return false;
         }
+
+        community.setAvatar(avatar);
+
+        communityRepository.save(community);
+
+        return true;
     }
 
-    public Image upload(MultipartFile file) throws IOException {
-        Map originalImageResult = cloudinary
-                .uploader()
-                .upload(file.getBytes(), ObjectUtils.emptyMap());
+    private Image upload(MultipartFile file) {
+        try {
+            Map originalImageResult = cloudinary
+                    .uploader()
+                    .upload(file.getBytes(), ObjectUtils.emptyMap());
 
-        String publicId = originalImageResult.get("public_id").toString();
-        String url = originalImageResult.get("url").toString();
+            String publicId = originalImageResult.get("public_id").toString();
+            String url = originalImageResult.get("url").toString();
 
-        Image image = new Image();
-        image.setImageId(publicId);
-        image.setOriginalUrl(url);
+            Image image = new Image();
+            image.setImageId(publicId);
+            image.setOriginalUrl(url);
 
-        return image;
+            return image;
+        } catch (Exception ex) {
+            logger.error("Failed to load to Cloudinary the image file: " + file.getName());
+            logger.error(ex.getMessage());
+
+            return null;
+        }
     }
 }

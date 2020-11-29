@@ -7,8 +7,8 @@ import org.neonsis.socialnetwork.model.domain.user.Friendship;
 import org.neonsis.socialnetwork.model.domain.user.FriendshipId;
 import org.neonsis.socialnetwork.model.domain.user.Status;
 import org.neonsis.socialnetwork.model.domain.user.User;
-import org.neonsis.socialnetwork.model.dto.mapper.UserMapper;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
+import org.neonsis.socialnetwork.model.mapper.UserMapper;
 import org.neonsis.socialnetwork.persistence.repository.FriendshipRepository;
 import org.neonsis.socialnetwork.persistence.repository.UserRepository;
 import org.neonsis.socialnetwork.service.FriendshipService;
@@ -19,6 +19,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * {@link Friendship} service interface.
+ *
+ * @author neonsis
+ */
 @Service
 @RequiredArgsConstructor
 public class FriendshipServiceImpl implements FriendshipService {
@@ -68,21 +73,21 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public Page<UserDto> getUserFriends(Long userId, String search, Pageable pageable) {
+    public Page<UserDto> findUserFriends(Long userId, String search, Pageable pageable) {
         Page<User> friends = friendshipRepository.findFriends(userId, search, pageable);
 
-        return toPageDto(friends);
+        return friends.map(this::toDto);
     }
 
     @Override
-    public Page<UserDto> getFollowers(Long userId, Pageable pageable) {
+    public Page<UserDto> findUserFollowers(Long userId, Pageable pageable) {
         Page<User> followers = friendshipRepository.findFollowers(userId, pageable);
 
-        return toPageDto(followers);
+        return followers.map(this::toDto);
     }
 
     @Override
-    public void delete(Long friendId) {
+    public void deleteById(Long friendId) {
         Friendship friendship = findFriendship(friendId)
                 .orElseThrow(() -> new EntityNotFoundException("Friendship not found by friend id: " + friendId));
 
@@ -90,16 +95,16 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public boolean isUserFriend(Long friendId) {
-        Optional<Friendship> friendship = findFriendship(friendId);
+    public boolean isUserFriend(Long userId) {
+        Optional<Friendship> friendship = findFriendship(userId);
 
         return friendship.isPresent() && friendship.get().getStatus().equals(Status.FRIEND);
     }
 
     @Override
-    public boolean isFollower(Long followerId) {
-        Optional<Friendship> friendship = findFriendship(followerId);
-        Long loggedInUserId = authenticationFacade.getUserId();
+    public boolean isFollower(Long userId) {
+        Optional<Friendship> friendship = findFriendship(userId);
+        Long loggedInUserId = authenticationFacade.getLoggedInUserId();
 
         return friendship.isPresent()
                 && friendship.get().getStatus().equals(Status.FOLLOWER)
@@ -108,8 +113,8 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     @Override
     public boolean isPendingFriendship(Long userId) {
-        Optional<Friendship> friendship = friendshipRepository.findFriendship(authenticationFacade.getUserId(), userId);
-        Long loggedInUserId = authenticationFacade.getUserId();
+        Optional<Friendship> friendship = friendshipRepository.findFriendship(authenticationFacade.getLoggedInUserId(), userId);
+        Long loggedInUserId = authenticationFacade.getLoggedInUserId();
 
         return friendship.isPresent()
                 && friendship.get().getStatus().equals(Status.FOLLOWER)
@@ -117,10 +122,10 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     private Optional<Friendship> findFriendship(Long userId) {
-        return friendshipRepository.findFriendship(authenticationFacade.getUserId(), userId);
+        return friendshipRepository.findFriendship(authenticationFacade.getLoggedInUserId(), userId);
     }
 
-    private Page<UserDto> toPageDto(Page<User> userPage) {
-        return userPage.map(userMapper::userToDto);
+    private UserDto toDto(User user) {
+        return userMapper.userToDto(user);
     }
 }

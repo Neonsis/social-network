@@ -7,7 +7,7 @@ import org.neonsis.socialnetwork.model.domain.chat.Message;
 import org.neonsis.socialnetwork.model.domain.user.User;
 import org.neonsis.socialnetwork.model.dto.chat.MessageCreateDto;
 import org.neonsis.socialnetwork.model.dto.chat.MessageDto;
-import org.neonsis.socialnetwork.model.dto.mapper.ChatMapper;
+import org.neonsis.socialnetwork.model.mapper.ChatMapper;
 import org.neonsis.socialnetwork.persistence.repository.ConversationRepository;
 import org.neonsis.socialnetwork.persistence.repository.MessageRepository;
 import org.neonsis.socialnetwork.service.ConversationService;
@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.Optional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
 
@@ -37,9 +36,10 @@ public class MessageServiceImpl implements MessageService {
     private final ChatMapper chatMapper;
 
     @Override
+    @Transactional
     public MessageDto save(MessageCreateDto messageCreateDto) {
         ConversationId conversationId =
-                conversationService.getConversationId(messageCreateDto.getRecipientId(), true).get(); // always exists
+                conversationService.findConversationId(messageCreateDto.getRecipientId(), true).get(); // always exists
 
         User loggedInUser = authenticationFacade.getLoggedInUser();
         Conversation conversation = conversationRepository.findById(conversationId).get();
@@ -57,7 +57,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Page<MessageDto> findConversationMessages(Long recipientId, Pageable pageable) {
-        Optional<ConversationId> conversationId = conversationService.getConversationId(recipientId, false);
+        Optional<ConversationId> conversationId = conversationService.findConversationId(recipientId, false);
 
         // If it's empty then logged in user never sent messages to the recipient
         if (conversationId.isEmpty()) {

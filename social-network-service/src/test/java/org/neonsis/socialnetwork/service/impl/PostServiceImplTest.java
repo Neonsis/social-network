@@ -10,7 +10,7 @@ import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
 import org.neonsis.socialnetwork.model.domain.post.Post;
 import org.neonsis.socialnetwork.model.domain.user.User;
-import org.neonsis.socialnetwork.model.dto.mapper.PostMapper;
+import org.neonsis.socialnetwork.model.mapper.PostMapper;
 import org.neonsis.socialnetwork.model.dto.post.PostCreateDto;
 import org.neonsis.socialnetwork.persistence.repository.CommunityRepository;
 import org.neonsis.socialnetwork.persistence.repository.PostRepository;
@@ -65,9 +65,9 @@ class PostServiceImplTest {
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(postRepository.findPostsByAuthorId(1L, null)).thenReturn(posts);
-        when(authenticationFacade.getUserId()).thenReturn(1L);
+        when(authenticationFacade.getLoggedInUserId()).thenReturn(1L);
 
-        postService.getUserPosts(1L, null);
+        postService.findUserPosts(1L, null);
 
         verify(userRepository, times(1)).findById(1L);
         verify(postRepository, times(1)).findPostsByAuthorId(1L, null);
@@ -76,7 +76,7 @@ class PostServiceImplTest {
 
     @Test
     public void testGetUserPostsFailure() {
-        assertThrows(EntityNotFoundException.class, () -> postService.getUserPosts(1L, null));
+        assertThrows(EntityNotFoundException.class, () -> postService.findUserPosts(1L, null));
     }
 
     @Test
@@ -86,7 +86,7 @@ class PostServiceImplTest {
 
         when(authenticationFacade.getLoggedInUser()).thenReturn(User.builder().id(1L).build());
 
-        postService.createUserPost(postCreateDto);
+        postService.saveUserPost(postCreateDto);
 
         ArgumentCaptor<Post> postArgument = ArgumentCaptor.forClass(Post.class);
         verify(authenticationFacade, times(1)).getLoggedInUser();
@@ -100,19 +100,19 @@ class PostServiceImplTest {
     public void testDeleteSuccess() {
         Post post = Post.builder().id(1L).build();
 
-        when(authenticationFacade.getUserId()).thenReturn(1L);
+        when(authenticationFacade.getLoggedInUserId()).thenReturn(1L);
         when(postRepository.findPostByIdAndAuthorId(1L, 1L)).thenReturn(Optional.of(post));
 
-        postService.delete(1L);
+        postService.deleteById(1L);
 
-        verify(authenticationFacade, times(1)).getUserId();
+        verify(authenticationFacade, times(1)).getLoggedInUserId();
         verify(postRepository, times(1)).findPostByIdAndAuthorId(1L, 1L);
         verify(postRepository, times(1)).delete(post);
     }
 
     @Test
     public void testDeleteFailure() {
-        assertThrows(EntityNotFoundException.class, () -> postService.delete(1L));
+        assertThrows(EntityNotFoundException.class, () -> postService.deleteById(1L));
     }
 
 
@@ -125,7 +125,7 @@ class PostServiceImplTest {
         when(postRepository.findById(1L)).thenReturn(Optional.of(post));
         when(postRepository.isAlreadyLiked(1L, 1L)).thenReturn(false);
 
-        postService.likePost(1L);
+        postService.like(1L);
 
         ArgumentCaptor<User> userArgument = ArgumentCaptor.forClass(User.class);
         verify(post, times(1)).addLike(userArgument.capture());
@@ -140,7 +140,7 @@ class PostServiceImplTest {
 
     @Test
     public void testLikePostFailurePostNotFound() {
-        assertThrows(EntityNotFoundException.class, () -> postService.likePost(1L));
+        assertThrows(EntityNotFoundException.class, () -> postService.like(1L));
     }
 
     @Test
@@ -152,7 +152,7 @@ class PostServiceImplTest {
         when(postRepository.isAlreadyLiked(1L, 1L)).thenReturn(true);
 
         InvalidWorkFlowException invalidWorkFlowException
-                = assertThrows(InvalidWorkFlowException.class, () -> postService.likePost(1L));
+                = assertThrows(InvalidWorkFlowException.class, () -> postService.like(1L));
 
         String actual = invalidWorkFlowException.getMessage();
 
@@ -167,7 +167,7 @@ class PostServiceImplTest {
         when(authenticationFacade.getLoggedInUser()).thenReturn(user);
         when(postRepository.findById(1L)).thenReturn(Optional.of(post));
 
-        postService.unlikePost(1L);
+        postService.unlike(1L);
 
         ArgumentCaptor<User> userArgument = ArgumentCaptor.forClass(User.class);
         verify(post, times(1)).removeLike(userArgument.capture());
@@ -181,6 +181,6 @@ class PostServiceImplTest {
 
     @Test
     public void testUnlikePostFailure() {
-        assertThrows(EntityNotFoundException.class, () -> postService.unlikePost(1L));
+        assertThrows(EntityNotFoundException.class, () -> postService.unlike(1L));
     }
 }

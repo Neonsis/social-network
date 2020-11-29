@@ -5,7 +5,7 @@ import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.model.domain.chat.Conversation;
 import org.neonsis.socialnetwork.model.domain.chat.ConversationId;
 import org.neonsis.socialnetwork.model.domain.user.User;
-import org.neonsis.socialnetwork.model.dto.mapper.UserMapper;
+import org.neonsis.socialnetwork.model.mapper.UserMapper;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.neonsis.socialnetwork.persistence.repository.ConversationRepository;
 import org.neonsis.socialnetwork.persistence.repository.UserRepository;
@@ -28,10 +28,10 @@ public class ConversationServiceImpl implements ConversationService {
 
     private final UserMapper userMapper;
 
-    public Optional<ConversationId> getConversationId(Long recipientId, boolean createIfNotExist) {
+    public Optional<ConversationId> findConversationId(Long recipientId, boolean createIfNotExist) {
         User recipient = userRepository.findById(recipientId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found by id: " + recipientId));
-        Long userId = authenticationFacade.getUserId();
+        Long userId = authenticationFacade.getLoggedInUserId();
 
         return conversationRepository
                 .findConversationByUsersId(userId, recipient.getId())
@@ -56,9 +56,9 @@ public class ConversationServiceImpl implements ConversationService {
     }
 
     @Override
-    public Page<UserDto> getLoggedInUserConversations(Pageable pageable) {
+    public Page<UserDto> findLoggedInUserConversations(Pageable pageable) {
         Page<User> userConversations
-                = conversationRepository.findUserConversations(authenticationFacade.getUserId(), pageable);
+                = conversationRepository.findUserConversations(authenticationFacade.getLoggedInUserId(), pageable);
 
         return userConversations.map(userMapper::userToDto);
     }

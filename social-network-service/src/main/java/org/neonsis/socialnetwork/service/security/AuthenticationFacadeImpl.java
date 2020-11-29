@@ -8,6 +8,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+/**
+ * AuthenticationFacade.
+ *
+ * @author neonsis
+ */
 @Component
 @RequiredArgsConstructor
 public class AuthenticationFacadeImpl implements AuthenticationFacade {
@@ -20,13 +25,13 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
     }
 
     @Override
-    public Long getUserId() {
+    public Long getLoggedInUserId() {
         return ((UserPrincipal) getAuthentication().getPrincipal()).getId();
     }
 
     @Override
     public User getLoggedInUser() {
-        Long userId = getUserId();
+        Long userId = getLoggedInUserId();
         return userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found by id: " + userId));
     }

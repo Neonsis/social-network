@@ -5,7 +5,7 @@ import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.model.domain.post.Comment;
 import org.neonsis.socialnetwork.model.domain.post.Post;
 import org.neonsis.socialnetwork.model.domain.user.User;
-import org.neonsis.socialnetwork.model.dto.mapper.CommentMapper;
+import org.neonsis.socialnetwork.model.mapper.CommentMapper;
 import org.neonsis.socialnetwork.model.dto.post.CommentCreateDto;
 import org.neonsis.socialnetwork.model.dto.post.CommentDto;
 import org.neonsis.socialnetwork.persistence.repository.CommentRepository;
@@ -14,6 +14,11 @@ import org.neonsis.socialnetwork.service.CommentService;
 import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.springframework.stereotype.Service;
 
+/**
+ * {@link Comment} service.
+ *
+ * @author neonsis
+ */
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
@@ -26,8 +31,7 @@ public class CommentServiceImpl implements CommentService {
     private final AuthenticationFacade authenticationFacade;
 
     @Override
-    public CommentDto create(CommentCreateDto commentDto) {
-        Long postId = commentDto.getPostId();
+    public CommentDto addCommentToPost(CommentCreateDto commentDto, Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found by id: " + postId));
 
@@ -47,14 +51,14 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteById(Long id) {
-        Long userId = authenticationFacade.getUserId();
+        Long userId = authenticationFacade.getLoggedInUserId();
         Comment comment = commentRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new EntityNotFoundException("Comment not found by id: " + id));
 
         commentRepository.delete(comment);
     }
 
-    public CommentDto toDto(Comment comment) {
+    private CommentDto toDto(Comment comment) {
         return commentMapper.commentToDto(comment);
     }
 }

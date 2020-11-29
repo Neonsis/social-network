@@ -1,25 +1,98 @@
 package org.neonsis.socialnetwork.service;
 
+import org.neonsis.socialnetwork.exception.EntityNotFoundException;
+import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
+import org.neonsis.socialnetwork.model.domain.post.Post;
 import org.neonsis.socialnetwork.model.dto.post.PostCreateDto;
 import org.neonsis.socialnetwork.model.dto.post.PostDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+/**
+ * {@link Post service interface.
+ *
+ * @author neonsis
+ */
 public interface PostService {
 
-    Page<PostDto> getUserPosts(Long userId, Pageable pageable);
+    /**
+     * Find published user posts.
+     *
+     * @param userId   the id of the user.
+     * @param pageable paging conditions.
+     *
+     * @return a page of user's posts.
+     *
+     * @throws EntityNotFoundException if user not found.
+     */
+    Page<PostDto> findUserPosts(Long userId, Pageable pageable);
 
-    Page<PostDto> getCommunityPosts(Long communityId, Pageable pageable);
+    /**
+     * Find published community posts.
+     *
+     * @param communityId the id of the community.
+     * @param pageable    paging conditions.
+     *
+     * @return a page of community's posts.
+     *
+     * @throws EntityNotFoundException if community not found.
+     */
+    Page<PostDto> findCommunityPosts(Long communityId, Pageable pageable);
 
-    Page<PostDto> getFeedPosts(Pageable pageable);
+    /**
+     * Find friends and communities posts of the current logged in user.
+     *
+     * @param pageable paging conditions.
+     *
+     * @return a page of posts.
+     */
+    Page<PostDto> findFeedPosts(Pageable pageable);
 
-    PostDto createUserPost(PostCreateDto postDto);
+    /**
+     * Create a new user's post.
+     *
+     * @param postDto a post object describing the post to create.
+     * @return the new post.
+     */
+    PostDto saveUserPost(PostCreateDto postDto);
 
-    PostDto createCommunityPost(PostCreateDto postCreateDto, Long communityId);
+    /**
+     * Create a new community's post.
+     *
+     * @param postDto     a profile object describing the profile to updated.
+     * @param communityId the id of the community.
+     *
+     * @return the new post.
+     *
+     * @throws EntityNotFoundException if community not found.
+     */
+    PostDto saveCommunityPost(PostCreateDto postDto, Long communityId);
 
-    void delete(Long postId);
+    /**
+     * Delete a post.
+     *
+     * @param postId the id of the post.
+     *
+     * @throws EntityNotFoundException if post not found.
+     */
+    void deleteById(Long postId);
 
-    void likePost(Long postId);
+    /**
+     * Like post.
+     *
+     * @param postId the id of the post.
+     *
+     * @throws EntityNotFoundException if post not found.
+     * @throws InvalidWorkFlowException if user already liked this post.
+     */
+    void like(Long postId);
 
-    void unlikePost(Long postId);
+    /**
+     * Unlike post.
+     *
+     * @param postId the id of the post.
+     *
+     * @throws EntityNotFoundException if post not found.
+     */
+    void unlike(Long postId);
 }
