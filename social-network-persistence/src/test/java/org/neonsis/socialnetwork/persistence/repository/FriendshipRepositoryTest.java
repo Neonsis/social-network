@@ -7,6 +7,7 @@ import org.neonsis.socialnetwork.model.domain.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Optional;
@@ -14,13 +15,24 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * {@link FriendshipRepositoryTest} Integration Test.
+ *
+ * @author neonsis
+ */
 @DataJpaTest
 @Sql("/test-data.sql")
 class FriendshipRepositoryTest {
 
+    /**
+     * The tested repository.
+     */
     @Autowired
     private FriendshipRepository friendshipRepository;
 
+    /**
+     * Test method for {@link FriendshipRepository#findFriendship(Long, Long)}.
+     */
     @Test
     public void testFindFriendshipExists() {
         Optional<Friendship> friendship = friendshipRepository.findFriendship(1L, 2L);
@@ -30,6 +42,9 @@ class FriendshipRepositoryTest {
         assertEquals(Status.FRIEND, actual.getStatus());
     }
 
+    /**
+     * Test method for {@link FriendshipRepository#findFriendship(Long, Long)}.
+     */
     @Test
     public void testFindFriendshipNotExists() {
         Optional<Friendship> friendship = friendshipRepository.findFriendship(1L, 4L);
@@ -37,6 +52,9 @@ class FriendshipRepositoryTest {
         assertTrue(friendship.isEmpty());
     }
 
+    /**
+     * Test method for {@link FriendshipRepository#findFriends(Long, String, Pageable)}.
+     */
     @Test
     public void testFindFriends() {
         Page<User> friends = friendshipRepository.findFriends(1L, "", null);
@@ -48,6 +66,9 @@ class FriendshipRepositoryTest {
         assertEquals(0, friends3.getSize());
     }
 
+    /**
+     * Test method for {@link FriendshipRepository#findFriends(Long, String, Pageable)}.
+     */
     @Test
     public void testFindFriendsWithSearch() {
         Page<User> friends = friendshipRepository.findFriends(1L, "Test2", null);
@@ -59,6 +80,9 @@ class FriendshipRepositoryTest {
         assertEquals(0, friends3.getSize());
     }
 
+    /**
+     * Test method for {@link FriendshipRepository#findFollowers(Long, Pageable)}.
+     */
     @Test
     public void testFindFollowers() {
         Page<User> friends = friendshipRepository.findFollowers(1L, null);

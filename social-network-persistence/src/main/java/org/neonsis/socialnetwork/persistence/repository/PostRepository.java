@@ -18,8 +18,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p WHERE p.author.id IN " +
             "(SELECT CASE WHEN f.invited.id = :userId THEN f.inviter.id ELSE f.invited.id END " +
-            "FROM Friendship f WHERE (f.invited.id = :userId OR f.inviter.id = :userId) AND (f.status = 1))")
-    Page<Post> findFriendsPosts(Long userId, Pageable pageable);
+            "FROM Friendship f WHERE (f.invited.id = :userId OR f.inviter.id = :userId) AND (f.status = 1))" +
+            "OR p.community.id IN (SELECT c.id FROM Community c WHERE (SELECT u FROM User u WHERE u.id =:userId) MEMBER OF c.followers)"
+    )
+    Page<Post> findFriendsAndCommunityPosts(Long userId, Pageable pageable);
 
     @Query("SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM Post p " +
             "JOIN p.usersLikes ul WHERE ul.id = :userId AND p.id = :postId")

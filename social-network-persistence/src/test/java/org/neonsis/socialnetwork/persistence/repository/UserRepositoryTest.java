@@ -11,30 +11,41 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * {@link UserRepositoryTest} Integration Test.
+ *
+ * @author neonsis
+ */
 @DataJpaTest
 @Sql("/test-data.sql")
 class UserRepositoryTest {
 
+    private static final String EMAIL = "test@gmail.com";
+
+    /**
+     * The tested repository.
+     */
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Test method for {@link UserRepository#findByEmail(String)}.
+     */
     @Test
     public void testFindByEmail() {
-        String expected = "test@gmail.com";
-
-        Optional<User> byEmail = userRepository.findByEmail(expected);
+        Optional<User> byEmail = userRepository.findByEmail(EMAIL);
 
         assertTrue(byEmail.isPresent());
-        assertEquals(expected, byEmail.get().getEmail());
+        assertEquals(EMAIL, byEmail.get().getEmail());
     }
 
+    /**
+     * Test method for {@link UserRepository#existsByEmail(String)}.
+     */
     @Test
     public void testExistsByEmail() {
-        String expected = "test@gmail.com";
+        boolean isExists = userRepository.existsByEmail(EMAIL);
 
-        Optional<User> byEmail = userRepository.findByEmail(expected);
-
-        assertTrue(byEmail.isPresent());
-        assertEquals(expected, byEmail.get().getEmail());
+        assertTrue(isExists);
     }
 }
