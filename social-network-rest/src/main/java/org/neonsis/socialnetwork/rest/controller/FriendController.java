@@ -34,7 +34,7 @@ public class FriendController {
             }) Pageable pageable,
             @RequestParam(name = "search", defaultValue = "", required = false) String search,
             @PathVariable Long id) {
-        Page<UserDto> friendsDto = friendshipService.getUserFriends(id, search, pageable);
+        Page<UserDto> friendsDto = friendshipService.findUserFriends(id, search, pageable);
 
         return ResponseEntity.ok(toPageResponse(friendsDto));
     }
@@ -46,7 +46,7 @@ public class FriendController {
                     @SortDefault(sort = "id", direction = Sort.Direction.ASC)
             }) Pageable pageable,
             @PathVariable Long id) {
-        Page<UserDto> pendingUsersDto = friendshipService.getFollowers(id, pageable);
+        Page<UserDto> pendingUsersDto = friendshipService.findUserFollowers(id, pageable);
         return ResponseEntity.ok(toPageResponse(pendingUsersDto));
     }
 
@@ -58,7 +58,7 @@ public class FriendController {
 
     @DeleteMapping("/friends/{id}")
     public ResponseEntity<HttpStatus> deleteFriend(@PathVariable Long id) {
-        friendshipService.delete(id);
+        friendshipService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 

@@ -22,7 +22,7 @@ public class CommunityController {
 
     @PostMapping
     public ResponseEntity<CommunityResponse> createCommunity(@RequestBody CommunityCreateDto communityCreateDto) {
-        CommunityDto communityDto = communityService.create(communityCreateDto);
+        CommunityDto communityDto = communityService.save(communityCreateDto);
         return ResponseEntity.ok(restMapper.communityDtoToResponse(communityDto));
     }
 }
