@@ -57,11 +57,13 @@ export const Post = observer(({post, like, unlike, loggedInUserId, onDelete, add
                 <Icon name="delete" className="post-delete" onClick={() => onDelete(post.id)}/>}
                 <Card.Meta className="post__date">{parseDate(new Date(createdAt))}</Card.Meta>
                 <Card.Description>
+                    <pre className="post-content">
                     {content}
+                    </pre>
                 </Card.Description>
                 <Divider/>
                 <Card.Content extra>
-                    <a href="" onClick={isLiked ? handleUnlike : handleLike}>
+                    <a onClick={isLiked ? handleUnlike : handleLike}>
                         <Icon className={isLiked ? "liked" : ""} name="like" size="large"/>
                         {countLike}
                     </a>

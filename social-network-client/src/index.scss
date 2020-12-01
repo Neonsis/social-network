@@ -11,7 +11,6 @@ body {
   min-width: 960px;
 }
 
-
 .app .primary-button,
 .app .primary-button:hover,
 .app .primary-button:active,
@@ -39,7 +38,7 @@ body {
 
 
 @media only screen and (min-width: 1200px) {
-  .ui.container {
-    width: 960px !important;
+  .app .ui.container {
+    width: 960px;
   }
 }

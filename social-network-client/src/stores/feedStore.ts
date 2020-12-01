@@ -28,7 +28,9 @@ export default class FeedStore {
             })
         } catch (error) {
             console.log(error);
-            this.loadFeedPosts = false;
+            runInAction(() => {
+                this.loadFeedPosts = false;
+            })
         }
     }
 
@@ -44,7 +46,9 @@ export default class FeedStore {
             })
         } catch (error) {
             console.log(error);
-            this.loadFeedPosts = false;
+            runInAction(() => {
+                this.loadFeedPosts = false;
+            })
         }
     }
 

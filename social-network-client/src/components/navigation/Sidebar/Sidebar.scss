@@ -5,6 +5,8 @@
   .main-sidebar {
     width: 157px;
     display: inline-block;
+    margin-right: 5px;
+    vertical-align: top;
 
     &__item {
       color: $color-primary-1-active;

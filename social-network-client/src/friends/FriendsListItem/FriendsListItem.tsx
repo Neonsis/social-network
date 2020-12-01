@@ -21,9 +21,9 @@ export const FriendsListItem = ({user, isFriend}: FriendsListItemProps) => {
             <List.Content>
                 <List.Header as={Link} to={`/id${user.id}`}>{user.firstName} {user.lastName}</List.Header>
                 <List.Description>
-                    <List.Item href="#" className="write-message">
+                    <List.Item className="write-message">
                         {isFriend
-                            ? "Написать сообщение"
+                            ? <Link to={`/chats/${user.id}`}>Написать сообщение</Link>
                             : <Button
                                 fluid
                                 className="profile__button primary-button"

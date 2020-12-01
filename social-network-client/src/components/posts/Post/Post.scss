@@ -18,6 +18,11 @@
     }
   }
 
+  .post-content {
+    white-space: pre-wrap;
+    font-size: $default-font-size;
+  }
+
   .post-delete {
     float: right;
     cursor: pointer;

@@ -1,22 +1,9 @@
 .main-layout {
   margin-top: 15px;
+  min-width: 960px;
 }
 
 .page-body {
   width: 795px;
   display: inline-block;
-}
-
-.wide-column {
-  display: inline-block;
-  max-width: 550px;
-  height: 100px;
-  background-color: red;
-}
-
-.narrow-column {
-  display: inline-block;
-  max-width: 230px;
-  height: 100px;
-  background-color: red;
 }

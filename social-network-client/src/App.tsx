@@ -7,6 +7,9 @@ import {AppLayout, AuthLayout, LoadingComponent} from "./components/layouts";
 import 'react-notifications-component/dist/theme.css';
 import ReactNotification from 'react-notifications-component'
 
+/**
+ * Root component of the app
+ */
 function App() {
     const rootStore = useContext(RootStoreContext);
     const {token, setAppLoaded, appLoaded} = rootStore.commonStore;

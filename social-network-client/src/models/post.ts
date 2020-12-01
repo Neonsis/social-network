@@ -1,10 +1,12 @@
 import {IUser} from "./user";
+import {ICommunity} from "./community";
 
 export interface IPost {
     id: string;
     content: string;
     createdAt: string;
     author: IUser;
+    community: ICommunity;
     isLiked: boolean;
     countLike: number;
     comments: IComment[];

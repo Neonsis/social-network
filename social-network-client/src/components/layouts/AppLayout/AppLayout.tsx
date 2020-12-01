@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from "react";
 import "./AppLayout.scss";
-import {Container, Grid} from "semantic-ui-react";
+import {Container} from "semantic-ui-react";
 import {Sidebar} from "../../navigation/Sidebar";
 import {Route, Switch} from "react-router-dom";
 import {EditProfilePage, ProfilePage} from "../../../pages";
@@ -23,23 +23,19 @@ export const AppLayout = () => {
 
     return (
         <Container className="main-layout">
-            <Grid>
-                <Grid.Column width={3}>
-                    <Sidebar/>
-                </Grid.Column>
-                <Grid.Column width={13}>
-                    <div className="page-body">
-                        <Switch>
-                            <Route exact path={Routes.PROFILE} component={ProfilePage}/>
-                            <Route exact path={Routes.EDIT} component={EditProfilePage}/>
-                            <Route exact path={Routes.FRIENDS} component={FriendsPage}/>
-                            <Route exact path={Routes.FEED} component={FeedPage}/>
-                            <Route exact path={Routes.CHATS} component={ChatList}/>
-                            <Route exact path={Routes.CHAT} component={Chat}/>
-                        </Switch>
-                    </div>
-                </Grid.Column>
-            </Grid>
+            <Sidebar/>
+            <div className="page-body">
+                <div className="page-body">
+                    <Switch>
+                        <Route exact path={Routes.PROFILE} component={ProfilePage}/>
+                        <Route exact path={Routes.EDIT} component={EditProfilePage}/>
+                        <Route exact path={Routes.FRIENDS} component={FriendsPage}/>
+                        <Route exact path={Routes.FEED} component={FeedPage}/>
+                        <Route exact path={Routes.CHATS} component={ChatList}/>
+                        <Route exact path={Routes.CHAT} component={Chat}/>
+                    </Switch>
+                </div>
+            </div>
         </Container>
     );
 };

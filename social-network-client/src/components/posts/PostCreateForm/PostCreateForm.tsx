@@ -1,6 +1,6 @@
-import React, {useContext, useState} from "react";
+import React, {ChangeEvent, useContext, useState} from "react";
 import "./PostCreateForm.scss";
-import {Button, Form, Segment} from "semantic-ui-react";
+import {Button, Form, Segment, TextAreaProps} from "semantic-ui-react";
 import {observer} from "mobx-react-lite";
 import {RootStoreContext} from "../../../stores/rootStore";
 
@@ -12,8 +12,8 @@ export const PostCreateForm = observer(() => {
         createPost
     } = rootStore.postStore;
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setContent(event.target.value);
+    const handleChange = (event: ChangeEvent<HTMLTextAreaElement>, data: TextAreaProps) => {
+        setContent(data.value!.toString());
     }
 
     const handleSubmit = () => {
@@ -27,11 +27,7 @@ export const PostCreateForm = observer(() => {
         <Segment>
             <Form className="post__form" onSubmit={handleSubmit}>
                 <Form.Group widths="equal">
-                    <Form.Input
-                        value={content}
-                        placeholder="Что у вас нового?"
-                        onChange={handleChange}
-                    />
+                    <Form.TextArea onChange={handleChange} placeholder='Что у вас нового?'/>
                     <Button
                         className="primary-button"
                         loading={saveLoadingPost}

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react';
-import {Grid, List} from "semantic-ui-react";
+import {Grid, List, Segment} from "semantic-ui-react";
 import {ChatListItem} from "../ChatListItem";
 import {RootStoreContext} from "../../../stores/rootStore";
 import {observer} from "mobx-react-lite";
@@ -22,6 +22,7 @@ export const ChatList = observer(() => {
         <Grid>
             <Grid.Column width={11}>
                 <List celled>
+                    {!chats.length && <Segment>У вас нет активных переписок</Segment>}
                     {chats.map(user => (
                         <ChatListItem user={user} key={user.id}/>
                     ))}

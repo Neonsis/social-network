@@ -83,6 +83,7 @@ export const SignUpForm = observer(() => {
                     <SemanticDatepicker
                         name="birthday"
                         onChange={onBirthdayChange}
+                        autoComplete="no"
                     />
                 </Form.Field>
                 <Form.Field error={errors.gender}>

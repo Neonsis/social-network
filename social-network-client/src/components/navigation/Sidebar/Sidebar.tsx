@@ -21,7 +21,6 @@ export const Sidebar = () => {
             <Menu.Item as={Link} to="/chats" className="main-sidebar__item">
                 <Icon name="chat"/>
                 Мессенджер
-                <Label>1</Label>
             </Menu.Item>
             <Menu.Item as={Link} to={`/friends`} className="main-sidebar__item">
                 <Icon name="user"/>
