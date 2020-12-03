@@ -13,12 +13,19 @@ import java.util.List;
 public class PostResponse {
 
     private String id;
+
     private String content;
+
     private UserResponse author;
+
     private CommunityResponse community;
+
     private Date createdAt;
+
     @JsonProperty(value = "isLiked")
     private Boolean isLiked;
+
     private Integer countLike;
+
     private List<CommentResponse> comments;
 }

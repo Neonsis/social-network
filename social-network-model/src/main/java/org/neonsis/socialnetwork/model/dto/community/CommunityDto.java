@@ -33,4 +33,9 @@ public class CommunityDto extends AbstractBaseDto {
      * The avatar of this community.
      */
     private ImageDto avatar;
+
+    /**
+     * The count of followers in this community.
+     */
+    private Integer followersCount;
 }

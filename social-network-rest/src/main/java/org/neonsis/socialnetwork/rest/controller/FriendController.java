@@ -41,14 +41,14 @@ public class FriendController {
     }
 
     @GetMapping("/users/{id}/followers")
-    public ResponseEntity<Page<UserResponse>> findUserFollowers(
+    public Page<UserResponse> findUserFollowers(
             @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "id", direction = Sort.Direction.ASC)
             }) Pageable pageable,
             @PathVariable Long id) {
         Page<UserDto> pendingUsersDto = friendshipService.findUserFollowers(id, pageable);
-        return ResponseEntity.ok(toPageResponse(pendingUsersDto));
+        return toPageResponse(pendingUsersDto);
     }
 
     @PostMapping("/friends/{id}")

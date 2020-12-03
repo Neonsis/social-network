@@ -3,6 +3,7 @@ package org.neonsis.socialnetwork.model.domain.community;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
 import org.neonsis.socialnetwork.model.domain.post.Post;
 import org.neonsis.socialnetwork.model.domain.user.Image;
@@ -53,6 +54,12 @@ public class Community extends AbstractBaseEntity {
      */
     @OneToMany(mappedBy = "community", cascade = {CascadeType.MERGE})
     private List<Post> posts = new ArrayList<>();
+
+    /**
+     * The count of followers in this community.
+     */
+    @Formula("(select count(*) from community_user cu where cu.community_id = id)")
+    private Integer followersCount;
 
     /**
      * Followers of this community.

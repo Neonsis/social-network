@@ -2,11 +2,11 @@ package org.neonsis.socialnetwork.rest.model.response;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.neonsis.socialnetwork.model.dto.user.ImageDto;
+import org.neonsis.socialnetwork.model.domain.user.Image;
 
 @Getter
 @Setter
-public class CommunityResponse {
+public class CommunityDetailsResponse {
 
     private String id;
 
@@ -14,7 +14,7 @@ public class CommunityResponse {
 
     private UserResponse moderator;
 
-    private Integer followersCount;
+    private Boolean isUserFollow;
 
-    private ImageDto avatar;
+    private Image avatar;
 }

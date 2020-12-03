@@ -27,9 +27,9 @@ public class UserController {
     private final ImageService imageService;
 
     @GetMapping("/me")
-    public ResponseEntity<UserResponse> getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+    public UserResponse getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
         UserDto user = userService.findById(userPrincipal.getId());
-        return ResponseEntity.ok(restMapper.userDtoToResponse(user));
+        return restMapper.userDtoToResponse(user);
     }
 
     @PostMapping("/uploadAvatar")
@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDetailsResponse> getProfileById(@PathVariable Long id) {
+    public UserDetailsResponse getProfileById(@PathVariable Long id) {
         UserDto user = userService.findById(id);
         UserDetailsResponse userDetailsResponse = restMapper.userDtoToDetailsResponse(user);
 
@@ -60,6 +60,6 @@ public class UserController {
             }
         }
 
-        return ResponseEntity.ok(userDetailsResponse);
+        return userDetailsResponse;
     }
 }

@@ -46,7 +46,7 @@ public class ChatController {
     }
 
     @GetMapping("/messages/{recipientId}")
-    public ResponseEntity<Page<MessageResponse>> getConversationMessages(
+    public Page<MessageResponse> getConversationMessages(
             @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "id", direction = Sort.Direction.DESC)
@@ -54,14 +54,14 @@ public class ChatController {
             @PathVariable Long recipientId) {
         Page<MessageDto> messages = messageService.findConversationMessages(recipientId, pageable);
 
-        return ResponseEntity.ok(messages.map(restMapper::messageDtoToResponse));
+        return messages.map(restMapper::messageDtoToResponse);
     }
 
     @GetMapping("/me/conversations")
-    public ResponseEntity<Page<UserResponse>> getUserConversations(
+    public Page<UserResponse> getUserConversations(
             @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE) Pageable pageable
     ) {
         Page<UserDto> conversations = conversationService.findLoggedInUserConversations(pageable);
-        return ResponseEntity.ok(conversations.map(restMapper::userDtoToResponse));
+        return conversations.map(restMapper::userDtoToResponse);
     }
 }

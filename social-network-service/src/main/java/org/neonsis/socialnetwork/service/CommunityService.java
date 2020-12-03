@@ -17,7 +17,6 @@ public interface CommunityService {
      * Find a community by id.
      *
      * @param communityId the id of the community.
-     *
      * @return the founded community.
      */
     CommunityDto findById(Long communityId);
@@ -27,7 +26,6 @@ public interface CommunityService {
      *
      * @param userId   the id of the user.
      * @param pageable paging conditions
-     *
      * @return the founded community.
      */
     Page<CommunityDto> findUserFollowCommunities(Long userId, Pageable pageable);
@@ -37,7 +35,6 @@ public interface CommunityService {
      *
      * @param moderatorId the id of the user.
      * @param pageable    paging conditions
-     *
      * @return the founded community.
      */
     Page<CommunityDto> findModeratorCommunities(Long moderatorId, Pageable pageable);
@@ -47,7 +44,6 @@ public interface CommunityService {
      *
      * @param search   the search parameter.
      * @param pageable paging conditions
-     *
      * @return the founded community.
      */
     Page<CommunityDto> findCommunities(String search, Pageable pageable);
@@ -56,10 +52,11 @@ public interface CommunityService {
      * Create a new community.
      *
      * @param communityCreateDto the community object describing the community to create.
-     *
      * @return the founded community.
      */
     CommunityDto save(CommunityCreateDto communityCreateDto);
+
+    boolean isFollowerOfCommunity(Long communityId);
 
     /**
      * Join to the community.

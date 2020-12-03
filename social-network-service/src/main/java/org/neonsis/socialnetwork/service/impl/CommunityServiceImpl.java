@@ -75,7 +75,16 @@ public class CommunityServiceImpl implements CommunityService {
 
         communityRepository.save(community);
 
+        community.setFollowersCount(0);
+
         return toDto(community);
+    }
+
+    @Override
+    public boolean isFollowerOfCommunity(Long communityId) {
+        User user = authenticationFacade.getLoggedInUser();
+
+        return communityRepository.isUserAlreadyJoined(communityId, user);
     }
 
     @Override

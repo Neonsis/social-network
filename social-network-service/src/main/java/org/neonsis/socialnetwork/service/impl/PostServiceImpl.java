@@ -1,6 +1,7 @@
 package org.neonsis.socialnetwork.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.neonsis.socialnetwork.exception.AccessForbiddenException;
 import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
 import org.neonsis.socialnetwork.model.domain.community.Community;
@@ -94,8 +95,18 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deleteById(Long postId) {
-        Post post = postRepository.findPostByIdAndAuthorId(postId, authenticationFacade.getLoggedInUserId())
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found by id: " + postId));
+
+        Long loggedInUserId = authenticationFacade.getLoggedInUserId();
+
+        if (
+                post.getAuthor() != null && !post.getAuthor().getId().equals(loggedInUserId) // author of the post is not loggedInUser
+                ||
+                post.getCommunity() != null && !post.getCommunity().getModerator().getId().equals(loggedInUserId) // moderator of the post is not loggedInUser
+        ) {
+            throw new AccessForbiddenException("");
+        }
 
         postRepository.delete(post);
     }
