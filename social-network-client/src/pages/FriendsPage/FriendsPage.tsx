@@ -4,7 +4,7 @@ import {observer} from "mobx-react-lite";
 import {RouteComponentProps} from "react-router";
 import "./FriendsPage.scss";
 import {RootStoreContext} from "../../stores/rootStore";
-import {FriendsList} from "../../friends/FriendsList";
+import {FriendsList} from "../../friends";
 import {Link} from "react-router-dom";
 
 export const FriendsPage = observer(({location}: RouteComponentProps) => {
@@ -24,7 +24,7 @@ export const FriendsPage = observer(({location}: RouteComponentProps) => {
     } = rootStore.friendsStore;
     const [searchValue, setSearchValue] = useState("");
 
-    let urlSearchParams = new URLSearchParams(location.search);
+    const urlSearchParams = new URLSearchParams(location.search);
 
     const isFollowersPage = urlSearchParams.get("section") === "followers";
     const userId = urlSearchParams.get("id") ? urlSearchParams.get("id") : user!.id;

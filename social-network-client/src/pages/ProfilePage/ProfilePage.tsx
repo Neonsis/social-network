@@ -44,6 +44,7 @@ export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({mat
                     isLoggedInUser={user?.isLoggedInUser}
                     isPendingFriendship={user?.isPendingFriendship}
                     isFollower={user?.isFollower}
+                    avatar={user?.avatar}
                 />
                 <ProfilesSection
                     userId={user?.id}

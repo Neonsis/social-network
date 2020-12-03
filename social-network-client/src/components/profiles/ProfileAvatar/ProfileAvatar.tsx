@@ -1,13 +1,14 @@
-import React, {useContext} from "react";
+import React, {ChangeEvent, useContext, useRef} from "react";
 import {Button, Dropdown, Image, Segment} from "semantic-ui-react";
 import NotFoundAvatar from "../../../assets/avatar_not_found.png";
 import "./ProfileAvatar.scss";
 import {Link} from "react-router-dom";
 import ContentLoader from "react-content-loader";
 import {RootStoreContext} from "../../../stores/rootStore";
+import {IPhoto} from "../../../models/user";
 
 export interface ProfileAvatarProps {
-    avatarUrl?: string;
+    avatar?: IPhoto;
     id: string;
     isFriend?: boolean;
     isLoggedInUser?: boolean;
@@ -17,7 +18,7 @@ export interface ProfileAvatarProps {
 }
 
 export const ProfileAvatar = (({
-                                   avatarUrl,
+                                   avatar,
                                    isLoggedInUser,
                                    isPendingFriendship,
                                    isFriend,
@@ -32,6 +33,31 @@ export const ProfileAvatar = (({
         cancelFriendship,
         confirmFriendship
     } = rootStore.friendshipStore;
+    const {
+        uploadAvatar
+    } = rootStore.imageStore;
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleUploadAvatar = async (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files![0];
+        uploadAvatar(file);
+    }
+
+    const uploadAvatarButton = () => (
+        <Button
+            fluid
+            className="profile__button secondary-button"
+            onClick={() => fileInputRef.current!.click()}
+        >
+            Загрузить аватарку
+            <input
+                ref={fileInputRef}
+                type="file"
+                hidden
+                onChange={handleUploadAvatar}
+            />
+        </Button>
+    );
 
     const writeMessageButton = () => (
         <Button
@@ -142,9 +168,10 @@ export const ProfileAvatar = (({
 
     return (
         <Segment className="profile__avatar-container">
-            <Image className="profile__avatar" src={avatarUrl ? avatarUrl : NotFoundAvatar}/>
+            <Image className="profile__avatar" src={avatar ? avatar.originalUrl : NotFoundAvatar}/>
             <div className="profile__buttons">
                 {isLoggedInUser && editButton()}
+                {isLoggedInUser && uploadAvatarButton()}
                 {!isLoggedInUser && writeMessageButton()}
                 {!isLoggedInUser && !isFriend && !isPendingFriendship && addToFriendsButton()}
                 {isPendingFriendship && pendingButton()}

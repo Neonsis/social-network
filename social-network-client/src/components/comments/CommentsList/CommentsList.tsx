@@ -4,6 +4,7 @@ import {Comment} from "semantic-ui-react";
 import AvatarNotFound from "../../../assets/avatar_not_found.png";
 import {Link} from "react-router-dom";
 import {parseDate} from "../../../util/util";
+import {cropImage} from "../../../util/image";
 
 export interface CommentsListProps {
     comments: IComment[];
@@ -14,7 +15,7 @@ export const CommentsList = ({comments}: CommentsListProps) => {
         <Comment.Group>
             {comments.map((comment => (
                 <Comment key={comment.id}>
-                    <Comment.Avatar src={comment.user.avatarUrl ? comment.user.avatarUrl : AvatarNotFound}/>
+                    <Comment.Avatar src={comment.user.avatar ? cropImage(comment.user.avatar.originalUrl) : AvatarNotFound}/>
                     <Comment.Content>
                         <Comment.Author
                             as={Link}

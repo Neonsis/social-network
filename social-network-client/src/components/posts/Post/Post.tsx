@@ -7,6 +7,7 @@ import {Link} from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import {CommentsSection} from "../../comments/CommentsSection";
 import {parseDate} from "../../../util/util";
+import {cropImage} from "../../../util/image";
 
 export interface PostProps {
     post: IPost;
@@ -44,7 +45,7 @@ export const Post = observer(({post, like, unlike, loggedInUserId, onDelete, add
                     size="huge"
                     avatar
                     className="post__avatar"
-                    src={author.avatarUrl ? author.avatarUrl : AvatarNotFound}
+                    src={author.avatar ? cropImage(author.avatar.originalUrl) : AvatarNotFound}
                 />
                 <Card.Header
                     className="post__author-name"

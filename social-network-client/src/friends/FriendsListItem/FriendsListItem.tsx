@@ -5,6 +5,7 @@ import "./FriendsListItem.scss";
 import {Link} from "react-router-dom";
 import AvatarNotFound from "../../assets/avatar_not_found.png";
 import {RootStoreContext} from "../../stores/rootStore";
+import {cropImage} from "../../util/image";
 
 export interface FriendsListItemProps {
     user: IUser;
@@ -17,7 +18,7 @@ export const FriendsListItem = ({user, isFriend}: FriendsListItemProps) => {
 
     return (
         <List.Item className="friends-list__item">
-            <Image avatar size="tiny" src={user.avatarUrl ? user.avatarUrl : AvatarNotFound}/>
+            <Image avatar size="tiny" src={user.avatar ? cropImage(user.avatar.originalUrl) : AvatarNotFound}/>
             <List.Content>
                 <List.Header as={Link} to={`/id${user.id}`}>{user.firstName} {user.lastName}</List.Header>
                 <List.Description>

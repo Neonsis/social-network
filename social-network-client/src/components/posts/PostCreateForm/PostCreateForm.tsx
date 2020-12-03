@@ -27,7 +27,7 @@ export const PostCreateForm = observer(() => {
         <Segment>
             <Form className="post__form" onSubmit={handleSubmit}>
                 <Form.Group widths="equal">
-                    <Form.TextArea onChange={handleChange} placeholder='Что у вас нового?'/>
+                    <Form.TextArea value={content} onChange={handleChange} placeholder='Что у вас нового?'/>
                     <Button
                         className="primary-button"
                         loading={saveLoadingPost}

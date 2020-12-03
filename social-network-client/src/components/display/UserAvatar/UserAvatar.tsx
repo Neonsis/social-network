@@ -4,6 +4,7 @@ import {IUser} from "../../../models/user";
 import {Link} from "react-router-dom";
 import AvatarNotFound from "../../../assets/avatar_not_found.png";
 import "./UserAvatar.scss";
+import {cropImage} from "../../../util/image";
 
 export interface UserAvatarProps {
     user: IUser
@@ -15,7 +16,7 @@ export const UserAvatar = ({user}: UserAvatarProps) => {
             <Link className="profile__item-avatar-wrapper" to={`/id${user.id}`}>
                 <Image className="profile__item-avatar"
                        avatar
-                       src={user.avatarUrl ? user.avatarUrl : AvatarNotFound}
+                       src={user.avatar ? cropImage(user.avatar.originalUrl) : AvatarNotFound}
                 />
                 <div>{user.firstName}</div>
             </Link>

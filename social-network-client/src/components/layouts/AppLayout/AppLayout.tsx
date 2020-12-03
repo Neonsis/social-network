@@ -9,6 +9,7 @@ import {FriendsPage} from "../../../pages/FriendsPage";
 import {FeedPage} from "../../../pages/FeedPage";
 import {Chat, ChatList} from "../../chat";
 import {RootStoreContext} from "../../../stores/rootStore";
+import {GroupFindPage} from "../../../pages/GroupFindPage";
 
 /**
  * Main layout of the app, when user is authenticated
@@ -33,6 +34,7 @@ export const AppLayout = () => {
                         <Route exact path={Routes.FEED} component={FeedPage}/>
                         <Route exact path={Routes.CHATS} component={ChatList}/>
                         <Route exact path={Routes.CHAT} component={Chat}/>
+                        <Route exact path={Routes.GROUPS} component={GroupFindPage}/>
                     </Switch>
                 </div>
             </div>

@@ -6,6 +6,7 @@ import {NavLink} from "react-router-dom";
 import AvatarNotFound from "../../../assets/avatar_not_found.png";
 import {ReactComponent as Logo} from "../../../assets/logo.svg";
 import {RootStoreContext} from "../../../stores/rootStore";
+import {cropImage} from "../../../util/image";
 
 export const AppNavBar = observer(() => {
     const rootStore = useContext(RootStoreContext);
@@ -24,7 +25,8 @@ export const AppNavBar = observer(() => {
                                 trigger={
                                     <React.Fragment>
                                         <span className="app-navbar__profile-name">{user.firstName}</span>
-                                        <Image avatar src={user.avatarUrl ? user.avatarUrl : AvatarNotFound}/>
+                                        <Image avatar
+                                               src={user.avatar ? cropImage(user.avatar.originalUrl) : AvatarNotFound}/>
                                     </React.Fragment>
                                 }
                                 className="app-navbar__dropdown"

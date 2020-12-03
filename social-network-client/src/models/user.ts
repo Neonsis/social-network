@@ -2,7 +2,7 @@ export interface IUser {
     id: string;
     firstName: string;
     lastName: string;
-    avatarUrl?: string;
+    avatar: IPhoto;
 }
 
 export interface IUserAuth extends IUser {
@@ -13,7 +13,7 @@ export interface IUserDetails {
     id: string;
     firstName: string;
     lastName: string;
-    avatarUrl: string;
+    avatar: IPhoto;
     email: string;
     isFriend: boolean;
     isLoggedInUser: boolean;
@@ -28,4 +28,9 @@ export interface IUserFormValues {
     birthday: Date;
     firstName?: string;
     lastName?: string;
+}
+
+export interface IPhoto {
+    imageId: string
+    originalUrl: string;
 }

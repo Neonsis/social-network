@@ -9,6 +9,7 @@ import "./Chat.scss";
 import InfiniteScroll from "react-infinite-scroll-component";
 import AvatarNotFound from "../../../assets/avatar_not_found.png";
 import {Link} from "react-router-dom";
+import {cropImage} from "../../../util/image";
 
 export interface ChatProps {
     recipientId: string;
@@ -63,7 +64,8 @@ export const Chat = observer(({match}: RouteComponentProps<ChatProps>) => {
                     <Link to={`/id${activeUserChat?.id}`}>
                         <span
                             className="chat__profile-name">{activeUserChat?.firstName} {activeUserChat?.lastName}</span>
-                        <Image avatar src={activeUserChat?.avatarUrl ? activeUserChat.avatarUrl : AvatarNotFound}/>
+                        <Image avatar
+                               src={activeUserChat?.avatar ? cropImage(activeUserChat.avatar.originalUrl) : AvatarNotFound}/>
                     </Link>
                 </Segment>
             </Grid.Column>

@@ -1,5 +1,5 @@
 import axios, {AxiosResponse} from "axios";
-import {IUser, IUserAuth, IUserDetails, IUserFormValues} from "../models/user";
+import {IPhoto, IUser, IUserAuth, IUserDetails, IUserFormValues} from "../models/user";
 import {IProfileDetails} from "../models/profile";
 import {Page} from "../models/page";
 import {IComment, ICommentFormValues, IPost, IPostFormValues} from "../models/post";
@@ -40,7 +40,20 @@ const requests = {
     del: (url: string) =>
         axios
             .delete(url)
-            .then(responseBody)
+            .then(responseBody),
+    postForm: (url: string, file: File) => {
+        let formData = new FormData();
+        formData.append('file', file);
+        formData.append('jsonBodyData',
+            new Blob([JSON.stringify(formData)], {
+                type: 'application/json'
+            }));
+        return axios
+            .post(url, formData, {
+                headers: {'Content-type': 'multipart/form-data'}
+            })
+            .then(responseBody);
+    }
 }
 
 const User = {
@@ -51,6 +64,7 @@ const User = {
     get: (userId: string): Promise<IUserDetails> => requests.get(`/users/${userId}`),
     profileDetails: (userId: string): Promise<IProfileDetails> => requests.get(`/profiles/${userId}`),
     saveDetails: (details: IProfileDetails): Promise<IProfileDetails> => requests.put(`/profiles`, details),
+    uploadAvatar: (photo: File): Promise<IPhoto> => requests.postForm("/users/uploadAvatar", photo)
 }
 
 const Friendship = {

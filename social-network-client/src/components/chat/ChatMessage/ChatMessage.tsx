@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import {parseDate} from "../../../util/util";
 import "./ChatMessage.scss";
 import AvatarNotFound from "../../../assets/avatar_not_found.png";
+import {cropImage} from "../../../util/image";
 
 export interface ChatMessageProps {
     message: IMessage;
@@ -15,7 +16,8 @@ export const ChatMessage = ({message}: ChatMessageProps) => {
         <Feed>
             <Feed.Event className="message">
                 <Feed.Label>
-                    <img src={message.sender.avatarUrl ? message.sender.avatarUrl : AvatarNotFound} alt="Avatar"/>
+                    <img src={message.sender.avatar ? cropImage(message.sender.avatar.originalUrl) : AvatarNotFound}
+                         alt="Avatar"/>
                 </Feed.Label>
                 <Feed.Content>
                     <Feed.Summary>
