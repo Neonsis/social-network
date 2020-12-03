@@ -42,7 +42,7 @@ export default class FriendsStore {
             runInAction(() => {
                 this.friends = [...this.friends, ...friends.content];
                 this.isLastFriends = friends.last;
-                this.page = this.page = 1;
+                this.page = this.page + 1;
                 this.loadingFriends = false;
             })
         } catch (e) {

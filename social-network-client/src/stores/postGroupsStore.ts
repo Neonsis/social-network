@@ -5,7 +5,7 @@ import agent from "../api/agent";
 
 const POST_PAGE_SIZE = 10;
 
-export default class PostStore {
+export default class GroupPostStore {
     rootStore: RootStore;
 
     constructor(rootStore: RootStore) {
@@ -15,17 +15,17 @@ export default class PostStore {
     @observable saveLoadingPost = false;
     @observable loadingPosts = false;
     @observable loadingInitialPosts = true;
-    @observable userPosts: IPost[] = [];
+    @observable groupPosts: IPost[] = [];
     @observable isLastPage: boolean = false;
     @observable pageNumber = 0;
 
-    @action createPost = async (post: IPostFormValues) => {
+    @action createPost = async (post: IPostFormValues, groupId: string) => {
         this.saveLoadingPost = true;
         try {
-            const createdPost = await agent.Post.createUserPost(post);
+            const createdPost = await agent.Post.createGroupPost(post, groupId);
             runInAction(() => {
                 createdPost.countLike = 0;
-                this.userPosts.unshift(createdPost);
+                this.groupPosts.unshift(createdPost);
             })
         } catch (error) {
             console.log(error);
@@ -40,19 +40,19 @@ export default class PostStore {
         try {
             await agent.Post.delete(postId);
             runInAction(() => {
-                this.userPosts = this.userPosts.filter(post => post.id !== postId);
+                this.groupPosts = this.groupPosts.filter(post => post.id !== postId);
             })
         } catch (error) {
             console.log(error);
         }
     }
 
-    @action loadUserPosts = async (userId: string) => {
+    @action loadGroupPosts = async (groupId: string) => {
         this.loadingInitialPosts = true;
         try {
-            const createdPost = await agent.Post.getUserPosts(userId, POST_PAGE_SIZE, 0);
+            const createdPost = await agent.Post.getGroupPosts(groupId, POST_PAGE_SIZE, 0);
             runInAction(() => {
-                this.userPosts = createdPost.content;
+                this.groupPosts = createdPost.content;
                 this.isLastPage = createdPost.last;
             })
         } catch (error) {
@@ -64,11 +64,11 @@ export default class PostStore {
         }
     }
 
-    @action fetchMorePosts = async (userId: string) => {
+    @action fetchMorePosts = async (groupId: string) => {
         try {
-            const createdPost = await agent.Post.getUserPosts(userId, POST_PAGE_SIZE, this.pageNumber + 1);
+            const createdPost = await agent.Post.getGroupPosts(groupId, POST_PAGE_SIZE, this.pageNumber + 1);
             runInAction(() => {
-                this.userPosts = [...this.userPosts, ...createdPost.content];
+                this.groupPosts = [...this.groupPosts, ...createdPost.content];
                 this.isLastPage = createdPost.last;
                 this.pageNumber = createdPost.number;
             })
@@ -81,7 +81,7 @@ export default class PostStore {
         try {
             await agent.Post.like(postId);
             runInAction(() => {
-                let find = this.userPosts.find(post => post.id === postId);
+                let find = this.groupPosts.find(post => post.id === postId);
                 find!.isLiked = true;
                 find!.countLike++;
             })
@@ -94,7 +94,7 @@ export default class PostStore {
         try {
             await agent.Post.unlike(postId);
             runInAction(() => {
-                let find = this.userPosts.find(post => post.id === postId);
+                let find = this.groupPosts.find(post => post.id === postId);
                 find!.isLiked = false;
                 find!.countLike--;
             })
@@ -107,7 +107,7 @@ export default class PostStore {
         try {
             const comment = await agent.Post.addComment(postId, values);
             runInAction(() => {
-                const post = this.userPosts.find(post => post.id === postId);
+                const post = this.groupPosts.find(post => post.id === postId);
                 post!.comments = [comment, ...post!.comments]
             })
         } catch (error) {

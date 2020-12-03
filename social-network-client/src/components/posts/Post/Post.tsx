@@ -1,6 +1,7 @@
 import React from "react";
 import {Card, Divider, Icon, Image} from "semantic-ui-react";
 import AvatarNotFound from "../../../assets/avatar_not_found.png";
+import GroupNotFound from "../../../assets/group_not_found.png";
 import "./Post.scss";
 import {ICommentFormValues, IPost} from "../../../models/post";
 import {Link} from "react-router-dom";
@@ -26,7 +27,8 @@ export const Post = observer(({post, like, unlike, loggedInUserId, onDelete, add
         id,
         isLiked,
         countLike,
-        comments
+        comments,
+        community
     } = post;
 
     const handleLike = () => {
@@ -45,17 +47,30 @@ export const Post = observer(({post, like, unlike, loggedInUserId, onDelete, add
                     size="huge"
                     avatar
                     className="post__avatar"
-                    src={author.avatar ? cropImage(author.avatar.originalUrl) : AvatarNotFound}
+                    src={
+                        author
+                            ? author.avatar.originalUrl
+                            ? cropImage(author.avatar.originalUrl)
+                            : AvatarNotFound
+                            : community?.avatar
+                            ? cropImage(community.avatar.originalUrl)
+                            : GroupNotFound
+                    }
                 />
                 <Card.Header
                     className="post__author-name"
                     as={Link}
-                    to={`/id${author.id}`}
+                    to={author ? `/id${author.id}` : `/group${community?.id}`}
                 >
-                    {author.firstName} {author.lastName}
+                    {
+                        author
+                            ? (author.firstName + " " + author.lastName)
+                            : community?.title
+                    }
+
                 </Card.Header>
-                {post.author.id === loggedInUserId &&
-                <Icon name="delete" className="post-delete" onClick={() => onDelete(post.id)}/>}
+                {post.author ? post.author.id === loggedInUserId : post.community?.moderator.id === loggedInUserId &&
+                    <Icon name="delete" className="post-delete" onClick={() => onDelete(post.id)}/>}
                 <Card.Meta className="post__date">{parseDate(new Date(createdAt))}</Card.Meta>
                 <Card.Description>
                     <pre className="post-content">

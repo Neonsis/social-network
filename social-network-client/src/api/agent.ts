@@ -4,6 +4,7 @@ import {IProfileDetails} from "../models/profile";
 import {Page} from "../models/page";
 import {IComment, ICommentFormValues, IPost, IPostFormValues} from "../models/post";
 import {IMessage} from "../models/chat";
+import {IGroup, IGroupDetails} from "../models/groups";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
@@ -77,9 +78,12 @@ const Friendship = {
 }
 
 const Post = {
-    create: (post: IPostFormValues): Promise<IPost> => requests.post(`/users/posts/`, post),
+    createUserPost: (post: IPostFormValues): Promise<IPost> => requests.post(`/users/posts/`, post),
+    createGroupPost: (post: IPostFormValues, groupId: string): Promise<IPost> => requests.post(`/communities/${groupId}/posts/`, post),
     getUserPosts: (userId: string, size: number, page: number)
         : Promise<Page<IPost[]>> => requests.get(`/users/${userId}/posts?page=${page}&size=${size}`),
+    getGroupPosts: (groupId: string, size: number, page: number)
+        : Promise<Page<IPost[]>> => requests.get(`/communities/${groupId}/posts?page=${page}&size=${size}`),
     feed: (size: number, page: number): Promise<Page<IPost[]>> => requests.get(`/users/feed?page=${page}&size=${size}`),
     delete: (postId: string): Promise<void> => requests.del(`/posts/${postId}`),
     like: (postId: string): Promise<void> => requests.post(`/posts/${postId}/like`, {}),
@@ -93,9 +97,21 @@ const Chat = {
         : Promise<Page<IMessage[]>> => requests.get(`/messages/${recipientId}?page=${page}&size=${size}`)
 }
 
+const Group = {
+    getGroup: (groupId: string): Promise<IGroupDetails> => requests.get(`/communities/${groupId}`),
+    getUserGroups: (userId: string, page: number, size: number)
+        : Promise<Page<IGroup[]>> => requests.get(`/users/${userId}/communities?page=${page}&size=${size}`),
+    getModeratorGroups: (moderatorId: string, page: number, size: number)
+        : Promise<Page<IGroup[]>> => requests.get(`/users/${moderatorId}/moderator/communities?page=${page}&size=${size}`),
+    createGroup: (title: string): Promise<IGroup> => requests.post("/communities", {title}),
+    follow: (groupId: string): Promise<void> => requests.post(`/communities/${groupId}/follow`, {}),
+    unfollow: (groupId: string): Promise<void> => requests.post(`/communities/${groupId}/unfollow`, {}),
+}
+
 export default {
     User,
     Friendship,
     Post,
-    Chat
+    Chat,
+    Group
 };

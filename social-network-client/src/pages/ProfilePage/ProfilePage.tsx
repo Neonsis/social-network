@@ -4,8 +4,7 @@ import {RouteComponentProps} from "react-router";
 import {RootStoreContext} from "../../stores/rootStore";
 import {observer} from "mobx-react-lite";
 import {ProfileAvatar, ProfileInfo, ProfilesSection} from "../../components/profiles";
-import {PostCreateForm} from "../../components/posts/PostCreateForm";
-import {PostsList} from "../../components/posts/PostsList";
+import {PostCreateForm, UserPostsList} from "../../components/posts";
 
 interface ProfilePageProps {
     userId: string;
@@ -13,6 +12,10 @@ interface ProfilePageProps {
 
 export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({match}) => {
     const rootStore = useContext(RootStoreContext);
+    const {
+        saveLoadingPost,
+        createPost
+    } = rootStore.postStore;
     const {
         loadingPage,
         user,
@@ -60,8 +63,8 @@ export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({mat
                     profileDetails={profileDetails!}
                     loading={loadingProfileDetails}
                 />
-                {user?.isLoggedInUser && <PostCreateForm/>}
-                <PostsList userId={match.params.userId}/>
+                {user?.isLoggedInUser && <PostCreateForm create={createPost} loading={saveLoadingPost}/>}
+                <UserPostsList userId={match.params.userId}/>
             </Grid.Column>
         </Grid>
     );

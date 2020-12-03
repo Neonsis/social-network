@@ -1,3 +1,3 @@
 export * from "./PostCreateForm";
 export * from "./Post";
-export * from "./PostsList";
+export * from "./UserPostsList";

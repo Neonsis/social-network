@@ -4,13 +4,13 @@ import {Post} from "../Post";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {observer} from "mobx-react-lite";
 import {Dimmer, Loader, Segment} from "semantic-ui-react";
-import "./PostsList.scss";
+import "./UserPostsList.scss";
 
 export interface PostListProps {
     userId: string;
 }
 
-export const PostsList = observer(({userId}: PostListProps) => {
+export const UserPostsList = observer(({userId}: PostListProps) => {
     const rootStore = useContext(RootStoreContext);
     const {
         loadUserPosts,

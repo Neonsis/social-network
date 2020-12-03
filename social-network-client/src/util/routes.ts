@@ -5,4 +5,5 @@ export const FRIENDS = "/friends";
 export const FEED = "/feed";
 export const CHATS = "/chats";
 export const GROUPS = "/groups";
+export const GROUP = "/group:groupId";
 export const CHAT = "/chats/:recipientId";

@@ -1,10 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import {Grid, Input, Menu, Segment} from "semantic-ui-react";
+import React, {useContext, useEffect, useState} from 'react';
+import {Button, Form, Grid, Header, Image, Input, Menu, Modal, Segment} from "semantic-ui-react";
 import {Link} from "react-router-dom";
 import "./GroupFindPage.scss";
 import {RouteComponentProps} from "react-router";
+import {GroupsList} from "../../components/groups/GroupsList";
+import {RootStoreContext} from "../../stores/rootStore";
+import {observer} from "mobx-react-lite";
+import ImageGroup from "../../assets/groups_create.png";
 
-export const GroupFindPage = ({location}: RouteComponentProps) => {
+export const GroupFindPage = observer(({location, history}: RouteComponentProps) => {
+    const rootStore = useContext(RootStoreContext);
+    const {
+        userGroups,
+        fetchMoreUserGroups,
+        isLastUserGroups,
+        loadUserGroups,
+        loadModeratorGroups,
+        creatGroup,
+        createGroupLoader
+    } = rootStore.groupsStore;
 
     const urlSearchParams = new URLSearchParams(location.search);
 
@@ -12,10 +26,21 @@ export const GroupFindPage = ({location}: RouteComponentProps) => {
     const isPopularTab = urlSearchParams.get("act") === "popular";
 
     const [searchValue, setSearchValue] = useState("");
+    const [open, setOpen] = useState(false)
+    const [title, setTitle] = useState("");
 
     useEffect(() => {
         setSearchValue("");
+        if (isAdminTab) {
+            loadModeratorGroups();
+        } else {
+            loadUserGroups();
+        }
     }, [isAdminTab, isPopularTab])
+
+    const handleSubmit = async () => {
+        await creatGroup(title);
+    }
 
     return (
         <Grid className="group-page">
@@ -24,15 +49,61 @@ export const GroupFindPage = ({location}: RouteComponentProps) => {
                     <Menu pointing secondary>
                         <Menu.Item
                             as={Link}
+                            to="/groups"
                             name="Все сообщества"
                             active={!isAdminTab}
                         />
                         <Menu.Item
                             as={Link}
-                            to={"/groups?tab=admin"}
+                            to="/groups?tab=admin"
                             name="Управление"
                             active={isAdminTab}
                         />
+                        <Modal
+                            onClose={() => setOpen(false)}
+                            onOpen={() => setOpen(true)}
+                            open={open}
+                            trigger={
+                                <Button
+                                    className="group__button primary-button"
+                                >
+                                    Создать сообщество
+                                </Button>
+                            }
+                        >
+                            <Modal.Header>Сообщество ВКонтакте</Modal.Header>
+                            <Modal.Content image>
+                                <Image size='medium' src={ImageGroup} wrapped/>
+                                <Modal.Description>
+                                    <Header>Создание сообщества</Header>
+                                    <Form>
+                                        <Form.Field inline>
+                                            <label>Название:</label>
+                                            <input
+                                                name="name"
+                                                placeholder="Название"
+                                                onChange={event => setTitle(event.currentTarget.value)}
+                                            />
+                                        </Form.Field>
+                                    </Form>
+                                </Modal.Description>
+                            </Modal.Content>
+                            <Modal.Actions>
+                                <Button
+                                    className="exit-button"
+                                    onClick={() => setOpen(false)}
+                                >
+                                    Выйти
+                                </Button>
+                                <Button
+                                    className="create-group-button primary-button"
+                                    onClick={handleSubmit}
+                                    loading={createGroupLoader}
+                                >
+                                    Создать сообщество
+                                </Button>
+                            </Modal.Actions>
+                        </Modal>
                     </Menu>
                     <Input
                         fluid
@@ -43,6 +114,11 @@ export const GroupFindPage = ({location}: RouteComponentProps) => {
                         className="group-search"
                         value={searchValue}
                         onChange={((event, data) => setSearchValue(data.value))}
+                    />
+                    <GroupsList
+                        groups={userGroups}
+                        hasMore={!isLastUserGroups}
+                        loadMore={fetchMoreUserGroups}
                     />
                 </Segment>
             </Grid.Column>
@@ -67,5 +143,5 @@ export const GroupFindPage = ({location}: RouteComponentProps) => {
                 </Menu>
             </Grid.Column>
         </Grid>
-    );
-};
+    )
+});
