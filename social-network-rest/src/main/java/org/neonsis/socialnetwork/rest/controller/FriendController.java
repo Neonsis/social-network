@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.neonsis.socialnetwork.rest.util.AppConstants.DEFAULT_PAGE_NUMBER;
 import static org.neonsis.socialnetwork.rest.util.AppConstants.DEFAULT_PAGE_SIZE;
 
-@Controller
+@RestController
 @RequestMapping
 @RequiredArgsConstructor
 public class FriendController {
@@ -27,7 +27,7 @@ public class FriendController {
     private final RestMapper restMapper;
 
     @GetMapping("/users/{id}/friends")
-    public ResponseEntity<Page<UserResponse>> findUserFriends(
+    public Page<UserResponse> findUserFriends(
             @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "id", direction = Sort.Direction.ASC)
@@ -36,7 +36,8 @@ public class FriendController {
             @PathVariable Long id) {
         Page<UserDto> friendsDto = friendshipService.findUserFriends(id, search, pageable);
 
-        return ResponseEntity.ok(toPageResponse(friendsDto));
+        Page<UserResponse> userResponses = toPageResponse(friendsDto);
+        return userResponses;
     }
 
     @GetMapping("/users/{id}/followers")

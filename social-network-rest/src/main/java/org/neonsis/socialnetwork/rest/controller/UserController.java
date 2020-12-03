@@ -21,19 +21,25 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
 
     private final RestMapper restMapper;
+
     private final UserService userService;
     private final FriendshipService friendshipService;
     private final ImageService imageService;
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-        return ResponseEntity.ok(restMapper.userPrincipalToResponse(userPrincipal));
+        UserDto user = userService.findById(userPrincipal.getId());
+        return ResponseEntity.ok(restMapper.userDtoToResponse(user));
     }
 
     @PostMapping("/uploadAvatar")
     public ResponseEntity<HttpStatus> uploadAvatar(@RequestParam("file") MultipartFile file) {
-        imageService.uploadUserAvatar(file);
-        return ResponseEntity.ok().build();
+        boolean isUploaded = imageService.uploadUserAvatar(file);
+        if(isUploaded){
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/{id}")

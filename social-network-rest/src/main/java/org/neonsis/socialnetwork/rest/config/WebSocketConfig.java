@@ -1,6 +1,8 @@
 package org.neonsis.socialnetwork.rest.config;
 
 import org.neonsis.socialnetwork.rest.security.JwtTokenProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -24,11 +26,14 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 import java.util.List;
+import java.util.Objects;
 
 @Configuration
 @EnableWebSocketMessageBroker
 @Order(Ordered.HIGHEST_PRECEDENCE + 99)
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketConfig.class);
 
     @Autowired
     private JwtTokenProvider tokenProvider;
@@ -77,6 +82,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                     }
                 } else if (StompCommand.DISCONNECT.equals(accessor.getCommand())) {
                     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                    if (Objects.nonNull(authentication)) {
+                        logger.info("Disconnected Auth : " + authentication.getName());
+                    } else {
+                        logger.info("Disconnected Sess : " + accessor.getSessionId());
+                    }
                 }
                 return message;
             }

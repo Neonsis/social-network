@@ -1,6 +1,7 @@
 package org.neonsis.socialnetwork.rest.model.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.neonsis.socialnetwork.model.dto.chat.MessageDto;
 import org.neonsis.socialnetwork.model.dto.community.CommunityDto;
 import org.neonsis.socialnetwork.model.dto.post.CommentDto;
@@ -14,8 +15,6 @@ import org.neonsis.socialnetwork.service.security.UserPrincipal;
 public interface RestMapper {
 
     UserAuthResponse userDtoToAuthResponse(UserDto userDto);
-
-    UserResponse userPrincipalToResponse(UserPrincipal userPrincipal);
 
     UserResponse userDtoToResponse(UserDto userDto);
 

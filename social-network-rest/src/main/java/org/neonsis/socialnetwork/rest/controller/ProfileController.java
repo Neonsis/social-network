@@ -7,7 +7,6 @@ import org.neonsis.socialnetwork.rest.model.response.ProfileResponse;
 import org.neonsis.socialnetwork.rest.security.CurrentUser;
 import org.neonsis.socialnetwork.service.ProfileService;
 import org.neonsis.socialnetwork.service.security.UserPrincipal;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,16 +20,18 @@ public class ProfileController {
     private final RestMapper restMapper;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProfileResponse> getProfile(@PathVariable Long id) {
+    public ProfileResponse getProfile(@PathVariable Long id) {
         ProfileDto profile = profileService.findByUserId(id);
-        return ResponseEntity.ok(toDto(profile));
+        return toDto(profile);
     }
 
     @PutMapping
-    public ResponseEntity<ProfileResponse> updateProfile(@Valid @RequestBody ProfileDto profileDto, @CurrentUser UserPrincipal userPrincipal) {
+    public ProfileResponse updateProfile(
+            @Valid @RequestBody ProfileDto profileDto,
+            @CurrentUser UserPrincipal userPrincipal
+    ) {
         profileDto.setId(userPrincipal.getId());
-        ProfileDto updated = profileService.update(profileDto);
-        return ResponseEntity.ok(toDto(updated));
+        return toDto(profileService.update(profileDto));
     }
 
     private ProfileResponse toDto(ProfileDto profileDto) {

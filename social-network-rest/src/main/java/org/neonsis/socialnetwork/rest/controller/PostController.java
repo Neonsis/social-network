@@ -34,52 +34,52 @@ public class PostController {
     private final CommentService commentService;
 
     @GetMapping("/users/{userId}/posts")
-    public ResponseEntity<Page<PostResponse>> getUserPosts(
+    public Page<PostResponse> getUserPosts(
             @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
             }) Pageable pageable,
             @PathVariable Long userId) {
         Page<PostDto> userPosts = postService.findUserPosts(userId, pageable);
-        Page<PostResponse> map = userPosts.map(restMapper::postDtoToResponse);
-        return ResponseEntity.ok(map);
+        return userPosts.map(restMapper::postDtoToResponse);
     }
 
     @GetMapping("/communities/{communityId}/posts")
-    public ResponseEntity<Page<PostResponse>> getCommunityPosts(
+    public Page<PostResponse> getCommunityPosts(
             @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
             }) Pageable pageable,
             @PathVariable Long communityId) {
         Page<PostDto> communityPosts = postService.findCommunityPosts(communityId, pageable);
-        Page<PostResponse> map = communityPosts.map(restMapper::postDtoToResponse);
-        return ResponseEntity.ok(map);
+        return communityPosts.map(restMapper::postDtoToResponse);
     }
 
     @GetMapping("/users/feed")
-    public ResponseEntity<Page<PostResponse>> getFeedPosts(
+    public Page<PostResponse> getFeedPosts(
             @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
             }) Pageable pageable
     ) {
-        return ResponseEntity.ok(postService.findFeedPosts(pageable).map(restMapper::postDtoToResponse));
+        return postService.findFeedPosts(pageable).map(restMapper::postDtoToResponse);
     }
 
     @PostMapping("/users/posts")
-    public ResponseEntity<PostResponse> createUserPost(@Valid @RequestBody PostCreateDto postCreateDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public PostResponse createUserPost(@Valid @RequestBody PostCreateDto postCreateDto) {
         PostDto createdPost = postService.saveUserPost(postCreateDto);
-        return ResponseEntity.ok(restMapper.postDtoToResponse(createdPost));
+        return restMapper.postDtoToResponse(createdPost);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/communities/{communityId}/posts")
-    public ResponseEntity<PostResponse> createCommunityPost(
+    public PostResponse createCommunityPost(
             @PathVariable Long communityId,
             @Valid @RequestBody PostCreateDto postCreateDto
     ) {
         PostDto createdPost = postService.saveCommunityPost(postCreateDto, communityId);
-        return ResponseEntity.ok(restMapper.postDtoToResponse(createdPost));
+        return restMapper.postDtoToResponse(createdPost);
     }
 
     @PostMapping("/posts/{postId}/like")
@@ -100,12 +100,13 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/posts/{postId}/comments")
-    public ResponseEntity<CommentResponse> addComment(
+    public CommentResponse addComment(
             @PathVariable Long postId,
             @Valid @RequestBody CommentCreateDto commentCreateDto
     ) {
         CommentDto createdComment = commentService.addCommentToPost(commentCreateDto, postId);
-        return new ResponseEntity<>(restMapper.commentDtoToResponse(createdComment), HttpStatus.CREATED);
+        return restMapper.commentDtoToResponse(createdComment);
     }
 }
