@@ -97,7 +97,6 @@ class UserServiceImplTest {
         assertEquals(registrationDto.getFirstName(), actualUser.getFirstName());
         assertEquals(registrationDto.getLastName(), actualUser.getLastName());
         assertEquals("ENCRYPTED_PASSWORD", actualUser.getEncryptedPassword());
-        assertEquals(Collections.singleton(role), actualUser.getRoles());
         assertEquals(registrationDto.getGender(), actualProfile.getGender());
         assertEquals(registrationDto.getBirthday(), actualProfile.getBirthday());
     }

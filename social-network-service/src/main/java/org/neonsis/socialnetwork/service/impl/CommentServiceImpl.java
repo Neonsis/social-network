@@ -13,6 +13,7 @@ import org.neonsis.socialnetwork.persistence.repository.PostRepository;
 import org.neonsis.socialnetwork.service.CommentService;
 import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * {@link Comment} service.
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
  * @author neonsis
  */
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 

@@ -1,0 +1,50 @@
+version: '3.7'
+
+# Define services
+services:
+  # App backend service
+
+  # Database Service (Mysql)
+  db:
+    image: mysql
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: social_network
+      MYSQL_USER: social-network
+      MYSQL_PASSWORD: social-network
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d
+
+  app-server:
+    build:
+      context: social-network-rest
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    restart: on-failure
+    environment:
+      SPRING_DATABASE_URL: "jdbc:mysql://db:3306/social_network?serverTimezone=UTC&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
+      SPRING_DATABASE_USER: "social-network"
+      SPRING_DATABASE_PASSWORD: "social-network"
+      CLOUDINARY_NAME: ${CLOUDINARY_NAME}
+      CLOUDINARY_KEY: ${CLOUDINARY_KEY}
+      CLOUDINARY_SECRET: ${CLOUDINARY_SECRET}
+    depends_on:
+      - db
+
+  app-client:
+    build:
+      context: social-network-client
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: http://127.0.0.1:8081/api
+    ports:
+      - "80:80"
+    restart: always
+    depends_on:
+      - app-server
+    volumes:
+      - ./docker/nginx/:/etc/nginx/conf.d

@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
 

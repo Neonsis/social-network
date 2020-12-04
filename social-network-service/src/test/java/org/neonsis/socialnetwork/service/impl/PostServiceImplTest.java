@@ -96,7 +96,7 @@ class PostServiceImplTest {
         assertEquals("TEST", actual.getContent());
     }
 
-    @Test
+   /* @Test
     public void testDeleteSuccess() {
         Post post = Post.builder().id(1L).build();
 
@@ -108,7 +108,7 @@ class PostServiceImplTest {
         verify(authenticationFacade, times(1)).getLoggedInUserId();
         verify(postRepository, times(1)).findPostByIdAndAuthorId(1L, 1L);
         verify(postRepository, times(1)).delete(post);
-    }
+    }*/
 
     @Test
     public void testDeleteFailure() {
