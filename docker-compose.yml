@@ -24,6 +24,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8081:8081"
+      - "8000:8000" # debug port
     restart: on-failure
     environment:
       SPRING_DATABASE_URL: "jdbc:mysql://db:3306/social_network?serverTimezone=UTC&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
