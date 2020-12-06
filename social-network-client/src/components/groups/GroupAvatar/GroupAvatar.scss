@@ -1,0 +1,18 @@
+@import "src/theme/variables.scss";
+
+.group__section-item {
+  margin: 5px 9px 0;
+  font-size: $default-font-size;
+
+  .group__item-avatar-wrapper {
+    .group__item-avatar {
+      width: 47px;
+      height: auto;
+      margin: 0 !important;
+    }
+  }
+
+  .group__header {
+    margin-left: 10px;
+  }
+}

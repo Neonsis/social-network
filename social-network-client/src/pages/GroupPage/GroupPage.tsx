@@ -8,6 +8,8 @@ import {RootStoreContext} from "../../stores/rootStore";
 import "./GroupPage.scss";
 import {PostCreateForm} from "../../components/posts";
 import {GroupPostsList} from "../../components/posts/GroupPostsList";
+import {ProfilesSection} from "../../components/profiles";
+import {UserAvatar} from "../../components/display";
 
 interface GroupPageProps {
     groupId: string;
@@ -25,11 +27,15 @@ export const GroupPage = observer<RouteComponentProps<GroupPageProps>>(({match})
         loadGroup,
         follow,
         unfollow,
+        groupLoader,
         followLoader,
+        loadGroupFollowers,
+        groupFollowers,
+        groupFollowersLoader
     } = rootStore.groupsStore;
     const {
         createPost,
-        saveLoadingPost
+        saveLoadingPost,
     } = rootStore.groupPostStore;
 
     const isAdmin = group?.moderator.id === user?.id;
@@ -68,7 +74,12 @@ export const GroupPage = observer<RouteComponentProps<GroupPageProps>>(({match})
 
     useEffect(() => {
         loadGroup(groupId);
+        loadGroupFollowers(groupId);
     }, [groupId])
+
+    if (groupLoader) {
+        return null;
+    }
 
     return (
         <div>
@@ -93,7 +104,16 @@ export const GroupPage = observer<RouteComponentProps<GroupPageProps>>(({match})
                     <GroupPostsList groupId={groupId}/>
                 </Grid.Column>
                 <Grid.Column width={5}>
-                    test
+                    <ProfilesSection
+                        userId={user?.id}
+                        header="Подписчики"
+                        profiles={groupFollowers!}
+                        loading={groupFollowersLoader}
+                    />
+                    <Segment>
+                        <Header as="h4">Администратор</Header>
+                        <UserAvatar key={group?.moderator.id} user={group?.moderator!}/>
+                    </Segment>
                 </Grid.Column>
             </Grid>
         </div>

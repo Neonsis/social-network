@@ -5,6 +5,7 @@ import {RootStoreContext} from "../../stores/rootStore";
 import {observer} from "mobx-react-lite";
 import {ProfileAvatar, ProfileInfo, ProfilesSection} from "../../components/profiles";
 import {PostCreateForm, UserPostsList} from "../../components/posts";
+import {FollowSection} from "../../components/profiles/FollowSection";
 
 interface ProfilePageProps {
     userId: string;
@@ -21,7 +22,10 @@ export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({mat
         user,
         loadUser,
         profileDetails,
-        loadingProfileDetails
+        loadingProfileDetails,
+        loadingGroups,
+        profileGroups,
+        loadUserGroups
     } = rootStore.profileStore;
     const {
         loadProfileFriends,
@@ -35,7 +39,8 @@ export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({mat
         loadUser(userId);
         loadProfileFriends(userId)
         loadProfileDetails(userId);
-    }, [match.params.userId, loadUser, loadProfileFriends, loadProfileDetails])
+        loadUserGroups(userId);
+    }, [match.params.userId, loadUser, loadProfileFriends, loadProfileDetails, loadUserGroups])
 
     return (
         <Grid>
@@ -54,6 +59,10 @@ export const ProfilePage = observer<RouteComponentProps<ProfilePageProps>>(({mat
                     header="Друзья"
                     profiles={profileFriends!}
                     loading={loadingFriends}
+                />
+                <FollowSection
+                    groups={profileGroups!}
+                    loading={loadingGroups}
                 />
             </Grid.Column>
             <Grid.Column width={11}>

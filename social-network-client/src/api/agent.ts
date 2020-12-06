@@ -99,10 +99,14 @@ const Chat = {
 
 const Group = {
     getGroup: (groupId: string): Promise<IGroupDetails> => requests.get(`/communities/${groupId}`),
-    getUserGroups: (userId: string, page: number, size: number)
-        : Promise<Page<IGroup[]>> => requests.get(`/users/${userId}/communities?page=${page}&size=${size}`),
-    getModeratorGroups: (moderatorId: string, page: number, size: number)
-        : Promise<Page<IGroup[]>> => requests.get(`/users/${moderatorId}/moderator/communities?page=${page}&size=${size}`),
+    getGroups: (page: number, size: number, sort: string, search: string)
+        : Promise<Page<IGroup[]>> => requests.get(`/communities?page=${page}&size=${size}&search=${search}&sort=${sort}`),
+    getUserGroups: (userId: string, search: string, page: number, size: number)
+        : Promise<Page<IGroup[]>> => requests.get(`/users/${userId}/communities?page=${page}&size=${size}&search=${search}`),
+    getModeratorGroups: (moderatorId: string, search: string, page: number, size: number)
+        : Promise<Page<IGroup[]>> => requests.get(`/users/${moderatorId}/moderator/communities?page=${page}&size=${size}&search=${search}`),
+    getGroupFollowers: (groupId: string, page: number, size: number)
+        : Promise<Page<IUser[]>> => requests.get(`/communities/${groupId}/followers`),
     createGroup: (title: string): Promise<IGroup> => requests.post("/communities", {title}),
     follow: (groupId: string): Promise<void> => requests.post(`/communities/${groupId}/follow`, {}),
     unfollow: (groupId: string): Promise<void> => requests.post(`/communities/${groupId}/unfollow`, {}),

@@ -69,7 +69,7 @@ export const Post = observer(({post, like, unlike, loggedInUserId, onDelete, add
                     }
 
                 </Card.Header>
-                {post.author ? post.author.id === loggedInUserId : post.community?.moderator.id === loggedInUserId &&
+                {(post.author ? post.author.id === loggedInUserId : post.community?.moderator.id === loggedInUserId) &&
                     <Icon name="delete" className="post-delete" onClick={() => onDelete(post.id)}/>}
                 <Card.Meta className="post__date">{parseDate(new Date(createdAt))}</Card.Meta>
                 <Card.Description>

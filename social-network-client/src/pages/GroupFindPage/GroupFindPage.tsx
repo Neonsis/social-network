@@ -13,9 +13,10 @@ export const GroupFindPage = observer(({location, history}: RouteComponentProps)
     const {
         userGroups,
         fetchMoreUserGroups,
-        isLastUserGroups,
+        isLastGroups,
         loadUserGroups,
         loadModeratorGroups,
+        loadPopularGroups,
         creatGroup,
         createGroupLoader
     } = rootStore.groupsStore;
@@ -25,6 +26,8 @@ export const GroupFindPage = observer(({location, history}: RouteComponentProps)
     const isAdminTab = urlSearchParams.get("tab") === "admin";
     const isPopularTab = urlSearchParams.get("act") === "popular";
 
+    console.log(isPopularTab);
+
     const [searchValue, setSearchValue] = useState("");
     const [open, setOpen] = useState(false)
     const [title, setTitle] = useState("");
@@ -32,11 +35,27 @@ export const GroupFindPage = observer(({location, history}: RouteComponentProps)
     useEffect(() => {
         setSearchValue("");
         if (isAdminTab) {
-            loadModeratorGroups();
+            loadModeratorGroups(searchValue);
         } else {
-            loadUserGroups();
+            if (isPopularTab) {
+                loadPopularGroups(searchValue);
+            } else {
+                loadUserGroups(searchValue);
+            }
         }
     }, [isAdminTab, isPopularTab])
+
+    useEffect(() => {
+        if (isAdminTab) {
+            loadModeratorGroups(searchValue);
+        } else {
+            if (isPopularTab) {
+                loadPopularGroups(searchValue);
+            } else {
+                loadUserGroups(searchValue);
+            }
+        }
+    }, [searchValue])
 
     const handleSubmit = async () => {
         await creatGroup(title);
@@ -117,8 +136,8 @@ export const GroupFindPage = observer(({location, history}: RouteComponentProps)
                     />
                     <GroupsList
                         groups={userGroups}
-                        hasMore={!isLastUserGroups}
-                        loadMore={fetchMoreUserGroups}
+                        hasMore={!isLastGroups}
+                        loadMore={() => fetchMoreUserGroups(searchValue)}
                     />
                 </Segment>
             </Grid.Column>

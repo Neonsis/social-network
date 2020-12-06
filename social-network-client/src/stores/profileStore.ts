@@ -3,6 +3,8 @@ import {action, observable, runInAction} from "mobx";
 import agent from "../api/agent";
 import {IUserDetails} from "../models/user";
 import {IProfileDetails} from "../models/profile";
+import {IGroup} from "../models/groups";
+import {Page} from "../models/page";
 
 export default class ProfileStore {
     rootStore: RootStore;
@@ -17,6 +19,24 @@ export default class ProfileStore {
     @observable loadingSaveProfileDetails = false;
     @observable user: IUserDetails | null = null;
     @observable profileDetails: IProfileDetails | null = null;
+    @observable profileGroups: Page<IGroup[]> | null = null;
+    @observable loadingGroups = true;
+
+    @action loadUserGroups = async (userId: string) => {
+        this.loadingGroups = true;
+        try {
+            const userGroups = await agent.Group.getUserGroups(userId, "", 0, 6);
+            runInAction(() => {
+                this.profileGroups = userGroups;
+                this.loadingGroups = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+                this.loadingGroups = false;
+            })
+        }
+    }
 
     @action loadUser = async (userId: string) => {
         this.loadingPage = true;

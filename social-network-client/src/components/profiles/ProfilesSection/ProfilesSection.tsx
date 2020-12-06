@@ -1,7 +1,7 @@
 import React from "react";
 import {Header, Segment} from "semantic-ui-react";
 import {IUser} from "../../../models/user";
-import {UserAvatar} from "../../display/UserAvatar";
+import {UserAvatar} from "../../display";
 import {Page} from "../../../models/page";
 import ContentLoader from "react-content-loader";
 import {Link} from "react-router-dom";
