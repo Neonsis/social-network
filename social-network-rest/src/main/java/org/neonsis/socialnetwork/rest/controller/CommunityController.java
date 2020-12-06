@@ -9,10 +9,14 @@ import org.neonsis.socialnetwork.rest.model.response.CommunityDetailsResponse;
 import org.neonsis.socialnetwork.rest.model.response.CommunityResponse;
 import org.neonsis.socialnetwork.rest.model.response.UserResponse;
 import org.neonsis.socialnetwork.service.CommunityService;
+import org.neonsis.socialnetwork.service.ImageService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -25,6 +29,8 @@ import static org.neonsis.socialnetwork.rest.util.AppConstants.DEFAULT_PAGE_SIZE
 public class CommunityController {
 
     private final CommunityService communityService;
+    private final ImageService imageService;
+
     private final RestMapper restMapper;
 
     @GetMapping("/communities/{id}")
@@ -80,6 +86,19 @@ public class CommunityController {
     public CommunityResponse createCommunity(@Valid @RequestBody CommunityCreateDto communityCreateDto) {
         CommunityDto communityDto = communityService.save(communityCreateDto);
         return restMapper.communityDtoToResponse(communityDto);
+    }
+
+    @PostMapping("/community/{communityId}/uploadAvatar")
+    public ResponseEntity<HttpStatus> uploadAvatar(
+            @RequestParam("file") MultipartFile file,
+            @PathVariable Long communityId
+    ) {
+        boolean isUploaded = imageService.uploadCommunityAvatar(file, communityId);
+        if (isUploaded) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("/communities/{id}/follow")

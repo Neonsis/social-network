@@ -28,7 +28,7 @@ public class Comment extends AbstractBaseEntity {
     /**
      * The comment's content.
      */
-    @Column(name = "content", nullable = false, length = 255)
+    @Column(name = "content",columnDefinition = "TEXT",nullable = false)
     private String content;
 
     /**

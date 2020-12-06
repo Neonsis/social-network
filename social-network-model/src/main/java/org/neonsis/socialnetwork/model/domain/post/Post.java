@@ -33,7 +33,7 @@ public class Post extends AbstractBaseEntity {
     /**
      * The post's content.
      */
-    @Column(name = "content", nullable = false, length = 255)
+    @Column(name = "content",columnDefinition = "TEXT",nullable = false)
     private String content;
 
     /**
