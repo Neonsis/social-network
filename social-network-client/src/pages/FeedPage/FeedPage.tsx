@@ -24,7 +24,7 @@ export const FeedPage = observer(() => {
 
     useEffect(() => {
         getFeedPosts();
-    }, [getFeedPosts])
+    }, [])
 
     if (loadFeedPosts) return (
         <Segment textAlign="center">

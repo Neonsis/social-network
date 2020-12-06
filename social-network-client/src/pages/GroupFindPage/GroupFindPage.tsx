@@ -26,8 +26,6 @@ export const GroupFindPage = observer(({location, history}: RouteComponentProps)
     const isAdminTab = urlSearchParams.get("tab") === "admin";
     const isPopularTab = urlSearchParams.get("act") === "popular";
 
-    console.log(isPopularTab);
-
     const [searchValue, setSearchValue] = useState("");
     const [open, setOpen] = useState(false)
     const [title, setTitle] = useState("");

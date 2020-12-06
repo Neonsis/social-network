@@ -19,8 +19,9 @@ export default class FeedStore {
 
     @action getFeedPosts = async () => {
         this.loadFeedPosts = true;
+        this.page = 0;
         try {
-            let posts = await agent.Post.feed(POST_PAGE_SIZE, 0);
+            let posts = await agent.Post.feed(POST_PAGE_SIZE, this.page);
             runInAction(() => {
                 this.feedPosts = posts.content;
                 this.isLastPage = posts.last;
