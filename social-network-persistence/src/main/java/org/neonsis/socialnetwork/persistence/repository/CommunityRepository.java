@@ -13,13 +13,17 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
 
     Optional<Community> findByIdAndModeratorId(Long communityId, Long userId);
 
-    @Query("SELECT c FROM Community c WHERE :user MEMBER OF c.followers")
-    Page<Community> findUserCommunities(User user, Pageable pageable);
+    @Query("SELECT c FROM Community c WHERE :user MEMBER OF c.followers AND LOWER(c.title) LIKE LOWER(CONCAT('%',:search,'%'))")
+    Page<Community> findUserCommunities(User user, String search, Pageable pageable);
 
-    @Query("SELECT c FROM Community c WHERE c.moderator.id = :userId")
-    Page<Community> findModeratorCommunities(Long userId, Pageable pageable);
+    @Query("SELECT c FROM Community c WHERE c.moderator.id = :userId AND LOWER(c.title) LIKE LOWER(CONCAT('%',:search,'%'))")
+    Page<Community> findModeratorCommunities(Long userId, String search, Pageable pageable);
 
-    Page<Community> findByTitleLike(String title, Pageable pageable);
+    @Query("SELECT c FROM Community c WHERE LOWER(c.title) LIKE LOWER(CONCAT('%',:search,'%'))")
+    Page<Community> findCommunities(String search, Pageable pageable);
+
+    @Query("SELECT c.followers FROM Community c WHERE c.id = :communityId")
+    Page<User> findCommunityFollowers(Long communityId, Pageable pageable);
 
     @Query("SELECT CASE WHEN (COUNT(c) > 0) THEN true ELSE false END " +
             "FROM Community c WHERE c.id = :communityId AND :user MEMBER OF c.followers")

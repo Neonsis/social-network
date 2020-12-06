@@ -3,6 +3,7 @@ package org.neonsis.socialnetwork.service;
 import org.neonsis.socialnetwork.model.domain.community.Community;
 import org.neonsis.socialnetwork.model.dto.community.CommunityCreateDto;
 import org.neonsis.socialnetwork.model.dto.community.CommunityDto;
+import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -28,7 +29,7 @@ public interface CommunityService {
      * @param pageable paging conditions
      * @return the founded community.
      */
-    Page<CommunityDto> findUserFollowCommunities(Long userId, Pageable pageable);
+    Page<CommunityDto> findUserFollowCommunities(Long userId, String search, Pageable pageable);
 
     /**
      * Find communities that a user has created.
@@ -37,7 +38,9 @@ public interface CommunityService {
      * @param pageable    paging conditions
      * @return the founded community.
      */
-    Page<CommunityDto> findModeratorCommunities(Long moderatorId, Pageable pageable);
+    Page<CommunityDto> findModeratorCommunities(Long moderatorId, String search, Pageable pageable);
+
+    Page<UserDto> findCommunityFollowers(Long communityId, Pageable pageable);
 
     /**
      * Find all communities by title.

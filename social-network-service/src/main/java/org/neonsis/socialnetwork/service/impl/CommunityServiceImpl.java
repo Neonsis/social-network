@@ -7,7 +7,9 @@ import org.neonsis.socialnetwork.model.domain.community.Community;
 import org.neonsis.socialnetwork.model.domain.user.User;
 import org.neonsis.socialnetwork.model.dto.community.CommunityCreateDto;
 import org.neonsis.socialnetwork.model.dto.community.CommunityDto;
+import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.neonsis.socialnetwork.model.mapper.CommunityMapper;
+import org.neonsis.socialnetwork.model.mapper.UserMapper;
 import org.neonsis.socialnetwork.persistence.repository.CommunityRepository;
 import org.neonsis.socialnetwork.persistence.repository.UserRepository;
 import org.neonsis.socialnetwork.service.CommunityService;
@@ -28,6 +30,7 @@ public class CommunityServiceImpl implements CommunityService {
     private final AuthenticationFacade authenticationFacade;
 
     private final CommunityMapper communityMapper;
+    private final UserMapper userMapper;
 
     @Override
     public CommunityDto findById(Long communityId) {
@@ -38,28 +41,35 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public Page<CommunityDto> findUserFollowCommunities(Long userId, Pageable pageable) {
+    public Page<CommunityDto> findUserFollowCommunities(Long userId,String search, Pageable pageable) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found by id : " + userId));
 
-        Page<Community> userCommunities = communityRepository.findUserCommunities(user, pageable);
+        Page<Community> userCommunities = communityRepository.findUserCommunities(user,search, pageable);
 
         return userCommunities.map(this::toDto);
     }
 
     @Override
-    public Page<CommunityDto> findModeratorCommunities(Long moderatorId, Pageable pageable) {
+    public Page<CommunityDto> findModeratorCommunities(Long moderatorId,String search, Pageable pageable) {
         userRepository.findById(moderatorId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found by id : " + moderatorId));
 
-        Page<Community> userCommunities = communityRepository.findModeratorCommunities(moderatorId, pageable);
+        Page<Community> userCommunities = communityRepository.findModeratorCommunities(moderatorId,search, pageable);
 
         return userCommunities.map(this::toDto);
+    }
+
+    @Override
+    public Page<UserDto> findCommunityFollowers(Long communityId, Pageable pageable) {
+        Page<User> followers = communityRepository.findCommunityFollowers(communityId, pageable);
+
+        return followers.map(userMapper::userToDto);
     }
 
     @Override
     public Page<CommunityDto> findCommunities(String search, Pageable pageable) {
-        Page<Community> communities = communityRepository.findByTitleLike(search, pageable);
+        Page<Community> communities = communityRepository.findCommunities(search, pageable);
 
         return communities.map(this::toDto);
     }
