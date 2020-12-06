@@ -21,6 +21,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8081:8081"
+      - "8000:8000" # debug port
     restart: on-failure
     environment:
       SPRING_DATABASE_URL: "jdbc:mysql://db:3306/social_network?serverTimezone=UTC&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
@@ -31,18 +32,22 @@ services:
       CLOUDINARY_SECRET: ${CLOUDINARY_SECRET}
     depends_on:
       - db
-    command: "java -jar social-network.jar"
+    command: "java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000 -jar social-network.jar"
 
   app-client:
     build:
       context: social-network-client
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       args:
         REACT_APP_API_URL: http://127.0.0.1:8081/api
     ports:
-      - "80:80"
+      - "3000:3000"
     restart: always
     depends_on:
       - app-server
     volumes:
-      - ./docker/nginx/:/etc/nginx/conf.d
+      - './social-network-client:/app'
+      - '/app/node_modules'
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    stdin_open: true
