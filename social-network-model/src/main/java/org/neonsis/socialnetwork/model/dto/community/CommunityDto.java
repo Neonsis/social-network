@@ -4,11 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.neonsis.socialnetwork.model.domain.community.Community;
 import org.neonsis.socialnetwork.model.dto.base.AbstractBaseDto;
-import org.neonsis.socialnetwork.model.dto.post.PostDto;
 import org.neonsis.socialnetwork.model.dto.user.ImageDto;
-import org.neonsis.socialnetwork.model.dto.user.UserDto;
-
-import java.util.List;
+import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
 
 /**
  * CommunityDto. {@link Community}
@@ -27,7 +24,7 @@ public class CommunityDto extends AbstractBaseDto {
     /**
      * The creator of this community.
      */
-    private UserDto moderator;
+    private ProfileDto moderator;
 
     /**
      * The avatar of this community.

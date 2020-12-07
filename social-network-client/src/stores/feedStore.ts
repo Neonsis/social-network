@@ -36,20 +36,15 @@ export default class FeedStore {
     }
 
     @action fetchMorePosts = async () => {
-        this.loadFeedPosts = true;
         try {
             let post = await agent.Post.feed(POST_PAGE_SIZE, this.page + 1);
             runInAction(() => {
                 this.feedPosts = [...this.feedPosts, ...post.content];
                 this.isLastPage = post.last;
                 this.page = post.number;
-                this.loadFeedPosts = false;
             })
         } catch (error) {
             console.log(error);
-            runInAction(() => {
-                this.loadFeedPosts = false;
-            })
         }
     }
 

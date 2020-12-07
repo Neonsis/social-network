@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Formula;
 import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
 import org.neonsis.socialnetwork.model.domain.community.Community;
+import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.User;
 
 import javax.persistence.*;
@@ -41,11 +42,11 @@ public class Post extends AbstractBaseEntity {
      */
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(
-            name = "post_user",
+            name = "post_profile",
             joinColumns = {@JoinColumn(name = "post_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+            inverseJoinColumns = {@JoinColumn(name = "profile_id")}
     )
-    private User author;
+    private Profile author;
 
     /**
      * The community which made this post
@@ -73,7 +74,7 @@ public class Post extends AbstractBaseEntity {
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<User> usersLikes = new ArrayList<>();
+    private List<Profile> usersLikes = new ArrayList<>();
 
     /**
      * Comments that users writes to this post.
@@ -93,7 +94,7 @@ public class Post extends AbstractBaseEntity {
      * @param user the user that likes this post.
      * @throws NullPointerException if {@param user} is null.
      */
-    public void addLike(User user) {
+    public void addLike(Profile user) {
         Objects.requireNonNull(user, "User parameter is not initialized");
         if (this.usersLikes == null) {
             this.usersLikes = new ArrayList<>();
@@ -106,7 +107,7 @@ public class Post extends AbstractBaseEntity {
      *
      * @param user the user which we want to remove.
      */
-    public void removeLike(User user) {
+    public void removeLike(Profile user) {
         Objects.requireNonNull(user, "User parameter is not initialized");
         if (this.usersLikes == null) {
             return;
@@ -180,9 +181,9 @@ public class Post extends AbstractBaseEntity {
          *
          * @param author the author of the post being built.
          * @return the builder.
-         * @see Post#setAuthor(User)
+         * @see Post#setAuthor(Profile)
          */
-        public Post.PostBuilder author(User author) {
+        public Post.PostBuilder author(Profile author) {
             this.getEntity().setAuthor(author);
             return this;
         }

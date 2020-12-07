@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
+import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.User;
 
 import javax.persistence.*;
@@ -28,7 +29,7 @@ public class Comment extends AbstractBaseEntity {
     /**
      * The comment's content.
      */
-    @Column(name = "content",columnDefinition = "TEXT",nullable = false)
+    @Column(name = "content", columnDefinition = "TEXT", nullable = false)
     private String content;
 
     /**
@@ -41,7 +42,7 @@ public class Comment extends AbstractBaseEntity {
      * The user who created this comment.
      */
     @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    private User user;
+    private Profile profile;
 
     /**
      * Get a new {@link CommentBuilder}.
@@ -91,12 +92,12 @@ public class Comment extends AbstractBaseEntity {
         /**
          * Set the comment user and return the builder.
          *
-         * @param user the user of the comment being built.
+         * @param profile the user of the comment being built.
          * @return the builder.
-         * @see Comment#setUser(User)
+         * @see Comment#setProfile(Profile)
          */
-        public CommentBuilder user(User user) {
-            this.getEntity().setUser(user);
+        public CommentBuilder profile(Profile profile) {
+            this.getEntity().setProfile(profile);
             return this;
         }
     }

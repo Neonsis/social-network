@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.neonsis.socialnetwork.model.domain.chat.Conversation;
 import org.neonsis.socialnetwork.model.domain.chat.ConversationId;
+import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
 
 /**
@@ -23,10 +24,10 @@ public class ConversationDto {
     /**
      * The first user in the conversation.
      */
-    private UserDto userOne;
+    private ProfileDto userOne;
 
     /**
      * The second user in the conversation.
      */
-    private UserDto userTwo;
+    private ProfileDto userTwo;
 }

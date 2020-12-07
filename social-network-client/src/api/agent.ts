@@ -1,5 +1,5 @@
 import axios, {AxiosResponse} from "axios";
-import {IPhoto, IUser, IUserAuth, IUserDetails, IUserFormValues} from "../models/user";
+import {IPhoto, IToken, IUser, IUserDetails, IUserFormValues} from "../models/user";
 import {IProfileDetails} from "../models/profile";
 import {Page} from "../models/page";
 import {IComment, ICommentFormValues, IPost, IPostFormValues} from "../models/post";
@@ -58,21 +58,21 @@ const requests = {
 }
 
 const User = {
-    login: (user: IUserFormValues): Promise<IUserAuth> => requests.post("/auth/signin", user),
+    login: (user: IUserFormValues): Promise<IToken> => requests.post("/auth/signin", user),
     logout: (): Promise<void> => requests.post("/auth/logout", {}),
-    signup: (user: IUserFormValues): Promise<IUserAuth> => requests.post("/auth/signup", user),
-    current: (): Promise<IUser> => requests.get("/users/me"),
-    get: (userId: string): Promise<IUserDetails> => requests.get(`/users/${userId}`),
+    signup: (user: IUserFormValues): Promise<IToken> => requests.post("/auth/signup", user),
+    current: (): Promise<IUser> => requests.get("/profiles/me"),
+    get: (userId: string): Promise<IUserDetails> => requests.get(`/profiles/${userId}`),
     profileDetails: (userId: string): Promise<IProfileDetails> => requests.get(`/profiles/${userId}`),
     saveDetails: (details: IProfileDetails): Promise<IProfileDetails> => requests.put(`/profiles`, details),
-    uploadAvatar: (photo: File): Promise<IPhoto> => requests.postForm("/users/uploadAvatar", photo)
+    uploadAvatar: (photo: File): Promise<IPhoto> => requests.postForm("/profiles/uploadAvatar", photo)
 }
 
 const Friendship = {
     getFriends: (userId: string, search: string, page: number, size: number)
         : Promise<Page<IUser[]>> => requests.get(`/users/${userId}/friends?size=${size}&page=${page}&search=${search}`),
     getFollowers: (userId: string, page: number, size: number)
-        : Promise<Page<IUser[]>> => requests.get(`/users/${userId}/followers`),
+        : Promise<Page<IUser[]>> => requests.get(`/users/${userId}/followers?size=${size}&page=${page}`),
     post: (friendId: string): Promise<void> => requests.post(`/friends/${friendId}`, {}),
     delete: (friendId: string): Promise<void> => requests.del(`/friends/${friendId}`)
 }
@@ -106,7 +106,7 @@ const Group = {
     getModeratorGroups: (moderatorId: string, search: string, page: number, size: number)
         : Promise<Page<IGroup[]>> => requests.get(`/users/${moderatorId}/moderator/communities?page=${page}&size=${size}&search=${search}`),
     getGroupFollowers: (groupId: string, page: number, size: number)
-        : Promise<Page<IUser[]>> => requests.get(`/communities/${groupId}/followers`),
+        : Promise<Page<IUser[]>> => requests.get(`/communities/${groupId}/followers?page=${page}&size=${size}`),
     createGroup: (title: string): Promise<IGroup> => requests.post("/communities", {title}),
     follow: (groupId: string): Promise<void> => requests.post(`/communities/${groupId}/follow`, {}),
     unfollow: (groupId: string): Promise<void> => requests.post(`/communities/${groupId}/unfollow`, {}),

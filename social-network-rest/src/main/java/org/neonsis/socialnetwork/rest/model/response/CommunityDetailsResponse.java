@@ -12,7 +12,7 @@ public class CommunityDetailsResponse {
 
     private String title;
 
-    private UserResponse moderator;
+    private ProfileResponse moderator;
 
     private Boolean isUserFollow;
 

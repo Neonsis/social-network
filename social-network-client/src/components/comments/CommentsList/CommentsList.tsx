@@ -15,13 +15,13 @@ export const CommentsList = ({comments}: CommentsListProps) => {
         <Comment.Group>
             {comments.map((comment => (
                 <Comment key={comment.id}>
-                    <Comment.Avatar src={comment.user.avatar ? cropImage(comment.user.avatar.originalUrl) : AvatarNotFound}/>
+                    <Comment.Avatar src={comment.profile.avatar ? cropImage(comment.profile.avatar.originalUrl) : AvatarNotFound}/>
                     <Comment.Content>
                         <Comment.Author
                             as={Link}
-                            to={`/id${comment.user.id}`}
+                            to={`/id${comment.profile.id}`}
                         >
-                            {comment.user.firstName} {comment.user.lastName}
+                            {comment.profile.firstName} {comment.profile.lastName}
                         </Comment.Author>
                         <Comment.Metadata>
                             <div>{parseDate(new Date(comment.createdAt))}</div>

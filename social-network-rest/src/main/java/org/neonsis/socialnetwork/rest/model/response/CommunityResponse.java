@@ -12,7 +12,7 @@ public class CommunityResponse {
 
     private String title;
 
-    private UserResponse moderator;
+    private ProfileResponse moderator;
 
     private Integer followersCount;
 

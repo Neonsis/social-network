@@ -1,18 +1,18 @@
 package org.neonsis.socialnetwork.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.neonsis.socialnetwork.exception.AccessForbiddenException;
 import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
 import org.neonsis.socialnetwork.model.domain.community.Community;
 import org.neonsis.socialnetwork.model.domain.post.Post;
+import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.User;
 import org.neonsis.socialnetwork.model.dto.post.PostCreateDto;
 import org.neonsis.socialnetwork.model.dto.post.PostDto;
 import org.neonsis.socialnetwork.model.mapper.PostMapper;
 import org.neonsis.socialnetwork.persistence.repository.CommunityRepository;
 import org.neonsis.socialnetwork.persistence.repository.PostRepository;
-import org.neonsis.socialnetwork.persistence.repository.UserRepository;
+import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;
 import org.neonsis.socialnetwork.service.PostService;
 import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.springframework.data.domain.Page;
@@ -31,8 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
     private final CommunityRepository communityRepository;
+    private final ProfileRepository profileRepository;
 
     private final PostMapper postMapper;
 
@@ -40,8 +40,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<PostDto> findUserPosts(Long authorId, Pageable pageable) {
-        userRepository.findById(authorId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found by id: " + authorId));
+        profileRepository.findById(authorId)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found by id: " + authorId));
 
         Page<Post> userPosts = postRepository.findPostsByAuthorId(authorId, pageable);
 
@@ -67,11 +67,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto saveUserPost(PostCreateDto postDto) {
-        User user = authenticationFacade.getLoggedInUser();
+        Long loggedInUserId = authenticationFacade.getLoggedInUserId();
+        Profile profile = profileRepository.findById(loggedInUserId)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found by id: " + loggedInUserId));
 
         Post post = Post.builder()
                 .content(postDto.getContent())
-                .author(user)
+                .author(profile)
                 .build();
 
         postRepository.save(post);
@@ -100,35 +102,38 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found by id: " + postId));
 
-        Long loggedInUserId = authenticationFacade.getLoggedInUserId();
-
+        authenticationFacade.getLoggedInUserId();
 
         postRepository.delete(post);
     }
 
     @Override
     public void like(Long postId) {
-        User user = authenticationFacade.getLoggedInUser();
+        Long loggedInUserId = authenticationFacade.getLoggedInUserId();
+        Profile profile = profileRepository.findById(loggedInUserId)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found by id: " + loggedInUserId));
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found by id: " + postId));
 
-        boolean alreadyLiked = postRepository.isAlreadyLiked(postId, user.getId());
+        boolean alreadyLiked = postRepository.isAlreadyLiked(postId, profile.getId());
         if (alreadyLiked) {
             throw new InvalidWorkFlowException("You have already liked post with id: " + postId);
         }
 
-        post.addLike(user);
+        post.addLike(profile);
 
         postRepository.save(post);
     }
 
     @Override
     public void unlike(Long postId) {
-        User user = authenticationFacade.getLoggedInUser();
+        Long loggedInUserId = authenticationFacade.getLoggedInUserId();
+        Profile profile = profileRepository.findById(loggedInUserId)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found by id: " + loggedInUserId));
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found by id: " + postId));
 
-        post.removeLike(user);
+        post.removeLike(profile);
 
         postRepository.save(post);
     }

@@ -6,9 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.model.domain.community.Community;
 import org.neonsis.socialnetwork.model.domain.user.Image;
+import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.User;
 import org.neonsis.socialnetwork.persistence.repository.CommunityRepository;
-import org.neonsis.socialnetwork.persistence.repository.UserRepository;
+import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;
 import org.neonsis.socialnetwork.service.ImageService;
 import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.slf4j.Logger;
@@ -33,23 +34,26 @@ public class CloudinaryImageService implements ImageService {
 
     private final Cloudinary cloudinary;
 
-    private final UserRepository userRepository;
     private final CommunityRepository communityRepository;
+    private final ProfileRepository profileRepository;
 
     private final AuthenticationFacade authenticationFacade;
 
     @Override
     public boolean uploadUserAvatar(MultipartFile file) {
-        User loggedInUser = authenticationFacade.getLoggedInUser();
+        Long loggedInUserId = authenticationFacade.getLoggedInUserId();
+        Profile profile = profileRepository.findById(loggedInUserId)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found by id: " + loggedInUserId));
+
         Image avatar = upload(file);
 
         if (avatar == null) {
             return false;
         }
 
-        loggedInUser.setAvatar(avatar);
+        profile.setAvatar(avatar);
 
-        userRepository.save(loggedInUser);
+        profileRepository.save(profile);
 
         return true;
     }

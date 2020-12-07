@@ -7,6 +7,7 @@ import org.neonsis.socialnetwork.model.mapper.ProfileMapper;
 import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
 import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;
 import org.neonsis.socialnetwork.service.ProfileService;
+import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +35,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfileDto update(ProfileDto profileDto) {
         Long id = profileDto.getId();
-        profileRepository.findById(id)
+        Profile profile = profileRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Profile not found by id: " + id));
 
         Profile saved = profileRepository.save(toEntity(profileDto));

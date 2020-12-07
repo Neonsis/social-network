@@ -20,7 +20,7 @@ export interface IComment {
     id: string;
     content: string;
     postId: string;
-    user: IUser;
+    profile: IUser;
     createdAt: string;
 }
 

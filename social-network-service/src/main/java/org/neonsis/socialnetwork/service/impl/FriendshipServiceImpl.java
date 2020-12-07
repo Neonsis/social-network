@@ -5,12 +5,12 @@ import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
 import org.neonsis.socialnetwork.model.domain.user.Friendship;
 import org.neonsis.socialnetwork.model.domain.user.FriendshipId;
+import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.Status;
-import org.neonsis.socialnetwork.model.domain.user.User;
-import org.neonsis.socialnetwork.model.dto.user.UserDto;
-import org.neonsis.socialnetwork.model.mapper.UserMapper;
+import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
+import org.neonsis.socialnetwork.model.mapper.ProfileMapper;
 import org.neonsis.socialnetwork.persistence.repository.FriendshipRepository;
-import org.neonsis.socialnetwork.persistence.repository.UserRepository;
+import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;
 import org.neonsis.socialnetwork.service.FriendshipService;
 import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.springframework.data.domain.Page;
@@ -31,25 +31,24 @@ import java.util.Optional;
 public class FriendshipServiceImpl implements FriendshipService {
 
     private final FriendshipRepository friendshipRepository;
-    private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
 
     private final AuthenticationFacade authenticationFacade;
 
-    private final UserMapper userMapper;
+    private final ProfileMapper profileMapper;
 
     @Override
     public void addToFriends(Long friendId) {
-        User currentUser = authenticationFacade.getLoggedInUser();
-        Long loggedInUserId = currentUser.getId();
+        Long loggedInUserId = authenticationFacade.getLoggedInUserId();
 
         if (loggedInUserId.equals(friendId)) {
             throw new InvalidWorkFlowException("You can't add yourself as a friend");
         }
 
-        User friend = userRepository.findById(friendId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found by id: " + friendId));
+        Profile friend = profileRepository.findById(friendId)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found by id: " + friendId));
 
-        Optional<Friendship> friendshipOptional = friendshipRepository.findFriendship(currentUser.getId(), friend.getId());
+        Optional<Friendship> friendshipOptional = friendshipRepository.findFriendship(loggedInUserId, friend.getId());
         Friendship friendship;
 
         if (friendshipOptional.isPresent()) {
@@ -75,15 +74,15 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public Page<UserDto> findUserFriends(Long userId, String search, Pageable pageable) {
-        Page<User> friends = friendshipRepository.findFriends(userId, search, pageable);
+    public Page<ProfileDto> findUserFriends(Long userId, String search, Pageable pageable) {
+        Page<Profile> friends = friendshipRepository.findFriends(userId, search, pageable);
 
         return friends.map(this::toDto);
     }
 
     @Override
-    public Page<UserDto> findUserFollowers(Long userId, Pageable pageable) {
-        Page<User> followers = friendshipRepository.findFollowers(userId, pageable);
+    public Page<ProfileDto> findUserFollowers(Long userId, Pageable pageable) {
+        Page<Profile> followers = friendshipRepository.findFollowers(userId, pageable);
 
         return followers.map(this::toDto);
     }
@@ -127,7 +126,7 @@ public class FriendshipServiceImpl implements FriendshipService {
         return friendshipRepository.findFriendship(authenticationFacade.getLoggedInUserId(), userId);
     }
 
-    private UserDto toDto(User user) {
-        return userMapper.userToDto(user);
+    private ProfileDto toDto(Profile profile) {
+        return profileMapper.profileToDto(profile);
     }
 }

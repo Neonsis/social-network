@@ -6,7 +6,7 @@ import "./Post.scss";
 import {ICommentFormValues, IPost} from "../../../models/post";
 import {Link} from "react-router-dom";
 import {observer} from "mobx-react-lite";
-import {CommentsSection} from "../../comments/CommentsSection";
+import {CommentsSection} from "../../comments";
 import {parseDate} from "../../../util/util";
 import {cropImage} from "../../../util/image";
 
@@ -49,7 +49,7 @@ export const Post = observer(({post, like, unlike, loggedInUserId, onDelete, add
                     className="post__avatar"
                     src={
                         author
-                            ? author.avatar.originalUrl
+                            ? author.avatar
                             ? cropImage(author.avatar.originalUrl)
                             : AvatarNotFound
                             : community?.avatar

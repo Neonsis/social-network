@@ -7,6 +7,7 @@ import org.hibernate.annotations.Formula;
 import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
 import org.neonsis.socialnetwork.model.domain.post.Post;
 import org.neonsis.socialnetwork.model.domain.user.Image;
+import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.User;
 
 import javax.persistence.*;
@@ -41,7 +42,7 @@ public class Community extends AbstractBaseEntity {
      * The creator of this community.
      */
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
-    private User moderator;
+    private Profile moderator;
 
     /**
      * The avatar of this community.
@@ -58,17 +59,17 @@ public class Community extends AbstractBaseEntity {
     /**
      * The count of followers in this community.
      */
-    @Formula("(select count(*) from community_user cu where cu.community_id = id)")
+    @Formula("(select count(*) from community_profile cu where cu.community_id = id)")
     private Integer followersCount;
 
     /**
      * Followers of this community.
      */
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinTable(name = "community_user",
+    @JoinTable(name = "community_profile",
             joinColumns = @JoinColumn(name = "community_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> followers = new ArrayList<>();
+            inverseJoinColumns = @JoinColumn(name = "profile_id"))
+    private List<Profile> followers = new ArrayList<>();
 
     /**
      * Add the post to {@link #posts}.
@@ -106,7 +107,7 @@ public class Community extends AbstractBaseEntity {
      * @param follower the follower which we want to save.
      * @throws NullPointerException if {@param follower} is null.
      */
-    public void addFollower(User follower) {
+    public void addFollower(Profile follower) {
         Objects.requireNonNull(follower, "User parameter is not initialized");
         if (this.followers == null) {
             this.followers = new ArrayList<>();
@@ -121,7 +122,7 @@ public class Community extends AbstractBaseEntity {
      * @param follower the follower which we want to remove.
      * @throws NullPointerException if {@param follower} is null.
      */
-    public void removeFollower(User follower) {
+    public void removeFollower(Profile follower) {
         Objects.requireNonNull(follower, "User parameter is not initialized");
         if (this.followers == null) {
             this.followers = new ArrayList<>();
@@ -168,9 +169,9 @@ public class Community extends AbstractBaseEntity {
          *
          * @param moderator the moderator of the community being built.
          * @return the builder.
-         * @see Community#setModerator(User)
+         * @see Community#setModerator(Profile)
          */
-        public CommunityBuilder moderator(User moderator) {
+        public CommunityBuilder moderator(Profile moderator) {
             this.getEntity().setModerator(moderator);
             return this;
         }

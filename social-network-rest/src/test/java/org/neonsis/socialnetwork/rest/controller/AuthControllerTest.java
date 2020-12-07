@@ -1,32 +1,11 @@
 package org.neonsis.socialnetwork.rest.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.neonsis.socialnetwork.model.domain.user.Image;
-import org.neonsis.socialnetwork.model.dto.user.LoginDto;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
-import org.neonsis.socialnetwork.rest.SpringSecurityTestConfig;
-import org.neonsis.socialnetwork.rest.config.AuditingConfig;
-import org.neonsis.socialnetwork.rest.security.JwtTokenProvider;
 import org.neonsis.socialnetwork.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /*
 @WebMvcTest(value = AuthController.class, excludeFilters = {@ComponentScan.Filter(

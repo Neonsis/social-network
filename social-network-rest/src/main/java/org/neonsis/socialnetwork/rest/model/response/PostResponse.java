@@ -16,7 +16,7 @@ public class PostResponse {
 
     private String content;
 
-    private UserResponse author;
+    private ProfileResponse author;
 
     private CommunityResponse community;
 

@@ -4,14 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
 import org.neonsis.socialnetwork.model.domain.community.Community;
-import org.neonsis.socialnetwork.model.domain.user.User;
+import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.dto.community.CommunityCreateDto;
 import org.neonsis.socialnetwork.model.dto.community.CommunityDto;
-import org.neonsis.socialnetwork.model.dto.user.UserDto;
+import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
 import org.neonsis.socialnetwork.model.mapper.CommunityMapper;
-import org.neonsis.socialnetwork.model.mapper.UserMapper;
+import org.neonsis.socialnetwork.model.mapper.ProfileMapper;
 import org.neonsis.socialnetwork.persistence.repository.CommunityRepository;
-import org.neonsis.socialnetwork.persistence.repository.UserRepository;
+import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;
 import org.neonsis.socialnetwork.service.CommunityService;
 import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.springframework.data.domain.Page;
@@ -24,13 +24,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CommunityServiceImpl implements CommunityService {
 
+    private final ProfileRepository profileRepository;
     private final CommunityRepository communityRepository;
-    private final UserRepository userRepository;
 
     private final AuthenticationFacade authenticationFacade;
 
     private final CommunityMapper communityMapper;
-    private final UserMapper userMapper;
+    private final ProfileMapper profileMapper;
 
     @Override
     public CommunityDto findById(Long communityId) {
@@ -41,30 +41,32 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public Page<CommunityDto> findUserFollowCommunities(Long userId,String search, Pageable pageable) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found by id : " + userId));
+    public Page<CommunityDto> findUserFollowCommunities(Long userId, String search, Pageable pageable) {
+        Profile profile = profileRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found by id : " + userId));
 
-        Page<Community> userCommunities = communityRepository.findUserCommunities(user,search, pageable);
-
-        return userCommunities.map(this::toDto);
-    }
-
-    @Override
-    public Page<CommunityDto> findModeratorCommunities(Long moderatorId,String search, Pageable pageable) {
-        userRepository.findById(moderatorId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found by id : " + moderatorId));
-
-        Page<Community> userCommunities = communityRepository.findModeratorCommunities(moderatorId,search, pageable);
+        Page<Community> userCommunities = communityRepository.findUserCommunities(profile, search, pageable);
 
         return userCommunities.map(this::toDto);
     }
 
     @Override
-    public Page<UserDto> findCommunityFollowers(Long communityId, Pageable pageable) {
-        Page<User> followers = communityRepository.findCommunityFollowers(communityId, pageable);
+    public Page<CommunityDto> findModeratorCommunities(Long moderatorId, String search, Pageable pageable) {
+        profileRepository.findById(moderatorId)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found by id : " + moderatorId));
 
-        return followers.map(userMapper::userToDto);
+        Page<Community> userCommunities = communityRepository.findModeratorCommunities(moderatorId, search, pageable);
+
+        return userCommunities.map(this::toDto);
+    }
+
+    @Override
+    public Page<ProfileDto> findCommunityFollowers(Long communityId, Pageable pageable) {
+        Community community = communityRepository.findById(communityId)
+                .orElseThrow(() -> new EntityNotFoundException("Community not found by id: " + communityId));
+        Page<Profile> followers = communityRepository.findCommunityFollowers(community, pageable);
+
+        return followers.map(profileMapper::profileToDto);
     }
 
     @Override
@@ -76,10 +78,12 @@ public class CommunityServiceImpl implements CommunityService {
 
     @Override
     public CommunityDto save(CommunityCreateDto communityCreateDto) {
-        User loggedInUser = authenticationFacade.getLoggedInUser();
+        Long loggedInUserId = authenticationFacade.getLoggedInUserId();
+        Profile profile = profileRepository.findById(loggedInUserId)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found by id: " + loggedInUserId));
 
         Community community = Community.builder()
-                .moderator(loggedInUser)
+                .moderator(profile)
                 .title(communityCreateDto.getTitle())
                 .build();
 
@@ -92,43 +96,49 @@ public class CommunityServiceImpl implements CommunityService {
 
     @Override
     public boolean isFollowerOfCommunity(Long communityId) {
-        User user = authenticationFacade.getLoggedInUser();
+        Long loggedInUserId = authenticationFacade.getLoggedInUserId();
+        Profile profile = profileRepository.findById(loggedInUserId)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found by id: " + loggedInUserId));
 
-        return communityRepository.isUserAlreadyJoined(communityId, user);
+        return communityRepository.isUserAlreadyJoined(communityId, profile);
     }
 
     @Override
     public void join(Long communityId) {
-        User loggedInUser = authenticationFacade.getLoggedInUser();
+        Long loggedInUserId = authenticationFacade.getLoggedInUserId();
+        Profile profile = profileRepository.findById(loggedInUserId)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found by id: " + loggedInUserId));
 
         Community community = communityRepository.findById(communityId)
                 .orElseThrow(() -> new EntityNotFoundException("Community not found by id : " + communityId));
 
-        boolean isAlreadyJoined = communityRepository.isUserAlreadyJoined(communityId, loggedInUser);
+        boolean isAlreadyJoined = communityRepository.isUserAlreadyJoined(communityId, profile);
 
         if (isAlreadyJoined) {
             throw new InvalidWorkFlowException("You're already joined to the community with id: " + communityId);
         }
 
-        boolean isModerator = community.getModerator().getId().equals(loggedInUser.getId());
+        boolean isModerator = community.getModerator().getId().equals(profile.getId());
 
         if (isModerator) {
             throw new InvalidWorkFlowException("Moderator can't joined to the own group");
         }
 
-        community.addFollower(loggedInUser);
+        community.addFollower(profile);
 
         communityRepository.save(community);
     }
 
     @Override
     public void leave(Long communityId) {
-        User loggedInUser = authenticationFacade.getLoggedInUser();
+        Long loggedInUserId = authenticationFacade.getLoggedInUserId();
+        Profile profile = profileRepository.findById(loggedInUserId)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found by id: " + loggedInUserId));
 
         Community community = communityRepository.findById(communityId)
                 .orElseThrow(() -> new EntityNotFoundException("Community not found by id : " + communityId));
 
-        community.removeFollower(loggedInUser);
+        community.removeFollower(profile);
 
         communityRepository.save(community);
     }

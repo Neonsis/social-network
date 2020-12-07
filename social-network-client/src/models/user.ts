@@ -5,7 +5,7 @@ export interface IUser {
     avatar: IPhoto;
 }
 
-export interface IUserAuth extends IUser {
+export interface IToken {
     token: string;
 }
 

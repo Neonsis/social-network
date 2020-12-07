@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.model.domain.post.Comment;
 import org.neonsis.socialnetwork.model.domain.post.Post;
+import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.User;
 import org.neonsis.socialnetwork.model.mapper.CommentMapper;
 import org.neonsis.socialnetwork.model.dto.post.CommentCreateDto;
 import org.neonsis.socialnetwork.model.dto.post.CommentDto;
 import org.neonsis.socialnetwork.persistence.repository.CommentRepository;
 import org.neonsis.socialnetwork.persistence.repository.PostRepository;
+import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;
 import org.neonsis.socialnetwork.service.CommentService;
 import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class CommentServiceImpl implements CommentService {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final ProfileRepository profileRepository;
 
     private final CommentMapper commentMapper;
 
@@ -37,11 +40,13 @@ public class CommentServiceImpl implements CommentService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found by id: " + postId));
 
-        User user = authenticationFacade.getLoggedInUser();
+        Long loggedInUserId = authenticationFacade.getLoggedInUserId();
+        Profile profile = profileRepository.findById(loggedInUserId)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found by id: " + loggedInUserId));
 
         Comment comment = Comment.builder()
                 .content(commentDto.getContent())
-                .user(user)
+                .profile(profile)
                 .build();
 
         post.addComment(comment);
@@ -54,7 +59,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteById(Long id) {
         Long userId = authenticationFacade.getLoggedInUserId();
-        Comment comment = commentRepository.findByIdAndUserId(id, userId)
+        Comment comment = commentRepository.findByIdAndProfileId(id, userId)
                 .orElseThrow(() -> new EntityNotFoundException("Comment not found by id: " + id));
 
         commentRepository.delete(comment);

@@ -1,8 +1,8 @@
 package org.neonsis.socialnetwork.rest;
 
 import org.neonsis.socialnetwork.model.domain.user.User;
-import org.neonsis.socialnetwork.model.domain.user.security.Role;
-import org.neonsis.socialnetwork.model.domain.user.security.RoleName;
+import org.neonsis.socialnetwork.model.domain.user.Role;
+import org.neonsis.socialnetwork.model.domain.user.RoleName;
 import org.neonsis.socialnetwork.rest.model.mapper.RestMapper;
 import org.neonsis.socialnetwork.rest.model.mapper.RestMapperImpl;
 import org.neonsis.socialnetwork.service.security.UserPrincipal;

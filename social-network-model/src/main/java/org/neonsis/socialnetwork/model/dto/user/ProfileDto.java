@@ -22,6 +22,21 @@ import java.time.LocalDate;
 public class ProfileDto extends AbstractBaseDto {
 
     /**
+     * The user's first name.
+     */
+    private String firstName;
+
+    /**
+     * The user's last name.
+     */
+    private String lastName;
+
+    /**
+     * The user's main avatar.
+     */
+    private ImageDto avatar;
+
+    /**
      * The user's birthday.
      */
     private LocalDate birthday;

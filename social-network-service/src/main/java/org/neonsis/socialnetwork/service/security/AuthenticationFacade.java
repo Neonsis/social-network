@@ -1,6 +1,5 @@
 package org.neonsis.socialnetwork.service.security;
 
-import org.neonsis.socialnetwork.model.domain.user.User;
 import org.springframework.security.core.Authentication;
 
 /**
@@ -23,11 +22,4 @@ public interface AuthenticationFacade {
      * @return the user id.
      */
     Long getLoggedInUserId();
-
-    /**
-     * Get the logged in user.
-     *
-     * @return the user.
-     */
-    User getLoggedInUser();
 }

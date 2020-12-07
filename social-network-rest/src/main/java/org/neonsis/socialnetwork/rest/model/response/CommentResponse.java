@@ -12,6 +12,6 @@ public class CommentResponse {
     private String id;
     private String content;
     private String postId;
-    private UserResponse user;
+    private ProfileResponse profile;
     private Date createdAt;
 }

@@ -2,6 +2,7 @@ package org.neonsis.socialnetwork.persistence.repository;
 
 import org.neonsis.socialnetwork.model.domain.chat.Conversation;
 import org.neonsis.socialnetwork.model.domain.chat.ConversationId;
+import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,12 +19,12 @@ public interface ConversationRepository extends JpaRepository<Conversation, Conv
             "(c.id.userOneId = :userTwoId AND c.id.userTwoId = :userOneId)")
     Optional<Conversation> findConversationByUsersId(Long userOneId, Long userTwoId);
 
-    @Query("SELECT u FROM User u " +
-            " WHERE u.id IN (SELECT CASE" +
+    @Query("SELECT p FROM Profile p " +
+            " WHERE p.id IN (SELECT CASE" +
             " WHEN c.userOne.id = :userId THEN c.userTwo.id" +
             " ELSE c.userOne.id END" +
             " FROM Conversation c" +
             " WHERE c.userOne.id = :userId OR c.userTwo.id = :userId)"
     )
-    Page<User> findUserConversations(Long userId, Pageable pageable);
+    Page<Profile> findUserConversations(Long userId, Pageable pageable);
 }

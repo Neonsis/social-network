@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ConversationResponse {
+public class TokenResponse {
 
-    private ProfileResponse recipient;
+    private String token;
 }

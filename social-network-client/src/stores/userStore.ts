@@ -35,7 +35,6 @@ export default class UserStore {
             const user = await agent.User.login(values);
             runInAction(() => {
                 this.loading = false;
-                this.user = user;
             });
             this.rootStore.commonStore.setToken(user.token);
         } catch (error) {
@@ -52,9 +51,8 @@ export default class UserStore {
             const user = await agent.User.signup(values);
             runInAction(() => {
                 this.loading = false;
-                this.user = user;
+                this.rootStore.commonStore.setToken(user.token);
             });
-            this.rootStore.commonStore.setToken(user.token);
         } catch (error) {
             runInAction(() => {
                 this.loading = false;

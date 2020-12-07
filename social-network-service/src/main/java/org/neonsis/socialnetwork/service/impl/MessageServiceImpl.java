@@ -1,15 +1,17 @@
 package org.neonsis.socialnetwork.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.model.domain.chat.Conversation;
 import org.neonsis.socialnetwork.model.domain.chat.ConversationId;
 import org.neonsis.socialnetwork.model.domain.chat.Message;
-import org.neonsis.socialnetwork.model.domain.user.User;
+import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.dto.chat.MessageCreateDto;
 import org.neonsis.socialnetwork.model.dto.chat.MessageDto;
 import org.neonsis.socialnetwork.model.mapper.ChatMapper;
 import org.neonsis.socialnetwork.persistence.repository.ConversationRepository;
 import org.neonsis.socialnetwork.persistence.repository.MessageRepository;
+import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;
 import org.neonsis.socialnetwork.service.ConversationService;
 import org.neonsis.socialnetwork.service.MessageService;
 import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
@@ -31,6 +33,7 @@ public class MessageServiceImpl implements MessageService {
 
     private final ConversationRepository conversationRepository;
     private final MessageRepository messageRepository;
+    private final ProfileRepository profileRepository;
 
     private final AuthenticationFacade authenticationFacade;
 
@@ -42,11 +45,14 @@ public class MessageServiceImpl implements MessageService {
         ConversationId conversationId =
                 conversationService.findConversationId(messageCreateDto.getRecipientId(), true).get(); // always exists
 
-        User loggedInUser = authenticationFacade.getLoggedInUser();
+        Long loggedInUserId = authenticationFacade.getLoggedInUserId();
+        Profile profile = profileRepository.findById(loggedInUserId)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found by id: " + loggedInUserId));
+
         Conversation conversation = conversationRepository.findById(conversationId).get();
 
         Message message = Message.builder()
-                .sender(loggedInUser)
+                .sender(profile)
                 .content(messageCreateDto.getContent())
                 .conversation(conversation)
                 .build();
@@ -62,7 +68,7 @@ public class MessageServiceImpl implements MessageService {
 
         // If it's empty then logged in user never sent messages to the recipient
         if (conversationId.isEmpty()) {
-            return new PageImpl<MessageDto>(Collections.emptyList());
+            return new PageImpl<>(Collections.emptyList());
         }
 
         Page<Message> messages = messageRepository.findMessagesByConversationId(conversationId.get(), pageable);

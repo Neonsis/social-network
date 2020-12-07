@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
+import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.User;
 
 import javax.persistence.*;
@@ -35,7 +36,7 @@ public class Message extends AbstractBaseEntity {
      * The user who sent this message.
      */
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private User sender;
+    private Profile sender;
 
     /**
      * The content of this message.
@@ -81,9 +82,9 @@ public class Message extends AbstractBaseEntity {
          *
          * @param sender the sender of the message being built.
          * @return the builder.
-         * @see Message#setSender(User)
+         * @see Message#setSender(Profile)
          */
-        public MessageBuilder sender(User sender) {
+        public MessageBuilder sender(Profile sender) {
             this.getEntity().setSender(sender);
             return this;
         }

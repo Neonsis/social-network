@@ -8,6 +8,7 @@
         <module>social-network-service</module>
         <module>social-network-rest</module>
         <module>social-network-security</module>
+        <module>social-network-config</module>
     </modules>
 
     <parent>

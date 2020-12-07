@@ -1,9 +1,7 @@
 package org.neonsis.socialnetwork.service.security;
 
 import lombok.RequiredArgsConstructor;
-import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.model.domain.user.User;
-import org.neonsis.socialnetwork.persistence.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -17,8 +15,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AuthenticationFacadeImpl implements AuthenticationFacade {
 
-    private final UserRepository userRepository;
-
     @Override
     public Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
@@ -27,12 +23,5 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
     @Override
     public Long getLoggedInUserId() {
         return ((UserPrincipal) getAuthentication().getPrincipal()).getId();
-    }
-
-    @Override
-    public User getLoggedInUser() {
-        Long userId = getLoggedInUserId();
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found by id: " + userId));
     }
 }

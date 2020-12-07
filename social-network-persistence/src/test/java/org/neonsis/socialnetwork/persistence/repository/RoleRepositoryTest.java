@@ -1,11 +1,10 @@
 package org.neonsis.socialnetwork.persistence.repository;
 
 import org.junit.jupiter.api.Test;
-import org.neonsis.socialnetwork.model.domain.user.security.Role;
-import org.neonsis.socialnetwork.model.domain.user.security.RoleName;
+import org.neonsis.socialnetwork.model.domain.user.Role;
+import org.neonsis.socialnetwork.model.domain.user.RoleName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Optional;

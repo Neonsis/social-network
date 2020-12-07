@@ -3,9 +3,10 @@ package org.neonsis.socialnetwork.service;
 import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
 import org.neonsis.socialnetwork.model.domain.user.Friendship;
+import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.Status;
 import org.neonsis.socialnetwork.model.domain.user.User;
-import org.neonsis.socialnetwork.model.dto.user.UserDto;
+import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -40,12 +41,12 @@ public interface FriendshipService {
      * Find friends of a user.
      *
      * @param userId   the id of the searched user.
-     * @param search   parameter of friends {@link User#firstName} and {@link User#lastName}.
+     * @param search   parameter of friends {@link Profile#firstName} and {@link Profile#lastName}.
      * @param pageable paging conditions.
      *
      * @return a page of user friends.
      */
-    Page<UserDto> findUserFriends(Long userId, String search, Pageable pageable);
+    Page<ProfileDto> findUserFriends(Long userId, String search, Pageable pageable);
 
     /**
      * Find followers of a user.
@@ -55,7 +56,7 @@ public interface FriendshipService {
      *
      * @return a page of user followers.
      */
-    Page<UserDto> findUserFollowers(Long userId, Pageable pageable);
+    Page<ProfileDto> findUserFollowers(Long userId, Pageable pageable);
 
     /**
      * Delete a user friend.

@@ -5,8 +5,7 @@ import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.model.dto.user.LoginDto;
 import org.neonsis.socialnetwork.model.dto.user.RegistrationDto;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
-import org.neonsis.socialnetwork.rest.model.mapper.RestMapper;
-import org.neonsis.socialnetwork.rest.model.response.UserAuthResponse;
+import org.neonsis.socialnetwork.rest.model.response.TokenResponse;
 import org.neonsis.socialnetwork.rest.security.JwtTokenProvider;
 import org.neonsis.socialnetwork.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -29,8 +28,6 @@ public class AuthController {
 
     private final UserService userService;
 
-    private final RestMapper restMapper;
-
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
 
@@ -39,11 +36,11 @@ public class AuthController {
         try {
             String email = loginDto.getEmail();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, loginDto.getPassword()));
-            UserDto loggedInUser = userService.findByEmail(email);
             String token = jwtTokenProvider.generateToken(email);
-            loggedInUser.setToken(token);
+            TokenResponse tokenResponse = new TokenResponse();
+            tokenResponse.setToken(token);
 
-            return ResponseEntity.ok(toResponse(loggedInUser));
+            return ResponseEntity.ok(tokenResponse);
         } catch (AuthenticationException | EntityNotFoundException e) {
             throw new BadCredentialsException("Invalid username or password");
         }
@@ -51,12 +48,15 @@ public class AuthController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserAuthResponse registerUser(@Valid @RequestBody RegistrationDto registrationDto) {
+    public TokenResponse registerUser(@Valid @RequestBody RegistrationDto registrationDto) {
         UserDto registeredUser = userService.signUp(registrationDto);
         String token = jwtTokenProvider.generateToken(registeredUser.getEmail());
         registeredUser.setToken(token);
 
-        return toResponse(registeredUser);
+        TokenResponse tokenResponse = new TokenResponse();
+        tokenResponse.setToken(token);
+
+        return tokenResponse;
     }
 
     @PostMapping("/logout")
@@ -64,9 +64,5 @@ public class AuthController {
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
         securityContextLogoutHandler.logout(request, response, null);
-    }
-
-    private UserAuthResponse toResponse(UserDto user) {
-        return restMapper.userDtoToAuthResponse(user);
     }
 }

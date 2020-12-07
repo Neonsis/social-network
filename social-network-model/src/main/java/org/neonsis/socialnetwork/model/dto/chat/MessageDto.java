@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.neonsis.socialnetwork.model.domain.chat.Message;
 import org.neonsis.socialnetwork.model.dto.base.AbstractBaseDto;
+import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
 
 /**
@@ -28,5 +29,5 @@ public class MessageDto extends AbstractBaseDto {
     /**
      * The user who sent this message.
      */
-    private UserDto sender;
+    private ProfileDto sender;
 }

@@ -3,11 +3,12 @@ package org.neonsis.socialnetwork.rest.controller;
 import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.model.dto.community.CommunityCreateDto;
 import org.neonsis.socialnetwork.model.dto.community.CommunityDto;
+import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
 import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.neonsis.socialnetwork.rest.model.mapper.RestMapper;
 import org.neonsis.socialnetwork.rest.model.response.CommunityDetailsResponse;
 import org.neonsis.socialnetwork.rest.model.response.CommunityResponse;
-import org.neonsis.socialnetwork.rest.model.response.UserResponse;
+import org.neonsis.socialnetwork.rest.model.response.ProfileResponse;
 import org.neonsis.socialnetwork.service.CommunityService;
 import org.neonsis.socialnetwork.service.ImageService;
 import org.springframework.data.domain.Page;
@@ -20,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
-import static org.neonsis.socialnetwork.rest.util.AppConstants.DEFAULT_PAGE_NUMBER;
 import static org.neonsis.socialnetwork.rest.util.AppConstants.DEFAULT_PAGE_SIZE;
 
 @RestController
@@ -64,12 +64,12 @@ public class CommunityController {
     }
 
     @GetMapping("/communities/{communityId}/followers")
-    public Page<UserResponse> getCommunityFollowers(
+    public Page<ProfileResponse> getCommunityFollowers(
             @PageableDefault(size = DEFAULT_PAGE_SIZE) Pageable pageable,
             @PathVariable Long communityId
     ) {
-        Page<UserDto> followers = communityService.findCommunityFollowers(communityId, pageable);
-        return followers.map(restMapper::userDtoToResponse);
+        Page<ProfileDto> followers = communityService.findCommunityFollowers(communityId, pageable);
+        return followers.map(restMapper::profileDtoToResponse);
     }
 
     @GetMapping("/communities")

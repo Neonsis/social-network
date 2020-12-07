@@ -12,5 +12,5 @@ public class MessageResponse {
     private String id;
     private String content;
     private Date createdAt;
-    private UserResponse sender;
+    private ProfileResponse sender;
 }

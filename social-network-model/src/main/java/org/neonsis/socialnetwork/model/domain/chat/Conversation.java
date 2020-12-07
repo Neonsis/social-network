@@ -3,6 +3,7 @@ package org.neonsis.socialnetwork.model.domain.chat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.User;
 
 import javax.persistence.*;
@@ -39,14 +40,14 @@ public class Conversation implements Serializable {
      */
     @MapsId("user_one_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private User userOne;
+    private Profile userOne;
 
     /**
      * The second user in the conversation.
      */
     @MapsId("user_two_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private User userTwo;
+    private Profile userTwo;
 
     /**
      * Messages which is related to this conversation.
@@ -139,9 +140,9 @@ public class Conversation implements Serializable {
          *
          * @param userOne the first user of the conversation being built.
          * @return the builder.
-         * @see Conversation#setUserOne(User)
+         * @see Conversation#setUserOne(Profile)
          */
-        public Conversation.ConversationBuilder userOne(User userOne) {
+        public Conversation.ConversationBuilder userOne(Profile userOne) {
             conversation.setUserOne(userOne);
             return this;
         }
@@ -151,9 +152,9 @@ public class Conversation implements Serializable {
          *
          * @param userTwo the second user of the conversation being built.
          * @return the builder.
-         * @see Conversation#setUserTwo(User)
+         * @see Conversation#setUserTwo(Profile)
          */
-        public Conversation.ConversationBuilder userTwo(User userTwo) {
+        public Conversation.ConversationBuilder userTwo(Profile userTwo) {
             conversation.setUserTwo(userTwo);
             return this;
         }

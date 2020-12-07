@@ -40,14 +40,14 @@ public class Friendship implements Serializable {
      */
     @MapsId("inviter_id")
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.MERGE})
-    private User inviter;
+    private Profile inviter;
 
     /**
      * The user who is invited by another user.
      */
     @MapsId("invited_id")
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.MERGE})
-    private User invited;
+    private Profile invited;
 
     /**
      * An auto-populating date/time stamp of when the record was created.
@@ -130,9 +130,9 @@ public class Friendship implements Serializable {
          *
          * @param inviter the inviter of the friendship being built.
          * @return the builder.
-         * @see Friendship#setInviter(User)
+         * @see Friendship#setInviter(Profile)
          */
-        public Friendship.FriendshipBuilder inviter(User inviter) {
+        public Friendship.FriendshipBuilder inviter(Profile inviter) {
             friendship.setInviter(inviter);
             return this;
         }
@@ -142,9 +142,9 @@ public class Friendship implements Serializable {
          *
          * @param invited the invited of the friendship being built.
          * @return the builder.
-         * @see Friendship#setInvited(User)
+         * @see Friendship#setInvited(Profile)
          */
-        public Friendship.FriendshipBuilder invited(User invited) {
+        public Friendship.FriendshipBuilder invited(Profile invited) {
             friendship.setInvited(invited);
             return this;
         }

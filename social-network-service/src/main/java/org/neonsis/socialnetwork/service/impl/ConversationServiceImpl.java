@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.model.domain.chat.Conversation;
 import org.neonsis.socialnetwork.model.domain.chat.ConversationId;
-import org.neonsis.socialnetwork.model.domain.user.User;
-import org.neonsis.socialnetwork.model.mapper.UserMapper;
-import org.neonsis.socialnetwork.model.dto.user.UserDto;
+import org.neonsis.socialnetwork.model.domain.user.Profile;
+import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
+import org.neonsis.socialnetwork.model.mapper.ProfileMapper;
 import org.neonsis.socialnetwork.persistence.repository.ConversationRepository;
-import org.neonsis.socialnetwork.persistence.repository.UserRepository;
+import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;
 import org.neonsis.socialnetwork.service.ConversationService;
 import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.springframework.data.domain.Page;
@@ -24,15 +24,15 @@ import java.util.Optional;
 public class ConversationServiceImpl implements ConversationService {
 
     private final ConversationRepository conversationRepository;
-    private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
 
     private final AuthenticationFacade authenticationFacade;
 
-    private final UserMapper userMapper;
+    private final ProfileMapper profileMapper;
 
     public Optional<ConversationId> findConversationId(Long recipientId, boolean createIfNotExist) {
-        User recipient = userRepository.findById(recipientId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found by id: " + recipientId));
+        Profile recipient = profileRepository.findById(recipientId)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found by id: " + recipientId));
         Long userId = authenticationFacade.getLoggedInUserId();
 
         return conversationRepository
@@ -58,10 +58,10 @@ public class ConversationServiceImpl implements ConversationService {
     }
 
     @Override
-    public Page<UserDto> findLoggedInUserConversations(Pageable pageable) {
-        Page<User> userConversations
+    public Page<ProfileDto> findLoggedInUserConversations(Pageable pageable) {
+        Page<Profile> userConversations
                 = conversationRepository.findUserConversations(authenticationFacade.getLoggedInUserId(), pageable);
 
-        return userConversations.map(userMapper::userToDto);
+        return userConversations.map(profileMapper::profileToDto);
     }
 }
