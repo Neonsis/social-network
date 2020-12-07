@@ -30,8 +30,10 @@ import static org.neonsis.socialnetwork.rest.util.AppConstants.DEFAULT_PAGE_SIZE
 public class ChatController {
 
     private final SimpMessagingTemplate messagingTemplate;
+
     private final MessageService messageService;
     private final ConversationService conversationService;
+
     private final RestMapper restMapper;
 
     @MessageMapping("/chat")
@@ -51,7 +53,8 @@ public class ChatController {
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "id", direction = Sort.Direction.DESC)
             }) Pageable pageable,
-            @PathVariable Long recipientId) {
+            @PathVariable Long recipientId
+    ) {
         Page<MessageDto> messages = messageService.findConversationMessages(recipientId, pageable);
 
         return messages.map(restMapper::messageDtoToResponse);

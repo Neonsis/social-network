@@ -24,43 +24,40 @@ import static org.neonsis.socialnetwork.rest.util.AppConstants.DEFAULT_PAGE_SIZE
 public class FriendController {
 
     private final FriendshipService friendshipService;
+
     private final RestMapper restMapper;
 
-    @GetMapping("/users/{id}/friends")
+    @GetMapping("/users/{userId}/friends")
     public Page<UserResponse> findUserFriends(
-            @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
-            @SortDefault.SortDefaults({
-                    @SortDefault(sort = "id", direction = Sort.Direction.ASC)
-            }) Pageable pageable,
+            @PageableDefault(size = DEFAULT_PAGE_SIZE) Pageable pageable,
             @RequestParam(name = "search", defaultValue = "", required = false) String search,
-            @PathVariable Long id) {
-        Page<UserDto> friendsDto = friendshipService.findUserFriends(id, search, pageable);
+            @PathVariable Long userId
+    ) {
+        Page<UserDto> friendsDto = friendshipService.findUserFriends(userId, search, pageable);
 
-        Page<UserResponse> userResponses = toPageResponse(friendsDto);
-        return userResponses;
+        return toPageResponse(friendsDto);
     }
 
-    @GetMapping("/users/{id}/followers")
+    @GetMapping("/users/{userId}/followers")
     public Page<UserResponse> findUserFollowers(
-            @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
-            @SortDefault.SortDefaults({
-                    @SortDefault(sort = "id", direction = Sort.Direction.ASC)
-            }) Pageable pageable,
-            @PathVariable Long id) {
-        Page<UserDto> pendingUsersDto = friendshipService.findUserFollowers(id, pageable);
+            @PageableDefault(size = DEFAULT_PAGE_SIZE) Pageable pageable,
+            @PathVariable Long userId
+    ) {
+        Page<UserDto> pendingUsersDto = friendshipService.findUserFollowers(userId, pageable);
+
         return toPageResponse(pendingUsersDto);
     }
 
-    @PostMapping("/friends/{id}")
-    public ResponseEntity<HttpStatus> addToFriend(@PathVariable Long id) {
-        friendshipService.addToFriends(id);
-        return ResponseEntity.ok().build();
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/friends/{userId}")
+    public void addToFriend(@PathVariable Long userId) {
+        friendshipService.addToFriends(userId);
     }
 
-    @DeleteMapping("/friends/{id}")
-    public ResponseEntity<HttpStatus> deleteFriend(@PathVariable Long id) {
-        friendshipService.deleteById(id);
-        return ResponseEntity.ok().build();
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/friends/{userId}")
+    public void deleteFriend(@PathVariable Long userId) {
+        friendshipService.deleteById(userId);
     }
 
     private Page<UserResponse> toPageResponse(Page<UserDto> userDtoPage) {

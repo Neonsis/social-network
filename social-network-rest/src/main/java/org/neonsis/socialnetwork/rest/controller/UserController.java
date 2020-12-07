@@ -29,6 +29,7 @@ public class UserController {
     @GetMapping("/me")
     public UserResponse getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
         UserDto user = userService.findById(userPrincipal.getId());
+
         return restMapper.userDtoToResponse(user);
     }
 

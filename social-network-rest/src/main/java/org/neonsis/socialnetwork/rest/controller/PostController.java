@@ -30,34 +30,39 @@ import static org.neonsis.socialnetwork.rest.util.AppConstants.DEFAULT_PAGE_SIZE
 public class PostController {
 
     private final PostService postService;
-    private final RestMapper restMapper;
     private final CommentService commentService;
+
+    private final RestMapper restMapper;
 
     @GetMapping("/users/{userId}/posts")
     public Page<PostResponse> getUserPosts(
-            @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
+            @PageableDefault(size = DEFAULT_PAGE_SIZE)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
             }) Pageable pageable,
-            @PathVariable Long userId) {
+            @PathVariable Long userId
+    ) {
         Page<PostDto> userPosts = postService.findUserPosts(userId, pageable);
+
         return userPosts.map(restMapper::postDtoToResponse);
     }
 
     @GetMapping("/communities/{communityId}/posts")
     public Page<PostResponse> getCommunityPosts(
-            @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
+            @PageableDefault(size = DEFAULT_PAGE_SIZE)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
             }) Pageable pageable,
-            @PathVariable Long communityId) {
+            @PathVariable Long communityId
+    ) {
         Page<PostDto> communityPosts = postService.findCommunityPosts(communityId, pageable);
+
         return communityPosts.map(restMapper::postDtoToResponse);
     }
 
     @GetMapping("/users/feed")
     public Page<PostResponse> getFeedPosts(
-            @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE)
+            @PageableDefault(size = DEFAULT_PAGE_SIZE)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
             }) Pageable pageable
@@ -69,6 +74,7 @@ public class PostController {
     @ResponseStatus(HttpStatus.CREATED)
     public PostResponse createUserPost(@Valid @RequestBody PostCreateDto postCreateDto) {
         PostDto createdPost = postService.saveUserPost(postCreateDto);
+
         return restMapper.postDtoToResponse(createdPost);
     }
 
@@ -79,25 +85,26 @@ public class PostController {
             @Valid @RequestBody PostCreateDto postCreateDto
     ) {
         PostDto createdPost = postService.saveCommunityPost(postCreateDto, communityId);
+
         return restMapper.postDtoToResponse(createdPost);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/posts/{postId}/like")
-    public ResponseEntity<HttpStatus> likePost(@PathVariable Long postId) {
+    public void likePost(@PathVariable Long postId) {
         postService.like(postId);
-        return ResponseEntity.ok().build();
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/posts/{postId}/unlike")
-    public ResponseEntity<HttpStatus> unlikePost(@PathVariable Long postId) {
+    public void unlikePost(@PathVariable Long postId) {
         postService.unlike(postId);
-        return ResponseEntity.ok().build();
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/posts/{postId}")
-    public ResponseEntity<HttpStatus> deletePost(@PathVariable Long postId) {
+    public void deletePost(@PathVariable Long postId) {
         postService.deleteById(postId);
-        return ResponseEntity.ok().build();
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -107,6 +114,7 @@ public class PostController {
             @Valid @RequestBody CommentCreateDto commentCreateDto
     ) {
         CommentDto createdComment = commentService.addCommentToPost(commentCreateDto, postId);
+
         return restMapper.commentDtoToResponse(createdComment);
     }
 }

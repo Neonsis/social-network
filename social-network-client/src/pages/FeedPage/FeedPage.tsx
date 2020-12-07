@@ -36,7 +36,7 @@ export const FeedPage = observer(() => {
         <Grid>
             <Grid.Column>
                 <InfiniteScroll
-                    next={() => fetchMorePosts()}
+                    next={fetchMorePosts}
                     hasMore={!isLastPage}
                     loader={<h4>Loading...</h4>}
                     dataLength={feedPosts.length}

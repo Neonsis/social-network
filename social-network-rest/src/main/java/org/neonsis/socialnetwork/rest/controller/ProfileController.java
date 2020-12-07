@@ -17,11 +17,13 @@ import javax.validation.Valid;
 public class ProfileController {
 
     private final ProfileService profileService;
+
     private final RestMapper restMapper;
 
     @GetMapping("/{id}")
     public ProfileResponse getProfile(@PathVariable Long id) {
         ProfileDto profile = profileService.findByUserId(id);
+
         return toDto(profile);
     }
 
@@ -31,6 +33,7 @@ public class ProfileController {
             @CurrentUser UserPrincipal userPrincipal
     ) {
         profileDto.setId(userPrincipal.getId());
+
         return toDto(profileService.update(profileDto));
     }
 

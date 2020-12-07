@@ -33,11 +33,11 @@ public class CommunityController {
 
     private final RestMapper restMapper;
 
-    @GetMapping("/communities/{id}")
-    public CommunityDetailsResponse getCommunity(@PathVariable Long id) {
-        CommunityDetailsResponse community = restMapper.communityDtoToDetailsResponse(communityService.findById(id));
+    @GetMapping("/communities/{communityId}")
+    public CommunityDetailsResponse getCommunity(@PathVariable Long communityId) {
+        CommunityDetailsResponse community = restMapper.communityDtoToDetailsResponse(communityService.findById(communityId));
 
-        boolean isFollow = communityService.isFollowerOfCommunity(id);
+        boolean isFollow = communityService.isFollowerOfCommunity(communityId);
         community.setIsUserFollow(isFollow);
 
         return community;
@@ -45,7 +45,7 @@ public class CommunityController {
 
     @GetMapping("/users/{userId}/communities")
     public Page<CommunityResponse> getUserCommunities(
-            @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE) Pageable pageable,
+            @PageableDefault(size = DEFAULT_PAGE_SIZE) Pageable pageable,
             @RequestParam(name = "search", defaultValue = "", required = false) String search,
             @PathVariable Long userId
     ) {
@@ -55,7 +55,7 @@ public class CommunityController {
 
     @GetMapping("/users/{moderatorId}/moderator/communities")
     public Page<CommunityResponse> getModeratorCommunities(
-            @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE) Pageable pageable,
+            @PageableDefault(size = DEFAULT_PAGE_SIZE) Pageable pageable,
             @RequestParam(name = "search", defaultValue = "", required = false) String search,
             @PathVariable Long moderatorId
     ) {
@@ -65,7 +65,7 @@ public class CommunityController {
 
     @GetMapping("/communities/{communityId}/followers")
     public Page<UserResponse> getCommunityFollowers(
-            @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE) Pageable pageable,
+            @PageableDefault(size = DEFAULT_PAGE_SIZE) Pageable pageable,
             @PathVariable Long communityId
     ) {
         Page<UserDto> followers = communityService.findCommunityFollowers(communityId, pageable);
@@ -74,7 +74,7 @@ public class CommunityController {
 
     @GetMapping("/communities")
     public Page<CommunityResponse> getCommunities(
-            @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE) Pageable pageable,
+            @PageableDefault(size = DEFAULT_PAGE_SIZE) Pageable pageable,
             @RequestParam(name = "search", defaultValue = "", required = false) String search
     ) {
         Page<CommunityDto> communities = communityService.findCommunities(search, pageable);
@@ -101,14 +101,16 @@ public class CommunityController {
         }
     }
 
-    @PostMapping("/communities/{id}/follow")
-    public void follow(@PathVariable Long id) {
-        communityService.join(id);
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/communities/{communityId}/follow")
+    public void follow(@PathVariable Long communityId) {
+        communityService.join(communityId);
     }
 
-    @PostMapping("/communities/{id}/unfollow")
-    public void unfollow(@PathVariable Long id) {
-        communityService.leave(id);
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/communities/{communityId}/unfollow")
+    public void unfollow(@PathVariable Long communityId) {
+        communityService.leave(communityId);
     }
 
     public CommunityResponse toResponse(CommunityDto communityDto) {

@@ -102,13 +102,6 @@ public class PostServiceImpl implements PostService {
 
         Long loggedInUserId = authenticationFacade.getLoggedInUserId();
 
-        if (
-                post.getAuthor() != null && !post.getAuthor().getId().equals(loggedInUserId) // author of the post is not loggedInUser
-                ||
-                post.getCommunity() != null && !post.getCommunity().getModerator().getId().equals(loggedInUserId) // moderator of the post is not loggedInUser
-        ) {
-            throw new AccessForbiddenException("");
-        }
 
         postRepository.delete(post);
     }

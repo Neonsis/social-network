@@ -16,10 +16,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +28,9 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final UserService userService;
+
     private final RestMapper restMapper;
+
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
 
@@ -51,15 +50,17 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserAuthResponse> registerUser(@Valid @RequestBody RegistrationDto registrationDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserAuthResponse registerUser(@Valid @RequestBody RegistrationDto registrationDto) {
         UserDto registeredUser = userService.signUp(registrationDto);
         String token = jwtTokenProvider.generateToken(registeredUser.getEmail());
         registeredUser.setToken(token);
 
-        return new ResponseEntity<>(toResponse(registeredUser), HttpStatus.CREATED);
+        return toResponse(registeredUser);
     }
 
     @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.OK)
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
         securityContextLogoutHandler.logout(request, response, null);

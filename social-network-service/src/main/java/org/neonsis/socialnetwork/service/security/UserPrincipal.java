@@ -21,12 +21,6 @@ public class UserPrincipal implements UserDetails {
 
     private final String encryptedPassword;
 
-    private final String firstName;
-
-    private final String lastName;
-
-    private final String avatarUrl;
-
     private final Collection<? extends GrantedAuthority> authorities;
 
     public static UserPrincipal create(User user) {
@@ -34,18 +28,10 @@ public class UserPrincipal implements UserDetails {
                 new SimpleGrantedAuthority(role.getName().name())
         ).collect(Collectors.toList());
 
-        String avatar = null;
-        if (user.getAvatar() != null) {
-            avatar = user.getAvatar().getOriginalUrl();
-        }
-
         return new UserPrincipal(
                 user.getId(),
                 user.getEmail(),
                 user.getEncryptedPassword(),
-                user.getFirstName(),
-                user.getLastName(),
-                avatar,
                 authorities
         );
     }
