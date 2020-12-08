@@ -11,8 +11,8 @@ import org.neonsis.socialnetwork.model.mapper.CommentMapper;
 import org.neonsis.socialnetwork.persistence.repository.CommentRepository;
 import org.neonsis.socialnetwork.persistence.repository.PostRepository;
 import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;
-import org.neonsis.socialnetwork.service.CommentService;
 import org.neonsis.socialnetwork.security.facade.AuthenticationFacade;
+import org.neonsis.socialnetwork.service.CommentService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

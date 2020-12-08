@@ -3,11 +3,10 @@ package org.neonsis.socialnetwork.rest.controller;
 import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.model.dto.user.LoginDto;
+import org.neonsis.socialnetwork.model.dto.user.RegistrationDto;
 import org.neonsis.socialnetwork.rest.model.response.TokenResponse;
 import org.neonsis.socialnetwork.security.JwtTokenProvider;
-import org.neonsis.socialnetwork.security.model.dto.RegistrationDto;
-import org.neonsis.socialnetwork.security.model.dto.UserDto;
-import org.neonsis.socialnetwork.security.service.UserService;
+import org.neonsis.socialnetwork.service.ProfileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +25,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
+    private final ProfileService profileService;
 
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
@@ -49,9 +48,8 @@ public class AuthController {
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
     public TokenResponse registerUser(@Valid @RequestBody RegistrationDto registrationDto) {
-        UserDto registeredUser = userService.signUp(registrationDto);
-        String token = jwtTokenProvider.generateToken(registeredUser.getEmail());
-        registeredUser.setToken(token);
+        profileService.signUp(registrationDto);
+        String token = jwtTokenProvider.generateToken(registrationDto.getEmail());
 
         TokenResponse tokenResponse = new TokenResponse();
         tokenResponse.setToken(token);

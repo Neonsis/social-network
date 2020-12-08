@@ -29,7 +29,7 @@ public class Image extends AbstractBaseEntity {
     /**
      * The Unique Identifier that image service provides.
      */
-    @Column(name = "imageId", nullable = false, unique = true)
+    @Column(name = "imageId", nullable = false, length = 50, unique = true)
     private String imageId;
 
     /**

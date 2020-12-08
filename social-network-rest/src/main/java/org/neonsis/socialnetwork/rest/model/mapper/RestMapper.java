@@ -24,4 +24,6 @@ public interface RestMapper {
     CommunityResponse communityDtoToResponse(CommunityDto communityDto);
 
     CommunityDetailsResponse communityDtoToDetailsResponse(CommunityDto communityDto);
+
+    ProfileUpdateResponse profileDtoToUpdateResponse(ProfileDto profileDto);
 }

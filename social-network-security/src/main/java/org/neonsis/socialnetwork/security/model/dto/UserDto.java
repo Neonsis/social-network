@@ -13,10 +13,17 @@ import lombok.Setter;
 @Setter
 public class UserDto {
 
+    private Long id;
+
     /**
      * The user's account email.
      */
     private String email;
+
+    /**
+     * The user's account password.
+     */
+    private String password;
 
     /**
      * The user's account hashed password.

@@ -2,11 +2,11 @@ package org.neonsis.socialnetwork.rest.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
+import org.neonsis.socialnetwork.model.dto.user.ProfileUpdateDto;
 import org.neonsis.socialnetwork.rest.model.mapper.RestMapper;
 import org.neonsis.socialnetwork.rest.model.response.ProfileDetailsResponse;
 import org.neonsis.socialnetwork.rest.model.response.ProfileResponse;
-import org.neonsis.socialnetwork.security.CurrentUser;
-import org.neonsis.socialnetwork.security.model.domain.User;
+import org.neonsis.socialnetwork.rest.model.response.ProfileUpdateResponse;
 import org.neonsis.socialnetwork.service.FriendshipService;
 import org.neonsis.socialnetwork.service.ImageService;
 import org.neonsis.socialnetwork.service.ProfileService;
@@ -29,10 +29,8 @@ public class ProfileController {
     private final RestMapper restMapper;
 
     @GetMapping("/me")
-    public ProfileResponse getCurrentProfile(@CurrentUser User userPrincipal) {
-        ProfileDto user = profileService.findByUserId(userPrincipal.getId());
-
-        return restMapper.profileDtoToResponse(user);
+    public ProfileResponse getCurrentProfile() {
+        return restMapper.profileDtoToResponse(profileService.getLoggedInProfile());
     }
 
     @GetMapping("/{id}")
@@ -67,16 +65,7 @@ public class ProfileController {
     }
 
     @PutMapping
-    public ProfileResponse updateProfile(
-            @Valid @RequestBody ProfileDto profileDto,
-            @CurrentUser User userPrincipal
-    ) {
-        profileDto.setId(userPrincipal.getId());
-
-        return toDto(profileService.update(profileDto));
-    }
-
-    private ProfileResponse toDto(ProfileDto profileDto) {
-        return restMapper.profileDtoToResponse(profileDto);
+    public ProfileUpdateResponse updateProfile(@Valid @RequestBody ProfileUpdateDto profileUpdateDto) {
+        return restMapper.profileDtoToUpdateResponse(profileService.update(profileUpdateDto));
     }
 }

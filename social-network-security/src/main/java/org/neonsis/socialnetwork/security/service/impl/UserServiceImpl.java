@@ -2,14 +2,9 @@ package org.neonsis.socialnetwork.security.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.security.exception.EmailAlreadyExistsException;
-import org.neonsis.socialnetwork.security.exception.EmptyRoleException;
-import org.neonsis.socialnetwork.security.model.domain.Role;
-import org.neonsis.socialnetwork.security.model.domain.RoleName;
 import org.neonsis.socialnetwork.security.model.domain.User;
-import org.neonsis.socialnetwork.security.model.dto.RegistrationDto;
 import org.neonsis.socialnetwork.security.model.dto.UserDto;
 import org.neonsis.socialnetwork.security.model.mapper.UserMapper;
-import org.neonsis.socialnetwork.security.repository.RoleRepository;
 import org.neonsis.socialnetwork.security.repository.UserRepository;
 import org.neonsis.socialnetwork.security.service.UserService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 /**
  * {@link User} service interface.
@@ -32,27 +26,22 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public UserDto signUp(RegistrationDto registrationDto) {
-        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new EmptyRoleException("Default ROLE_USER not found"));
-
-        if (userRepository.existsByEmail(registrationDto.getEmail())) {
+    public UserDto signUp(UserDto userDto) {
+        if (userRepository.existsByEmail(userDto.getEmail())) {
             throw new EmailAlreadyExistsException(
-                    String.format("User with email '%s' already exists", registrationDto.getEmail())
+                    String.format("User with email '%s' already exists", userDto.getEmail())
             );
         }
 
-        String encryptedPassword = passwordEncoder.encode(registrationDto.getPassword());
+        String encryptedPassword = passwordEncoder.encode(userDto.getPassword());
 
         User user = new User();
-        user.setEmail(registrationDto.getEmail());
+        user.setEmail(userDto.getEmail());
         user.setEncryptedPassword(encryptedPassword);
-        user.setRoles(List.of(userRole));
 
         userRepository.save(user);
 
