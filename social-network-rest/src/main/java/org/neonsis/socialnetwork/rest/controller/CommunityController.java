@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.model.dto.community.CommunityCreateDto;
 import org.neonsis.socialnetwork.model.dto.community.CommunityDto;
 import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
-import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.neonsis.socialnetwork.rest.model.mapper.RestMapper;
 import org.neonsis.socialnetwork.rest.model.response.CommunityDetailsResponse;
 import org.neonsis.socialnetwork.rest.model.response.CommunityResponse;

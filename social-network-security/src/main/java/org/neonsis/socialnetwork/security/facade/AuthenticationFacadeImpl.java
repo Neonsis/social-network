@@ -1,7 +1,7 @@
-package org.neonsis.socialnetwork.service.security;
+package org.neonsis.socialnetwork.security.facade;
 
 import lombok.RequiredArgsConstructor;
-import org.neonsis.socialnetwork.model.domain.user.User;
+import org.neonsis.socialnetwork.security.model.domain.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -22,6 +22,6 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
 
     @Override
     public Long getLoggedInUserId() {
-        return ((UserPrincipal) getAuthentication().getPrincipal()).getId();
+        return ((User) getAuthentication().getPrincipal()).getId();
     }
 }

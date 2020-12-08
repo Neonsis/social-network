@@ -6,7 +6,6 @@ import org.neonsis.socialnetwork.model.dto.community.CommunityDto;
 import org.neonsis.socialnetwork.model.dto.post.CommentDto;
 import org.neonsis.socialnetwork.model.dto.post.PostDto;
 import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
-import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.neonsis.socialnetwork.rest.model.response.*;
 
 @Mapper(componentModel = "spring")

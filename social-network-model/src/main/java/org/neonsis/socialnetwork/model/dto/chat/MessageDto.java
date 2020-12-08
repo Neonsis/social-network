@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.neonsis.socialnetwork.model.domain.chat.Message;
 import org.neonsis.socialnetwork.model.dto.base.AbstractBaseDto;
 import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
-import org.neonsis.socialnetwork.model.dto.user.UserDto;
 
 /**
  * MessageDto. {@link Message}

@@ -1,4 +1,4 @@
-package org.neonsis.socialnetwork.rest.security;
+package org.neonsis.socialnetwork.security;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

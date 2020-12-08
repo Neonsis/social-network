@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.neonsis.socialnetwork.model.domain.user.Profile;
-import org.neonsis.socialnetwork.model.domain.user.User;
 
 import javax.persistence.*;
 import java.io.Serializable;

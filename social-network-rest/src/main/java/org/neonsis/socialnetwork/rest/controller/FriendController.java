@@ -2,7 +2,6 @@ package org.neonsis.socialnetwork.rest.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
-import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.neonsis.socialnetwork.rest.model.mapper.RestMapper;
 import org.neonsis.socialnetwork.rest.model.response.ProfileResponse;
 import org.neonsis.socialnetwork.service.FriendshipService;

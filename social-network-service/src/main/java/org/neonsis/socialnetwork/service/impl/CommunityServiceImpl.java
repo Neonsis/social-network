@@ -13,7 +13,7 @@ import org.neonsis.socialnetwork.model.mapper.ProfileMapper;
 import org.neonsis.socialnetwork.persistence.repository.CommunityRepository;
 import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;
 import org.neonsis.socialnetwork.service.CommunityService;
-import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
+import org.neonsis.socialnetwork.security.facade.AuthenticationFacade;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

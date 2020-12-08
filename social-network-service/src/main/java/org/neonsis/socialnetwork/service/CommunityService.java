@@ -4,7 +4,6 @@ import org.neonsis.socialnetwork.model.domain.community.Community;
 import org.neonsis.socialnetwork.model.dto.community.CommunityCreateDto;
 import org.neonsis.socialnetwork.model.dto.community.CommunityDto;
 import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
-import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

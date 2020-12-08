@@ -1,8 +1,8 @@
 package org.neonsis.socialnetwork.rest.config.security;
 
 import lombok.RequiredArgsConstructor;
-import org.neonsis.socialnetwork.rest.security.filter.JwtAuthenticationEntryPoint;
-import org.neonsis.socialnetwork.rest.security.filter.JwtAuthenticationFilter;
+import org.neonsis.socialnetwork.security.filter.JwtAuthenticationEntryPoint;
+import org.neonsis.socialnetwork.security.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

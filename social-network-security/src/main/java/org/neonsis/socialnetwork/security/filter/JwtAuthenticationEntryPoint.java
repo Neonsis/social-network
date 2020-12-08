@@ -1,4 +1,4 @@
-package org.neonsis.socialnetwork.rest.security.filter;
+package org.neonsis.socialnetwork.security.filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

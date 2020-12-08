@@ -7,7 +7,6 @@ import org.hibernate.annotations.Formula;
 import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
 import org.neonsis.socialnetwork.model.domain.community.Community;
 import org.neonsis.socialnetwork.model.domain.user.Profile;
-import org.neonsis.socialnetwork.model.domain.user.User;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class Post extends AbstractBaseEntity {
     /**
      * The post's content.
      */
-    @Column(name = "content",columnDefinition = "TEXT",nullable = false)
+    @Column(name = "content", columnDefinition = "TEXT", nullable = false)
     private String content;
 
     /**

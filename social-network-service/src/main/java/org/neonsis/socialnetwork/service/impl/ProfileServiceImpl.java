@@ -3,11 +3,10 @@ package org.neonsis.socialnetwork.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.model.domain.user.Profile;
-import org.neonsis.socialnetwork.model.mapper.ProfileMapper;
 import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
+import org.neonsis.socialnetwork.model.mapper.ProfileMapper;
 import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;
 import org.neonsis.socialnetwork.service.ProfileService;
-import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

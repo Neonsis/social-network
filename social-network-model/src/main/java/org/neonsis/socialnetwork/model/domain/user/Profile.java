@@ -7,6 +7,7 @@ import org.hibernate.annotations.Formula;
 import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
 import org.neonsis.socialnetwork.model.domain.community.Community;
 import org.neonsis.socialnetwork.model.domain.post.Post;
+import org.neonsis.socialnetwork.security.model.domain.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;

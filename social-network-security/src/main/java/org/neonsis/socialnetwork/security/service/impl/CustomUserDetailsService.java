@@ -1,9 +1,8 @@
-package org.neonsis.socialnetwork.rest.security;
+package org.neonsis.socialnetwork.security.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.neonsis.socialnetwork.model.domain.user.User;
-import org.neonsis.socialnetwork.persistence.repository.UserRepository;
-import org.neonsis.socialnetwork.service.security.UserPrincipal;
+import org.neonsis.socialnetwork.security.model.domain.User;
+import org.neonsis.socialnetwork.security.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +21,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found by email : " + email));
 
-        return UserPrincipal.create(user);
+        user.getAuthorities();
+
+        return user;
     }
 }

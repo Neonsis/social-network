@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.model.dto.chat.MessageCreateDto;
 import org.neonsis.socialnetwork.model.dto.chat.MessageDto;
 import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
-import org.neonsis.socialnetwork.model.dto.user.UserDto;
 import org.neonsis.socialnetwork.rest.model.mapper.RestMapper;
 import org.neonsis.socialnetwork.rest.model.response.MessageResponse;
 import org.neonsis.socialnetwork.rest.model.response.ProfileResponse;

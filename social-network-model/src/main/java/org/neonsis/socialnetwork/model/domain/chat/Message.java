@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.neonsis.socialnetwork.model.domain.base.AbstractBaseEntity;
 import org.neonsis.socialnetwork.model.domain.user.Profile;
-import org.neonsis.socialnetwork.model.domain.user.User;
 
 import javax.persistence.*;
 

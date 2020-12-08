@@ -25,6 +25,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+            <artifactId>social-network-security</artifactId>
+            <groupId>org.neonsis.socialnetwork</groupId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

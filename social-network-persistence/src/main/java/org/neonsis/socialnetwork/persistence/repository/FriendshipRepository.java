@@ -3,7 +3,6 @@ package org.neonsis.socialnetwork.persistence.repository;
 import org.neonsis.socialnetwork.model.domain.user.Friendship;
 import org.neonsis.socialnetwork.model.domain.user.FriendshipId;
 import org.neonsis.socialnetwork.model.domain.user.Profile;
-import org.neonsis.socialnetwork.model.domain.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package org.neonsis.socialnetwork.security.service.;
+package org.neonsis.socialnetwork.security.service;
 
 import org.neonsis.socialnetwork.security.exception.EmailAlreadyExistsException;
 import org.neonsis.socialnetwork.security.model.domain.User;
@@ -17,7 +17,7 @@ public interface UserService {
      *
      * @param registrationDto a registration object describing the user to register.
      * @return the registered user.
-     * @throws EmailAlreadyExistsException if user with {@link User#email} already exists.
+     * @throws EmailAlreadyExistsException if user with email already exists.
      */
     UserDto signUp(RegistrationDto registrationDto);
 

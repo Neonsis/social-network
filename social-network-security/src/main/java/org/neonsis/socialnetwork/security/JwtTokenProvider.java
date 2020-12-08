@@ -1,4 +1,4 @@
-package org.neonsis.socialnetwork.rest.security;
+package org.neonsis.socialnetwork.security;
 
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package org.neonsis.socialnetwork.service.security;
+package org.neonsis.socialnetwork.security.facade;
 
 import org.springframework.security.core.Authentication;
 

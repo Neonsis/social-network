@@ -5,7 +5,6 @@ import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
 import org.neonsis.socialnetwork.model.domain.user.Friendship;
 import org.neonsis.socialnetwork.model.domain.user.Profile;
 import org.neonsis.socialnetwork.model.domain.user.Status;
-import org.neonsis.socialnetwork.model.domain.user.User;
 import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

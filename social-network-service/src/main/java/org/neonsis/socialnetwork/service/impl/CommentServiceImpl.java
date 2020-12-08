@@ -5,15 +5,14 @@ import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.model.domain.post.Comment;
 import org.neonsis.socialnetwork.model.domain.post.Post;
 import org.neonsis.socialnetwork.model.domain.user.Profile;
-import org.neonsis.socialnetwork.model.domain.user.User;
-import org.neonsis.socialnetwork.model.mapper.CommentMapper;
 import org.neonsis.socialnetwork.model.dto.post.CommentCreateDto;
 import org.neonsis.socialnetwork.model.dto.post.CommentDto;
+import org.neonsis.socialnetwork.model.mapper.CommentMapper;
 import org.neonsis.socialnetwork.persistence.repository.CommentRepository;
 import org.neonsis.socialnetwork.persistence.repository.PostRepository;
 import org.neonsis.socialnetwork.persistence.repository.ProfileRepository;
 import org.neonsis.socialnetwork.service.CommentService;
-import org.neonsis.socialnetwork.service.security.AuthenticationFacade;
+import org.neonsis.socialnetwork.security.facade.AuthenticationFacade;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
