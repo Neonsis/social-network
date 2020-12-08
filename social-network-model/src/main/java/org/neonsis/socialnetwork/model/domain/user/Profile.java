@@ -47,7 +47,7 @@ public class Profile extends AbstractBaseEntity {
     /**
      * The user's main avatar.
      */
-    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     private Image avatar;
 
     /**

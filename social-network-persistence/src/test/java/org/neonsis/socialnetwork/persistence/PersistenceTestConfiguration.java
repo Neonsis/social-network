@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootConfiguration
 @EnableAutoConfiguration
-@EntityScan(basePackages = "org.neonsis.socialnetwork.model.domain")
+@EntityScan(basePackages = {"org.neonsis.socialnetwork"})
 @ComponentScan(basePackages = "org.neonsis.socialnetwork.persistence")
 public class PersistenceTestConfiguration {
 }

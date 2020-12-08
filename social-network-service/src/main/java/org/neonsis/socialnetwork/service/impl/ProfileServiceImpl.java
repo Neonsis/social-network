@@ -73,7 +73,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ProfileDto signUp(RegistrationDto registrationDto) {
-        UserDto userDto = new UserDto();
+        UserDto userDto =new UserDto();
         userDto.setEmail(registrationDto.getEmail());
         userDto.setPassword(registrationDto.getPassword());
 

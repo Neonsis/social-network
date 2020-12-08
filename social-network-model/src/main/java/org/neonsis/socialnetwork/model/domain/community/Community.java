@@ -46,7 +46,7 @@ public class Community extends AbstractBaseEntity {
     /**
      * The avatar of this community.
      */
-    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToOne(orphanRemoval = true)
     private Image avatar;
 
     /**

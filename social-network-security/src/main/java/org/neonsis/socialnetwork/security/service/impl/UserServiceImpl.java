@@ -2,6 +2,7 @@ package org.neonsis.socialnetwork.security.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.security.exception.EmailAlreadyExistsException;
+import org.neonsis.socialnetwork.security.exception.UserNotFoundException;
 import org.neonsis.socialnetwork.security.model.domain.User;
 import org.neonsis.socialnetwork.security.model.dto.UserDto;
 import org.neonsis.socialnetwork.security.model.mapper.UserMapper;
@@ -10,8 +11,6 @@ import org.neonsis.socialnetwork.security.service.UserService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
 
 /**
  * {@link User} service interface.
@@ -51,14 +50,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto findById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found by id: " + id));
+                .orElseThrow(() -> new UserNotFoundException("User not found by id: " + id));
         return toDto(user);
     }
 
     @Override
     public UserDto findByEmail(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("User not found by email: " + email));
+                .orElseThrow(() -> new UserNotFoundException("User not found by email: " + email));
         return toDto(user);
     }
 

@@ -8,6 +8,4 @@ import org.neonsis.socialnetwork.model.dto.user.ProfileDto;
 public interface ProfileMapper {
 
     ProfileDto profileToDto(Profile profile);
-
-    Profile dtoToProfile(ProfileDto profileDto);
 }

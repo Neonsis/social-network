@@ -1,6 +1,7 @@
 package org.neonsis.socialnetwork.security.model.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
@@ -11,6 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class UserDto {
 
     private Long id;
@@ -29,9 +31,4 @@ public class UserDto {
      * The user's account hashed password.
      */
     private String encryptedPassword;
-
-    /**
-     * JWT token
-     */
-    private String token;
 }
