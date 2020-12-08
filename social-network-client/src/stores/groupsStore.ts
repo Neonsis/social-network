@@ -75,7 +75,7 @@ export default class GroupsStore {
 
     @action loadPopularGroups = async (search: string) => {
         try {
-            const popularGroups = await agent.Group.getGroups(this.page, GROUPS_PAGE_SIZE, "followersCount", search);
+            const popularGroups = await agent.Group.getGroups(this.page, GROUPS_PAGE_SIZE, "followersCount", search, "desc");
             runInAction(() => {
                 this.userGroups = popularGroups.content;
                 this.isLastGroups = popularGroups.last;
@@ -127,7 +127,7 @@ export default class GroupsStore {
     @action unfollow = async (groupId: string) => {
         this.followLoader = false;
         try {
-            await agent.Group.follow(groupId);
+            await agent.Group.unfollow(groupId);
             runInAction(() => {
                 this.group!.isUserFollow = false;
             })

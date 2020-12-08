@@ -99,8 +99,8 @@ const Chat = {
 
 const Group = {
     getGroup: (groupId: string): Promise<IGroupDetails> => requests.get(`/communities/${groupId}`),
-    getGroups: (page: number, size: number, sort: string, search: string)
-        : Promise<Page<IGroup[]>> => requests.get(`/communities?page=${page}&size=${size}&search=${search}&sort=${sort}`),
+    getGroups: (page: number, size: number, sort: string, search: string, order: string)
+        : Promise<Page<IGroup[]>> => requests.get(`/communities?page=${page}&size=${size}&search=${search}&sort=${sort},${order}`),
     getUserGroups: (userId: string, search: string, page: number, size: number)
         : Promise<Page<IGroup[]>> => requests.get(`/users/${userId}/communities?page=${page}&size=${size}&search=${search}`),
     getModeratorGroups: (moderatorId: string, search: string, page: number, size: number)
