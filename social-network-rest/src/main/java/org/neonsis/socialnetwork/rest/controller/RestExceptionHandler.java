@@ -1,5 +1,6 @@
 package org.neonsis.socialnetwork.rest.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.neonsis.socialnetwork.exception.EntityNotFoundException;
 import org.neonsis.socialnetwork.exception.InternalServerErrorException;
 import org.neonsis.socialnetwork.exception.InvalidWorkFlowException;
@@ -8,6 +9,7 @@ import org.neonsis.socialnetwork.rest.model.response.ApiErrorResponse;
 import org.neonsis.socialnetwork.rest.model.response.ApiValidationErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -26,24 +28,30 @@ import java.util.stream.Collectors;
 import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
+@RequiredArgsConstructor
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(RestExceptionHandler.class);
+
+    private final MessageSource messageSource;
+
+    private static final String VALIDATION_ERROR = "config.data.exceptions.validation_error";
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
             HttpHeaders headers,
             HttpStatus status,
-            WebRequest request) {
+            WebRequest request
+    ) {
         logger.warn("Responding with validation error.  Message - {}", ex.getMessage());
         List<ValidationError> errors = ex.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> new ValidationError(fieldError.getField(), fieldError.getDefaultMessage()))
                 .collect(Collectors.toList());
 
         ApiValidationErrorResponse apiError = new ApiValidationErrorResponse(BAD_REQUEST);
-        apiError.setMessage("Validation error");
+        apiError.setMessage(messageSource.getMessage(VALIDATION_ERROR, null, request.getLocale()));
         apiError.setDetails(errors);
 
         return buildResponseEntity(apiError);
