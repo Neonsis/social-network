@@ -82,7 +82,7 @@ public class Post extends AbstractBaseEntity {
     @OneToMany(
             mappedBy = "post",
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             orphanRemoval = true
     )
     private List<Comment> comments = new ArrayList<>();

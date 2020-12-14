@@ -18,6 +18,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.neonsis.socialnetwork</groupId>
+            <artifactId>social-network-security</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <artifactId>social-network-model</artifactId>
             <groupId>org.neonsis.socialnetwork</groupId>
             <version>${project.parent.version}</version>
